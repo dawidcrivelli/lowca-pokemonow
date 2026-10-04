@@ -1,4 +1,4 @@
-# polskie teksty dla sławnych Pokémonów z gen. 4–9 (tmp/famous.json) → dopisuje do tmp/pl.json; nazwy ataków z kart: tmp/attacks_pl.json
+# polskie teksty dla sławnych Pokémonów z gen. 4–9 (tmp/famous.json) → dopisuje do tmp/pl.json, nazwy ataków z kart do tmp/attacks_pl.json, ruchów do tmp/moves_pl.json
 import json
 PL = {
 443: ("Pokémon Lądowy Rekin", "Mały, granatowy smoczek z wielką paszczą i płetwą na grzbiecie, trochę jak rekin.", "Mieszka w ciepłych jaskiniach i wyskakuje na zdobycz, która podejdzie za blisko."),
@@ -26,6 +26,14 @@ PL = {
 886: ("Pokémon Opiekun", "Zielono-szary smok-duch z głową jak trójkąt, na której nosi małego Dreepy.", "Opiekuje się Dreepy i wozi go na głowie, aż maluch dorośnie."),
 887: ("Pokémon Niewidzialny", "Duży zielony smok-duch z rogami jak odrzutowiec, w których siedzą Dreepy.", "Wystrzeliwuje Dreepy z rogów szybciej niż samochód wyścigowy. Dreepy to uwielbiają!"),
 }
-ATK = {}
-for f, new in [('tmp/pl.json', {str(k): dict(zip(('kind', 'hint', 'fact'), v)) for k, v in PL.items()}), ('tmp/attacks_pl.json', ATK)]:
+ATK = {"Power Blast": "Potężny Wybuch", "Dragonblade": "Smocze Ostrze", "Jab": "Prosty Cios", "Avenging Knuckle": "Pięść Zemsty",
+ "Accelerating Stab": "Przyspieszone Pchnięcie", "Illusory Hijacking": "Iluzoryczne Porwanie", "Try Bouncing": "Podskok", "Strafe": "Ostrzał",
+ "Coordinated Shuriken": "Zgrany Shuriken", "Disarming Voice": "Rozbrajający Głos", "Razor Wing": "Ostre Skrzydło", "Shoot Through": "Przestrzał",
+ "Power Shot": "Potężny Strzał", "Fake Out": "Zmyłka", "Flare Strike": "Płomienny Cios", "Flare Shot": "Płomienny Strzał", "Quick Attack": "Szybki Atak",
+ "Low Sweep": "Podcięcie", "Turbo Flare": "Turbopłomień", "Petty Grudge": "Mała Uraza", "Dragon Headbutt": "Smoczy Byk", "Phantom Force": "Upiorna Siła"}
+# nazwy ruchów do areny (klucze PokeAPI)
+MOVES = {"force-palm": "Dłoń Mocy", "metal-claw": "Metalowy Pazur", "bone-rush": "Kościany Grad", "foul-play": "Nieczysta Gra", "night-daze": "Nocne Oszołomienie",
+ "smack-down": "Strącenie", "double-team": "Podwójna Drużyna", "smokescreen": "Zasłona Dymna", "baby-doll-eyes": "Słodkie Oczka", "shadow-sneak": "Cień z Zaskoczenia",
+ "spirit-shackle": "Okowy Ducha", "darkest-lariat": "Mroczny Lariat", "flame-charge": "Płomienna Szarża", "pyro-ball": "Ognista Piłka", "dragon-darts": "Smocze Strzałki"}
+for f, new in [('tmp/pl.json', {str(k): dict(zip(('kind', 'hint', 'fact'), v)) for k, v in PL.items()}), ('tmp/attacks_pl.json', ATK), ('tmp/moves_pl.json', MOVES)]:
     d = json.load(open(f)); d.update(new); json.dump(d, open(f, 'w'), ensure_ascii=False, indent=1)

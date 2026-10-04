@@ -65,7 +65,7 @@ for (const i of IDS) {
   const bst = Object.values(st).reduce((a, b) => a + b, 0);
   const flav = en(sp.flavor_text_entries), red = flav.find(f => f.version.name === 'red') || flav[0];
   mons.push({
-    id: i, name: en(sp.names)[0].name, hz: HZ.hz.includes(i) || undefined, fam: FAM.fam.includes(i) || undefined, types: p.types.map(t => t.type.name),
+    id: i, name: en(sp.names)[0].name, hz: HZ.hz.includes(i) || undefined, fam: [...FAM.fam, ...FAM.family].includes(i) || undefined, types: p.types.map(t => t.type.name),
     hp: st.hp, atk: st.attack, def: st.defense, satk: st['special-attack'], sdef: st['special-defense'], spd: st.speed,
     m: p.height / 10, kg: p.weight / 10, rarity: rarity(sp, bst),
     from: (n => IDS.includes(n) ? n : null)(+sp.evolves_from_species?.url.match(/(\d+)\/$/)[1]),   // Pichu & co. spoza listy pomijamy
@@ -84,7 +84,7 @@ fs.writeFileSync(path.join(__dirname, 'en.json'), JSON.stringify(mons.map(({ id,
   ({ id, name, types, genus, flavor, from: from && mons.find(m => m.id === from).name })), null, 1));
 const plFile = path.join(__dirname, 'pl.json'), PL = fs.existsSync(plFile) ? JSON.parse(fs.readFileSync(plFile)) : {};
 const rows = mons.map(({ genus, flavor, ...m }) => JSON.stringify({ ...m, ...PL[m.id] }));
-fs.writeFileSync(path.join(__dirname, '..', 'js', 'species.js'), `/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz: widać je w serialu) + sławne z gen. 4–9 (fam) =================
+fs.writeFileSync(path.join(__dirname, '..', 'js', 'species.js'), `/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz: widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) =================
    Wygenerowane: node tmp/build_species.js  (dane: PokeAPI, teksty: tmp/pl.json)
    hp/atk/def/satk/sdef/spd = statystyki bazowe z gier · m = wzrost, kg = waga · from = z kogo ewoluuje
    mv: 4 ruchy do areny (klucze MOVES, opis pól w tmp/build_species.js) · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1

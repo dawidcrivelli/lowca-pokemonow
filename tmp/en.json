@@ -1651,6 +1651,60 @@
   "from": null
  },
  {
+  "id": 443,
+  "name": "Gible",
+  "types": [
+   "dragon",
+   "ground"
+  ],
+  "genus": "Land Shark Pokémon",
+  "flavor": "It nests in small, horizontal holes in cave walls. It pounces to catch prey that stray too close.",
+  "from": null
+ },
+ {
+  "id": 444,
+  "name": "Gabite",
+  "types": [
+   "dragon",
+   "ground"
+  ],
+  "genus": "Cave Pokémon",
+  "flavor": "There is a long-held belief that medicine made from its scales will heal even incurable illnesses.",
+  "from": "Gible"
+ },
+ {
+  "id": 445,
+  "name": "Garchomp",
+  "types": [
+   "dragon",
+   "ground"
+  ],
+  "genus": "Mach Pokémon",
+  "flavor": "When it folds up its body and extends its wings, it looks like a jet plane. It flies at sonic speed.",
+  "from": "Gabite"
+ },
+ {
+  "id": 447,
+  "name": "Riolu",
+  "types": [
+   "fighting"
+  ],
+  "genus": "Emanation Pokémon",
+  "flavor": "The aura that emanates from its body intensifies to alert others if it is afraid or sad.",
+  "from": null
+ },
+ {
+  "id": 448,
+  "name": "Lucario",
+  "types": [
+   "fighting",
+   "steel"
+  ],
+  "genus": "Aura Pokémon",
+  "flavor": "It has the ability to sense the auras of all things. It understands human speech.",
+  "from": "Riolu"
+ },
+ {
   "id": 466,
   "name": "Electivire",
   "types": [
@@ -1659,6 +1713,131 @@
   "genus": "Thunderbolt Pokémon",
   "flavor": "It pushes the tips of its two tails against the foe, then lets loose with over 20,000 volts of power.",
   "from": "Electabuzz"
+ },
+ {
+  "id": 570,
+  "name": "Zorua",
+  "types": [
+   "dark"
+  ],
+  "genus": "Tricky Fox Pokémon",
+  "flavor": "It changes into the forms of others to surprise them. Apparently, it often transforms into a silent child.",
+  "from": null
+ },
+ {
+  "id": 571,
+  "name": "Zoroark",
+  "types": [
+   "dark"
+  ],
+  "genus": "Illusion Fox Pokémon",
+  "flavor": "Bonds between these Pokémon are very strong. It protects the safety of its pack by tricking its opponents.",
+  "from": "Zorua"
+ },
+ {
+  "id": 656,
+  "name": "Froakie",
+  "types": [
+   "water"
+  ],
+  "genus": "Bubble Frog Pokémon",
+  "flavor": "It secretes flexible bubbles from its chest and back. The bubbles reduce the damage it would otherwise take when attacked.",
+  "from": null
+ },
+ {
+  "id": 657,
+  "name": "Frogadier",
+  "types": [
+   "water"
+  ],
+  "genus": "Bubble Frog Pokémon",
+  "flavor": "It can throw bubble-covered pebbles with precise control, hitting empty cans up to a hundred feet away.",
+  "from": "Froakie"
+ },
+ {
+  "id": 658,
+  "name": "Greninja",
+  "types": [
+   "water",
+   "dark"
+  ],
+  "genus": "Ninja Pokémon",
+  "flavor": "It creates throwing stars out of compressed water. When it spins them and throws them at high speed, these stars can split metal in two.",
+  "from": "Frogadier"
+ },
+ {
+  "id": 700,
+  "name": "Sylveon",
+  "types": [
+   "fairy"
+  ],
+  "genus": "Intertwining Pokémon",
+  "flavor": "It sends a soothing aura from its ribbonlike feelers to calm fights.",
+  "from": "Eevee"
+ },
+ {
+  "id": 722,
+  "name": "Rowlet",
+  "types": [
+   "grass",
+   "flying"
+  ],
+  "genus": "Grass Quill Pokémon",
+  "flavor": "This wary Pokémon uses photosynthesis to store up energy during the day, while becoming active at night.",
+  "from": null
+ },
+ {
+  "id": 723,
+  "name": "Dartrix",
+  "types": [
+   "grass",
+   "flying"
+  ],
+  "genus": "Blade Quill Pokémon",
+  "flavor": "A bit of a dandy, it spends its free time preening its wings. Its preoccupation with any dirt on its plumage can leave it unable to battle.",
+  "from": "Rowlet"
+ },
+ {
+  "id": 724,
+  "name": "Decidueye",
+  "types": [
+   "grass",
+   "ghost"
+  ],
+  "genus": "Arrow Quill Pokémon",
+  "flavor": "It fires arrow quills from its wings with such precision, they can pierce a pebble at distances over a hundred yards.",
+  "from": "Dartrix"
+ },
+ {
+  "id": 725,
+  "name": "Litten",
+  "types": [
+   "fire"
+  ],
+  "genus": "Fire Cat Pokémon",
+  "flavor": "While grooming itself, it builds up fur inside its stomach. It sets the fur alight and spews fiery attacks, which change based on how it coughs.",
+  "from": null
+ },
+ {
+  "id": 726,
+  "name": "Torracat",
+  "types": [
+   "fire"
+  ],
+  "genus": "Fire Cat Pokémon",
+  "flavor": "At its throat, it bears a bell of fire. The bell rings brightly whenever this Pokémon spits fire.",
+  "from": "Litten"
+ },
+ {
+  "id": 727,
+  "name": "Incineroar",
+  "types": [
+   "fire",
+   "dark"
+  ],
+  "genus": "Heel Pokémon",
+  "flavor": "This Pokémon has a violent, selfish disposition. If it’s not in the mood to listen, it will ignore its Trainer’s orders with complete nonchalance.",
+  "from": "Torracat"
  },
  {
   "id": 744,
@@ -1679,6 +1858,47 @@
   "genus": "Wolf Pokémon",
   "flavor": "Its quick movements confuse its enemies. Well equipped with claws and fangs, it also uses the sharp rocks in its mane as weapons.",
   "from": "Rockruff"
+ },
+ {
+  "id": 778,
+  "name": "Mimikyu",
+  "types": [
+   "ghost",
+   "fairy"
+  ],
+  "genus": "Disguise Pokémon",
+  "flavor": "Its actual appearance is unknown. A scholar who saw what was under its rag was overwhelmed by terror and died from the shock.",
+  "from": null
+ },
+ {
+  "id": 813,
+  "name": "Scorbunny",
+  "types": [
+   "fire"
+  ],
+  "genus": "Rabbit Pokémon",
+  "flavor": "A warm-up of running around gets fire energy coursing through this Pokémon’s body. Once that happens, it’s ready to fight at full power.",
+  "from": null
+ },
+ {
+  "id": 814,
+  "name": "Raboot",
+  "types": [
+   "fire"
+  ],
+  "genus": "Rabbit Pokémon",
+  "flavor": "Its thick and fluffy fur protects it from the cold and enables it to use hotter fire moves.",
+  "from": "Scorbunny"
+ },
+ {
+  "id": 815,
+  "name": "Cinderace",
+  "types": [
+   "fire"
+  ],
+  "genus": "Striker Pokémon",
+  "flavor": "It juggles a pebble with its feet, turning it into a burning soccer ball. Its shots strike opponents hard and leave them scorched.",
+  "from": "Raboot"
  },
  {
   "id": 821,
@@ -1825,6 +2045,39 @@
   "genus": "Cream Pokémon",
   "flavor": "When it trusts a Trainer, it will treat them to berries it’s decorated with cream.",
   "from": "Milcery"
+ },
+ {
+  "id": 885,
+  "name": "Dreepy",
+  "types": [
+   "dragon",
+   "ghost"
+  ],
+  "genus": "Lingering Pokémon",
+  "flavor": "After being reborn as a ghost Pokémon, Dreepy wanders the areas it used to inhabit back when it was alive in prehistoric seas.",
+  "from": null
+ },
+ {
+  "id": 886,
+  "name": "Drakloak",
+  "types": [
+   "dragon",
+   "ghost"
+  ],
+  "genus": "Caretaker Pokémon",
+  "flavor": "It’s capable of flying faster than 120 mph. It battles alongside Dreepy and dotes on them until they successfully evolve.",
+  "from": "Dreepy"
+ },
+ {
+  "id": 887,
+  "name": "Dragapult",
+  "types": [
+   "dragon",
+   "ghost"
+  ],
+  "genus": "Stealth Pokémon",
+  "flavor": "When it isn’t battling, it keeps Dreepy in the holes on its horns. Once a fight starts, it launches the Dreepy like supersonic missiles.",
+  "from": "Drakloak"
  },
  {
   "id": 900,
