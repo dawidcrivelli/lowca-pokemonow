@@ -4,9 +4,9 @@
 'use strict';
 
 /* ---------------- zapis ----------------
-   caught: id → {t}   rec: id → {w, l}   removed: ukryte id */
+   caught: id → {t}   rec: id → {w, l} */
 const KEY = 'pokeTracker.v1';
-const blank = () => ({ caught: {}, rec: {}, removed: [], settings: { sound: true, mode: 'auto' } });
+const blank = () => ({ caught: {}, rec: {}, settings: { sound: true, mode: 'auto' } });
 const load = j => { const db = blank(); for (const k of Object.keys(db)) if (j?.[k]) db[k] = k === 'settings' ? { ...db[k], ...j[k] } : j[k]; return db; };
 let DB = (() => { try { return load(JSON.parse(localStorage.getItem(KEY))); } catch (e) { return blank(); } })();
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
@@ -38,11 +38,8 @@ function search(q) {
 }
 
 /* ---------------- lista Pokémonów ---------------- */
-let LIST = [];
-const refreshList = () => { const rm = new Set(DB.removed); LIST = SPECIES.filter(s => !rm.has(s.id)); };
-refreshList();
+const LIST = SPECIES;
 const byId = id => LIST.find(s => s.id === +id);
-const isHidden = id => DB.removed.includes(+id);
 const isCaught = id => !!DB.caught[id];
 // ghost = czarna sylwetka; small = pikselowy sprite z gier do siatki (lekki), inaczej duża grafika
 const art = (sp, mode = 'color', small) => `<img src="${(small ? SPRITE_URL : ART_URL)(sp.id)}" crossorigin="anonymous" alt="" loading="lazy" draggable="false" class="${small ? 'px' : ''} ${mode}">`;
@@ -110,19 +107,17 @@ const binder = () => DB.settings.face === 'card';   // tryb kart: segregator w s
 // rewers niezłapanej karty: wyraźna sylwetka w okienku, żeby dało się zgadywać
 const cardBack = sp => `<span class="cardback"><span class="win">${art(sp, 'ghost')}</span>${drawBall(1)}</span>`;
 function tileHTML(sp) {
-  const got = isCaught(sp.id), hid = isHidden(sp.id);
-  return `<button class="tile ${got ? '' : 'ghost'} ${hid ? 'hid' : ''}" data-id="${sp.id}" ${editing && !got ? 'title="Dotknij, żeby odblokować"' : ''}>
+  const got = isCaught(sp.id);
+  return `<button class="tile ${got ? '' : 'ghost'}" data-id="${sp.id}" ${editing ? `title="Dotknij: ${got ? 'wypuść' : 'złap'}"` : ''}>
     <span class="no">${dexNo(sp)}</span>
     <span class="rar">${'<i></i>'.repeat(sp.rarity)}</span>
     ${binder() ? `<span class="art tcgs">${got ? `<img src="${CARD_URL(sp)}" alt="" loading="lazy">` : cardBack(sp)}</span>`
       : `<span class="art">${art(sp, got ? 'color' : 'ghost', 'small')}</span>`}
     <span class="nm">${got ? esc(sp.name) : '???'}</span>
-    <span class="grp" style="background:${TYPES[sp.types[0]][2]}"></span>
-    <span class="vis" data-vis="${sp.id}" title="${hid ? 'Pokaż' : 'Ukryj'}">${hid ? '🙈' : '👁'}</span></button>`;
+    <span class="grp" style="background:${TYPES[sp.types[0]][2]}"></span></button>`;
 }
-// tryb rodzica: w siatce też ukryte (przygaszone), żeby dało się je pokazać z powrotem
 function renderGrid(freshId) {
-  const list = (editing ? SPECIES : LIST).filter(s => inFilter(s, filter) && !(el.onlyMissing.checked && isCaught(s.id)));
+  const list = LIST.filter(s => inFilter(s, filter) && !(el.onlyMissing.checked && isCaught(s.id)));
   el.grid.innerHTML = list.map(tileHTML).join('');
   el.emptyMsg.hidden = list.length > 0;
   const t = freshId && el.grid.querySelector(`[data-id="${CSS.escape(freshId)}"]`);
@@ -147,10 +142,8 @@ function renderProgress() {
 function renderAll(freshId) { renderChips(); renderProgress(); renderGrid(freshId); }
 
 el.grid.addEventListener('click', e => {
-  const vis = e.target.closest('[data-vis]');
-  if (vis && editing) { e.stopPropagation(); return toggleHidden(vis.dataset.vis); }
-  const id = +e.target.closest('.tile')?.dataset.id, sp = editing ? SPECIES.find(s => s.id === id) : byId(id); if (!sp) return;
-  if (editing && !isCaught(sp.id)) return unlock(sp);   // tryb rodzica: dotknięcie sylwetki odblokowuje
+  const sp = byId(e.target.closest('.tile')?.dataset.id); if (!sp) return;
+  if (editing) return setCaught(sp, !isCaught(sp.id));   // tryb rodzica: dotknięcie łapie / wypuszcza
   blip(isCaught(sp.id) ? 620 : 380, .07);
   openCard(sp);
 });
@@ -281,7 +274,7 @@ function caughtCard(sp) {
       <button class="btn amber big" data-arena="${sp.id}">⚔️ Do areny</button>
       <button class="btn" data-duel="${sp.id}">🃏 Karty</button>
       <button class="btn ghost" data-close="1">Zamknij</button>
-      ${editing ? `<button class="btn ghost" data-hide="${sp.id}">${isHidden(sp.id) ? '👁 Pokaż' : '🙈 Ukryj'}</button><button class="btn danger" data-release="${sp.id}">Wypuść</button>` : ''}
+      ${editing ? `<button class="btn danger" data-release="${sp.id}">Wypuść</button>` : ''}
     </div>
   </div>`;
 }
@@ -298,7 +291,7 @@ function hintCard(sp) {
     <div class="m-actions">
       <button class="btn" data-letter="${sp.id}">Pokaż pierwszą literę</button>
       <button class="btn ghost" data-close="1">Zamknij</button>
-      ${editing ? `<button class="btn" data-unlock="${sp.id}">🔓 Odblokuj</button><button class="btn ghost" data-hide="${sp.id}">${isHidden(sp.id) ? '👁 Pokaż' : '🙈 Ukryj'}</button>` : ''}
+      ${editing ? `<button class="btn" data-unlock="${sp.id}">✓ Złap</button>` : ''}
     </div>
   </div>`;
 }
@@ -307,8 +300,7 @@ el.modalBody.addEventListener('click', e => {
   const d = b.dataset;
   if (d.close) closeModal();
   if (d.release) { delete DB.caught[d.release]; save(); closeModal(); renderAll(); }
-  if (d.hide) { closeModal(); toggleHidden(d.hide); }
-  if (d.unlock) { closeModal(); unlock(SPECIES.find(s => s.id === +d.unlock)); }
+  if (d.unlock) { closeModal(); setCaught(byId(d.unlock), true); }
   if (d.arena) openArena(d.arena);
   if (d.duel) openDuel(d.duel);
   if (d.flip) { const h = b.closest('.m-hero'); setFace(h.classList.toggle('card') ? 'card' : 'art'); b.textContent = binder() ? '🎨' : '🃏'; }
@@ -584,14 +576,10 @@ el.btnEdit.addEventListener('pointerdown', () => { el.btnEdit.classList.add('hol
 el.btnEdit.addEventListener('click', () => { if (!editing) say('Tryb rodzica: przytrzymaj ⚙️ przez sekundę.'); });
 el.btnEdit.addEventListener('contextmenu', e => e.preventDefault());
 
-// ukrycie nie kasuje złapania: po pokazaniu Pokémon wraca z postępem
-function toggleHidden(id) {
-  DB.removed = isHidden(id) ? DB.removed.filter(r => r !== +id) : [...DB.removed, +id];
-  save(); refreshList(); renderAll(); renderEditBar(); blip(isHidden(id) ? 300 : 560, .07);
-}
-function unlock(sp) {
-  DB.caught[sp.id] = { t: Date.now() }; save(); renderAll(sp.id); blip(880, .1);
-  say(`Odblokowany: <b>${esc(sp.name)}</b>.`, 'good');
+function setCaught(sp, got) {
+  if (got) DB.caught[sp.id] = { t: Date.now() }; else delete DB.caught[sp.id];
+  save(); renderAll(); blip(got ? 880 : 300, .1);
+  say(`${got ? 'Złapany' : 'Wypuszczony'}: <b>${esc(sp.name)}</b>.`, got ? 'good' : '');
 }
 function download(obj, name) {
   const a = document.createElement('a');
@@ -603,34 +591,26 @@ function toggleEdit() {
   editing = !editing;
   document.body.classList.toggle('editing', editing);
   el.btnEdit.classList.toggle('on', editing);
-  renderGrid();   // pokazuje / chowa ukryte kafelki
   if (!editing) { editBar?.remove(); editBar = null; return say(''); }
   blip(880, .15);
   editBar = document.createElement('section');
   editBar.className = 'edit-bar';
-  renderEditBar();
-  el.main.insertBefore(editBar, $('.filters'));
-  editBar.addEventListener('click', editBarClick);
-}
-function renderEditBar() {
-  if (!editBar) return;
   editBar.innerHTML = `
     <h3>⚙️ Tryb rodzica</h3>
-    <p>Dotknij sylwetki, żeby odblokować Pokémona. 👁 / 🙈 na kafelku pokazuje albo ukrywa go na liście (złapanie zostaje).
-      Postęp przeniesiesz na inne urządzenie przez plik.</p>
+    <p>Dotknij sylwetki, żeby złapać Pokémona, a złapanego — żeby go wypuścić. Postęp przeniesiesz na inne urządzenie przez plik.</p>
     <div class="eb-tools">
-      <button class="btn ghost" data-eb="restore" ${DB.removed.length ? '' : 'disabled'}>Pokaż wszystkie ukryte (${DB.removed.length})</button>
       <button class="btn ghost" data-eb="export">Zapisz do pliku</button>
       <button class="btn ghost" data-eb="import">Wczytaj z pliku</button>
       <button class="btn ghost" data-eb="sound">Dźwięk: ${DB.settings.sound ? 'wł.' : 'wył.'}</button>
       <button class="btn ghost" data-eb="all">Złap wszystkie (test)</button>
       <button class="btn danger" data-eb="reset">Wyzeruj postęp</button>
     </div>`;
+  el.main.insertBefore(editBar, $('.filters'));
+  editBar.addEventListener('click', editBarClick);
 }
 function editBarClick(e) {
   const b = e.target.closest('[data-eb]'); if (!b) return;
   ({
-    restore() { DB.removed = []; save(); refreshList(); renderAll(); renderEditBar(); },
     export() { download(DB, `lowca-pokemonow-${new Date().toISOString().slice(0, 10)}.json`); },
     import() {
       const inp = Object.assign(document.createElement('input'), { type: 'file', accept: 'application/json,.json' });
@@ -638,14 +618,14 @@ function editBarClick(e) {
         try {
           const db = load(JSON.parse(await inp.files[0].text()));
           if (!confirm(`Wczytać zapis? ${Object.keys(db.caught).length} złapanych Pokémonów. Obecny postęp zostanie zastąpiony.`)) return;
-          DB = db; save(); refreshList(); renderAll(); renderEditBar();
+          DB = db; save(); renderAll();
         } catch (err) { alert('Nie udało się wczytać tego pliku.'); }
       };
       inp.click();
     },
     sound() { DB.settings.sound = !DB.settings.sound; save(); b.textContent = `Dźwięk: ${DB.settings.sound ? 'wł.' : 'wył.'}`; },
     all() { LIST.forEach(s => { DB.caught[s.id] = DB.caught[s.id] || { t: Date.now() }; }); save(); renderAll(); },
-    reset() { if (confirm('Na pewno wyzerować cały postęp (złapane, ukryte, walki)?')) { DB = blank(); save(); refreshList(); renderAll(); renderEditBar(); } },
+    reset() { if (confirm('Na pewno wyzerować cały postęp (złapane, walki)?')) { DB = blank(); save(); renderAll(); } },
   })[b.dataset.eb]();
 }
 

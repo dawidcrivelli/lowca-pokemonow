@@ -24,8 +24,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
   energia, ewolucja (tylko w złapane!), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
   Efekty z opisu ataku: stany (☠️ 🔥 💤 ⚡ 💫, jak w grze), leczenie, obrażenia na ławce i w siebie, zrzut energii.
 - **Oryginalne okrzyki** z Red/Blue.
-- **Tryb rodzica** — przytrzymaj ⚙️ przez sekundę: dotknięcie sylwetki odblokowuje Pokémona, 👁 / 🙈 na kafelku pokazuje albo ukrywa
-  go (ukryte widać tylko w trybie rodzica, przygaszone; złapanie zostaje), zapis/odczyt pliku, reset.
+- **Tryb rodzica** — przytrzymaj ⚙️ przez sekundę: dotknięcie kafelka łapie albo wypuszcza Pokémona, zapis/odczyt pliku, reset.
 
 ## Uruchomienie
 
