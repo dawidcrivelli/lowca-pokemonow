@@ -1,5 +1,5 @@
 {
- "_source": "M12 Arceus and the Jewel of Life (2009): species in the movie's Pokémon list; family = pre-evolutions the cards need",
- "m12": [],
- "family": []
+ "_source": "M12 Arceus and the Jewel of Life (2009): species named by several sources (search summaries of Bulbapedia / Serebii; legendaries, Ash, Dawn, Brock, Team Rocket, Marcus, Damos, Kato & Kiko); wild background ones may be missing; family = pre-evolutions the cards need (no babies)",
+ "m12": [25, 31, 34, 52, 172, 185, 202, 214, 264, 267, 295, 299, 309, 310, 336, 343, 344, 359, 388, 391, 393, 398, 405, 417, 418, 427, 437, 439, 440, 453, 455, 469, 472, 473, 476, 483, 484, 485, 487, 493],
+ "family": [193, 207, 263, 265, 266, 294]
 }
