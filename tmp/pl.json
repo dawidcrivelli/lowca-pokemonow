@@ -2448,5 +2448,170 @@
   "kind": "Pokémon Niemowlę",
   "hint": "Mały, fioletowy jaszczurzy maluch z żółtym czubkiem i różowym brzuszkiem.",
   "fact": "Gromadzi trującą ślinę i prąd w woreczkach w ciele. Gdy dorośnie, zostanie gwiazdą rocka!"
+ },
+ "172": {
+  "kind": "Pokémon Malutka Mysz",
+  "hint": "Malutka żółta myszka z dużymi, trójkątnymi uszami zakończonymi na czarno.",
+  "fact": "Gdy się ekscytuje, przez przypadek strzela iskierkami z policzków. W filmie „Arceus i Klejnot Życia” maluch z postrzępionym uchem przyjaźni się z Dialgą i pomaga bohaterom."
+ },
+ "202": {
+  "kind": "Pokémon Cierpliwy",
+  "hint": "Niebieski, gumowy stworek o kształcie worka z zamkniętymi oczami i czarnym ogonkiem.",
+  "fact": "Nigdy nie atakuje pierwszy, tylko cierpliwie odbija ciosy. W filmie „Arceus i Klejnot Życia” należy do Jessie z Zespołu R."
+ },
+ "214": {
+  "kind": "Pokémon Pojedynczy Róg",
+  "hint": "Granatowy chrząszcz z jednym wielkim rogiem na głowie i mocnymi rękami.",
+  "fact": "Jest tak silny, że potrafi podnieść kilku ludzi naraz. W filmie „Arceus i Klejnot Życia” to Pokémon Kato."
+ },
+ "264": {
+  "kind": "Pokémon Pędzący",
+  "hint": "Długi, niski zwierzak z biało-brązowym futrem w paski i ostrymi pazurkami.",
+  "fact": "Biega bardzo szybko, ale tylko prosto przed siebie. Na krętych ścieżkach zupełnie sobie nie radzi."
+ },
+ "267": {
+  "kind": "Pokémon Motyl",
+  "hint": "Kolorowy motyl z wielkimi skrzydłami w żółte, czerwone i niebieskie plamy.",
+  "fact": "Jest piękny, ale łakomy. Przegania inne Pokémony, żeby mieć cały słodki nektar tylko dla siebie."
+ },
+ "295": {
+  "kind": "Pokémon Głośny Hałas",
+  "hint": "Duży, fioletowy stwór z wielką buzią i rurkami wystającymi z głowy i ciała.",
+  "fact": "Przez dziurki w ciele wydaje mnóstwo różnych dźwięków. Tak rozmawia z innymi ze swojego gatunku."
+ },
+ "309": {
+  "kind": "Pokémon Błyskawica",
+  "hint": "Zielony piesek z żółtymi znaczkami w kształcie błyskawic i dwoma kolcami na głowie.",
+  "fact": "Zbiera prąd w swoim futerku. Gdy powietrze jest suche, sypie iskrami z całego ciała."
+ },
+ "310": {
+  "kind": "Pokémon Wyładowanie",
+  "hint": "Niebieski wilk z żółtą, nastroszoną grzywą przypominającą błyskawice.",
+  "fact": "Rzadko pokazuje się ludziom. Podobno buduje legowisko tam, gdzie uderzył piorun."
+ },
+ "336": {
+  "kind": "Pokémon Wąż z Kłami",
+  "hint": "Długi, czarny wąż z żółtymi wzorkami, czerwonymi kłami i ogonem jak ostrze.",
+  "fact": "Od zawsze nie lubi się z białym Pokémonem Zangoose. W filmie „Arceus i Klejnot Życia” należy do Jessie z Zespołu R."
+ },
+ "343": {
+  "kind": "Pokémon Gliniana Lalka",
+  "hint": "Mała gliniana laleczka w kształcie bączka, stojąca na jednej nóżce.",
+  "fact": "Ciągle kręci się wokół siebie jak bączek. Nawet śpi, stojąc na jednej nodze."
+ },
+ "344": {
+  "kind": "Pokémon Gliniana Lalka",
+  "hint": "Czarna gliniana figura z wieloma oczami wokół głowy i rękami unoszącymi się obok ciała.",
+  "fact": "Narodził się podobno z glinianych lalek zrobionych dawno temu przez ludzi. Unosi się w powietrzu siłą umysłu."
+ },
+ "359": {
+  "kind": "Pokémon Katastrofa",
+  "hint": "Biały, czworonożny stwór z zakrzywionym czarnym rogiem i czarną twarzą.",
+  "fact": "Wyczuwa nadchodzące niebezpieczeństwo i ostrzega przed nim ludzi. Kiedyś ludzie myśleli błędnie, że to on sprowadza kłopoty."
+ },
+ "391": {
+  "kind": "Pokémon Psotnik",
+  "hint": "Pomarańczowa małpka z niebieską twarzą i płomykiem zamiast ogonka.",
+  "fact": "Im bardziej niebieska ma buzię, tym silniejsza wyrośnie. W filmie „Arceus i Klejnot Życia” należy do Asha."
+ },
+ "398": {
+  "kind": "Pokémon Drapieżnik",
+  "hint": "Duży szaro-biały ptak z czerwoną kitką na głowie i ostrym dziobem.",
+  "fact": "Jest tak silny, że potrafi unieść w locie duże i ciężkie rzeczy. W filmie „Arceus i Klejnot Życia” należy do Asha."
+ },
+ "417": {
+  "kind": "Pokémon Elektrowiewiórka",
+  "hint": "Biała wiewiórka z niebieskim paskiem na głowie i wielkim puszystym ogonem.",
+  "fact": "Jest spokojna, ale jej ogon i policzki są pełne prądu, więc lepiej ich nie dotykać. W filmie „Arceus i Klejnot Życia” należy do Dawn."
+ },
+ "427": {
+  "kind": "Pokémon Królik",
+  "hint": "Brązowy króliczek z puszystymi, kremowymi kłębkami na zwiniętych uszach i nóżkach.",
+  "fact": "Ma tak czuły słuch, że zwija uszy, żeby nie słyszeć zbyt głośnych dźwięków. W filmie „Arceus i Klejnot Życia” należy do Dawn."
+ },
+ "440": {
+  "kind": "Pokémon Zabawa w Dom",
+  "hint": "Mały, różowy stworek w kształcie jajka z białym kamykiem w kieszonce.",
+  "fact": "Nosi w kieszonce okrągły kamyk jak skarb i lubi bawić się z dziećmi w dom. W filmie „Arceus i Klejnot Życia” należy do Brocka."
+ },
+ "453": {
+  "kind": "Pokémon Trujący Pyszczek",
+  "hint": "Niebieska żaba z wielkimi policzkami, pomarańczowymi oczami i czarnymi paskami.",
+  "fact": "Ludzie lubią go za śmieszny wygląd i zabawny rechot. W filmie „Arceus i Klejnot Życia” należy do Brocka."
+ },
+ "455": {
+  "kind": "Pokémon Łowca Owadów",
+  "hint": "Zielona roślina z wielką buzią pełną zębów, unosząca się na pnączach.",
+  "fact": "To roślina, ale bardzo łakoma i trochę nieposłuszna. W filmie „Arceus i Klejnot Życia” należy do Jamesa z Zespołu R."
+ },
+ "469": {
+  "kind": "Pokémon Olbrzymia Ważka",
+  "hint": "Wielka zielona ważka z czerwonymi oczami i dwoma parami przezroczystych skrzydeł.",
+  "fact": "Tylko bardzo odważny trener może się z nim zaprzyjaźnić. W filmie „Arceus i Klejnot Życia” należy do Jessie z Zespołu R."
+ },
+ "472": {
+  "kind": "Pokémon Skorpion z Kłami",
+  "hint": "Fioletowy stwór jak nietoperz i skorpion, z dużymi szczypcami, skrzydłami i długim ogonem.",
+  "fact": "Szybuje bezszelestnie na ciemnych skrzydłach. W filmie „Arceus i Klejnot Życia” należy do Asha."
+ },
+ "476": {
+  "kind": "Pokémon Kompas",
+  "hint": "Niebieska kamienna głowa z wielkim czerwonym nosem i białymi, krzaczastymi wąsami.",
+  "fact": "Jego wąsy są zrobione z żelaznego piasku, którym steruje jak magnes."
+ },
+ "483": {
+  "kind": "Pokémon Czasu",
+  "hint": "Wielki granatowo-srebrny smok na czterech łapach z błyszczącym kryształem na piersi.",
+  "fact": "Według legend dzięki niemu zaczął płynąć czas. W filmie „Arceus i Klejnot Życia” walczy z Palkią i Giratiną."
+ },
+ "484": {
+  "kind": "Pokémon Przestrzeni",
+  "hint": "Wielki biały smok z różowymi pasami i perłami na ramionach.",
+  "fact": "Według legend stworzył przestrzeń i niebo bez końca. W filmie „Arceus i Klejnot Życia” walczy z Dialgą i Giratiną."
+ },
+ "485": {
+  "kind": "Pokémon Kopuła Lawy",
+  "hint": "Duży, czerwono-brązowy stwór na czterech łapach z metalową, kopulastą głową.",
+  "fact": "Podobno narodził się z gorącej lawy wewnątrz góry. W filmie „Arceus i Klejnot Życia” należy do Marcusa."
+ },
+ "487": {
+  "kind": "Pokémon Buntownik",
+  "hint": "Ogromny szaro-czarny smok ze złotymi ozdobami i czarnymi skrzydłami jak cienie.",
+  "fact": "Mieszka w tajemniczym świecie po drugiej stronie, pełnym cieni. W filmie „Arceus i Klejnot Życia” walczy z Dialgą i Palkią."
+ },
+ "493": {
+  "kind": "Pokémon Alfa",
+  "hint": "Biały, koniopodobny stwór ze złotym kołem wokół brzucha i zielonymi oczami.",
+  "fact": "Według legend stworzył cały świat Pokémonów. W filmie „Arceus i Klejnot Życia” wraca po tysiącach lat."
+ },
+ "193": {
+  "kind": "Pokémon Przezroczyste Skrzydła",
+  "hint": "Czerwona ważka z wielkimi oczami i czterema przezroczystymi skrzydłami.",
+  "fact": "Jej skrzydła są cieniutkie, ale machając nimi, wywołuje bardzo silny wiatr."
+ },
+ "207": {
+  "kind": "Pokémon Latający Skorpion",
+  "hint": "Fioletowy skorpion z dużymi szczypcami, skrzydełkami i długim ogonem z kolcem.",
+  "fact": "Szybuje w powietrzu jak latawiec, rozkładając swoje skrzydełka."
+ },
+ "263": {
+  "kind": "Pokémon Mały Szop",
+  "hint": "Mały brązowo-kremowy szopek z nastroszonym futerkiem w zygzaki.",
+  "fact": "Ma świetny węch. Jeśli coś zgubisz, na pewno pomoże ci to znaleźć."
+ },
+ "265": {
+  "kind": "Pokémon Robak",
+  "hint": "Czerwona gąsieniczka z żółtymi łatkami i dwoma kolcami na głowie.",
+  "fact": "Uwielbia sok z drzew. Z wyglądu nie da się zgadnąć, w kogo ewoluuje."
+ },
+ "266": {
+  "kind": "Pokémon Kokon",
+  "hint": "Biały, jedwabny kokon z dwoma czujnymi oczkami.",
+  "fact": "Owija się nitkami jedwabiu i zbiera siły do ewolucji. Nie może się ruszać, ale ciągle uważnie się rozgląda."
+ },
+ "294": {
+  "kind": "Pokémon Donośny Głos",
+  "hint": "Niebieski, okrągły stwór z wielką buzią i dużymi uszami jak głośniki.",
+  "fact": "Krzyczy tak głośno, że jego głos potrafi odepchnąć przeciwnika jak podmuch wiatru."
  }
 }

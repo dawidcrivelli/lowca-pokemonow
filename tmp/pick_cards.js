@@ -2,15 +2,16 @@
    użycie: require('./pick_cards.js')(id, nazwa) → karta z pokemon-tcg-data (z polem set) */
 const fs = require('fs'), path = require('path'), DIR = path.join(__dirname, 'pokeapi');
 const load = f => JSON.parse(fs.readFileSync(path.join(DIR, f + '.json')));
-const SERIES = ['Scarlet & Violet', 'Mega Evolution', 'Sword & Shield'];   // Hatenna, Rayquaza, Kleavor nie mają kart SV
+const SERIES = ['Scarlet & Violet', 'Mega Evolution', 'Sword & Shield', 'Sun & Moon'];   // Hatenna, Rayquaza, Kleavor nie mają kart SV; Pichu, Happiny, Giratina, Arceus – zwykłe dopiero w SM
 const PLAIN = ['Common', 'Uncommon', 'Rare'];
 const rank = s => SERIES.indexOf(s.series) * 2 + (s.id.endsWith('p'));   // promki (svp, swshp) na koniec serii
 let all;   // leniwie: fetch.js wczytuje SERIES, zanim pobierze karty
 const cards = () => all ||= load('tcg_sets').filter(s => SERIES.includes(s.series)).sort((a, b) => rank(a) - rank(b) || a.releaseDate.localeCompare(b.releaseDate))
-  .flatMap(s => load('tcg_' + s.id).map(c => ({ ...c, set: s.id })));
-// Perrserker, Runerigus: istnieją tylko jako „Galarian …” → takie karty dopiero, gdy nie ma zwykłej
-const score = c => (c.subtypes.includes('ex') ? 2 : 0) + (PLAIN.includes(c.rarity) ? 0 : 1) + (c.name.startsWith('Galarian ') ? 4 : 0);
-module.exports = Object.assign((id, name) => cards().filter(c => c.supertype === 'Pokémon' && c.nationalPokedexNumbers?.includes(id) && (c.name === name || c.name === 'Galarian ' + name))
+  .flatMap(s => load('tcg_' + s.id).map(c => ({ ...c, set: s.id, old: s.series === 'Sun & Moon' })));
+// gdy nie ma zwykłej karty: „Galarian …” (Perrserker, Runerigus), „Ethan's …” (Pichu), „… V” (Arceus) – w tej kolejności
+const alt = (c, name) => c.name === 'Galarian ' + name ? 4 : c.name.endsWith("'s " + name) ? 6 : c.name === name + ' V' ? 8 : c.name === name ? 0 : -1;
+const score = c => (c.subtypes.includes('ex') || c.subtypes.includes('V') ? 2 : 0) + (PLAIN.includes(c.rarity) ? 0 : 1) + c.alt + (c.old ? 20 : 0);   // Sun & Moon tylko w ostateczności
+module.exports = Object.assign((id, name) => cards().map(c => ({ ...c, alt: alt(c, name) })).filter(c => c.supertype === 'Pokémon' && c.nationalPokedexNumbers?.includes(id) && c.alt >= 0)
   .reduce((best, c) => !best || score(c) < score(best) ? c : best, null), { SERIES });
 if (require.main === module) {
   const HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');

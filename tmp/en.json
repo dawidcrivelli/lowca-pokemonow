@@ -260,7 +260,7 @@
   ],
   "genus": "Mouse Pokémon",
   "flavor": "When several of these POKéMON gather, their electricity could build and cause lightning storms.",
-  "from": null
+  "from": "Pichu"
  },
  {
   "id": 26,
@@ -1179,7 +1179,7 @@
   ],
   "genus": "Egg Pokémon",
   "flavor": "A rare and elusive POKéMON that is said to bring happiness to those who manage to get it.",
-  "from": null
+  "from": "Happiny"
  },
  {
   "id": 114,
@@ -1691,6 +1691,16 @@
   "from": "Chinchou"
  },
  {
+  "id": 172,
+  "name": "Pichu",
+  "types": [
+   "electric"
+  ],
+  "genus": "Tiny Mouse Pokémon",
+  "flavor": "It is not yet skilled at storing electricity. It may send out a jolt if amused or startled.",
+  "from": null
+ },
+ {
   "id": 177,
   "name": "Natu",
   "types": [
@@ -1797,6 +1807,17 @@
   "from": "Sunkern"
  },
  {
+  "id": 193,
+  "name": "Yanma",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Clear Wing Pokémon",
+  "flavor": "If it flaps its wings really fast, it can generate shock waves that will shatter win dows in the area.",
+  "from": null
+ },
+ {
   "id": 194,
   "name": "Wooper",
   "types": [
@@ -1839,6 +1860,27 @@
   "from": "Eevee"
  },
  {
+  "id": 202,
+  "name": "Wobbuffet",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Patient Pokémon",
+  "flavor": "It hates light and shock. If attack ed, it inflates its body to pump up its counter strike.",
+  "from": null
+ },
+ {
+  "id": 207,
+  "name": "Gligar",
+  "types": [
+   "ground",
+   "flying"
+  ],
+  "genus": "Fly Scorpion Pokémon",
+  "flavor": "It flies straight at its target's face then clamps down on the star tled victim to inject poison.",
+  "from": null
+ },
+ {
   "id": 211,
   "name": "Qwilfish",
   "types": [
@@ -1858,6 +1900,17 @@
   ],
   "genus": "Mold Pokémon",
   "flavor": "The BERRIES it stores in its vase-like shell decompose and become a gooey liquid.",
+  "from": null
+ },
+ {
+  "id": 214,
+  "name": "Heracross",
+  "types": [
+   "bug",
+   "fighting"
+  ],
+  "genus": "Single Horn Pokémon",
+  "flavor": "This powerful POKéMON thrusts its prized horn under its enemies’ bellies then lifts and throws them.",
   "from": null
  },
  {
@@ -2036,6 +2089,57 @@
   "from": null
  },
  {
+  "id": 263,
+  "name": "Zigzagoon",
+  "types": [
+   "normal"
+  ],
+  "genus": "Tiny Raccoon Pokémon",
+  "flavor": "ZIGZAGOON restlessly wanders everywhere at all times. This POKéMON does so because it is very curious. It becomes interested in anything that it happens to see.",
+  "from": null
+ },
+ {
+  "id": 264,
+  "name": "Linoone",
+  "types": [
+   "normal"
+  ],
+  "genus": "Rushing Pokémon",
+  "flavor": "LINOONE always runs full speed and only in straight lines. If facing an obstacle, it makes a right-angle turn to evade it. This POKéMON is very challenged by gently curving roads.",
+  "from": "Zigzagoon"
+ },
+ {
+  "id": 265,
+  "name": "Wurmple",
+  "types": [
+   "bug"
+  ],
+  "genus": "Worm Pokémon",
+  "flavor": "Using the spikes on its rear end, WURMPLE peels the bark off trees and feeds on the sap that oozes out. This POKéMON’s feet are tipped with suction pads that allow it to cling to glass without slipping.",
+  "from": null
+ },
+ {
+  "id": 266,
+  "name": "Silcoon",
+  "types": [
+   "bug"
+  ],
+  "genus": "Cocoon Pokémon",
+  "flavor": "SILCOON tethers itself to a tree branch using silk to keep from falling. There, this POKéMON hangs quietly while it awaits evolution. It peers out of the silk cocoon through a small hole.",
+  "from": "Wurmple"
+ },
+ {
+  "id": 267,
+  "name": "Beautifly",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Butterfly Pokémon",
+  "flavor": "BEAUTIFLY’s favorite food is the sweet pollen of flowers. If you want to see this POKéMON, just leave a potted flower by an open window. BEAUTIFLY is sure to come looking for pollen.",
+  "from": "Silcoon"
+ },
+ {
   "id": 270,
   "name": "Lotad",
   "types": [
@@ -2208,6 +2312,26 @@
   "from": null
  },
  {
+  "id": 294,
+  "name": "Loudred",
+  "types": [
+   "normal"
+  ],
+  "genus": "Big Voice Pokémon",
+  "flavor": "LOUDRED’s bellowing can completely decimate a wood-frame house. It uses its voice to punish its foes. This POKéMON’s round ears serve as loudspeakers.",
+  "from": "Whismur"
+ },
+ {
+  "id": 295,
+  "name": "Exploud",
+  "types": [
+   "normal"
+  ],
+  "genus": "Loud Noise Pokémon",
+  "flavor": "EXPLOUD triggers earthquakes with the tremors it creates by bellowing. If this POKéMON violently inhales from the ports on its body, it’s a sign that it is preparing to let loose a huge bellow.",
+  "from": "Loudred"
+ },
+ {
   "id": 299,
   "name": "Nosepass",
   "types": [
@@ -2269,6 +2393,26 @@
   "genus": "Meditate Pokémon",
   "flavor": "It is said that through meditation, MEDICHAM heightens energy inside its body and sharpens its sixth sense. This POKéMON hides its presence by merging itself with fields and mountains.",
   "from": "Meditite"
+ },
+ {
+  "id": 309,
+  "name": "Electrike",
+  "types": [
+   "electric"
+  ],
+  "genus": "Lightning Pokémon",
+  "flavor": "ELECTRIKE stores electricity in its long body hair. This POKéMON stimulates its leg muscles with electric charges. These jolts of power give its legs explosive acceleration performance.",
+  "from": null
+ },
+ {
+  "id": 310,
+  "name": "Manectric",
+  "types": [
+   "electric"
+  ],
+  "genus": "Discharge Pokémon",
+  "flavor": "MANECTRIC is constantly discharging electricity from its mane. The sparks sometimes ignite forest fires. When it enters a battle, this POKéMON creates thunderclouds.",
+  "from": "Electrike"
  },
  {
   "id": 315,
@@ -2408,6 +2552,38 @@
   "from": "Swablu"
  },
  {
+  "id": 336,
+  "name": "Seviper",
+  "types": [
+   "poison"
+  ],
+  "genus": "Fang Snake Pokémon",
+  "flavor": "SEVIPER shares a generations-long feud with ZANGOOSE. The scars on its body are evidence of vicious battles. This POKéMON attacks using its sword- edged tail.",
+  "from": null
+ },
+ {
+  "id": 343,
+  "name": "Baltoy",
+  "types": [
+   "ground",
+   "psychic"
+  ],
+  "genus": "Clay Doll Pokémon",
+  "flavor": "BALTOY moves while spinning around on its one foot. Primitive wall paintings depicting this POKéMON living among people were discovered in some ancient ruins.",
+  "from": null
+ },
+ {
+  "id": 344,
+  "name": "Claydol",
+  "types": [
+   "ground",
+   "psychic"
+  ],
+  "genus": "Clay Doll Pokémon",
+  "flavor": "CLAYDOL are said to be dolls of mud made by primitive humans and brought to life by exposure to a mysterious ray. This POKéMON moves about while levitating.",
+  "from": "Baltoy"
+ },
+ {
   "id": 345,
   "name": "Lileep",
   "types": [
@@ -2457,6 +2633,16 @@
   ],
   "genus": "Wind Chime Pokémon",
   "flavor": "CHIMECHO makes its cries echo inside its hollow body. When this POKéMON becomes enraged, its cries result in ultrasonic waves that have the power to knock foes flying.",
+  "from": null
+ },
+ {
+  "id": 359,
+  "name": "Absol",
+  "types": [
+   "dark"
+  ],
+  "genus": "Disaster Pokémon",
+  "flavor": "Every time ABSOL appears before people, it is followed by a disaster such as an earthquake or a tidal wave. As a result, it came to be known as the disaster POKéMON.",
   "from": null
  },
  {
@@ -2595,6 +2781,17 @@
   "from": null
  },
  {
+  "id": 391,
+  "name": "Monferno",
+  "types": [
+   "fire",
+   "fighting"
+  ],
+  "genus": "Playful Pokémon",
+  "flavor": "To intimidate attackers, it stretches the fire on its tail to make itself appear bigger.",
+  "from": "Chimchar"
+ },
+ {
   "id": 393,
   "name": "Piplup",
   "types": [
@@ -2625,6 +2822,17 @@
   "genus": "Starling Pokémon",
   "flavor": "It flies around forests and fields in search of bug Pokémon. It stays within a huge flock.",
   "from": "Starly"
+ },
+ {
+  "id": 398,
+  "name": "Staraptor",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Predator Pokémon",
+  "flavor": "It has a savage nature. It will courageously challenge foes that are much larger.",
+  "from": "Staravia"
  },
  {
   "id": 399,
@@ -2700,6 +2908,16 @@
   "from": "Combee"
  },
  {
+  "id": 417,
+  "name": "Pachirisu",
+  "types": [
+   "electric"
+  ],
+  "genus": "EleSquirrel Pokémon",
+  "flavor": "It makes fur balls that crackle with static electricity. It stores them with berries in tree holes.",
+  "from": null
+ },
+ {
   "id": 418,
   "name": "Buizel",
   "types": [
@@ -2760,6 +2978,16 @@
   "genus": "Blimp Pokémon",
   "flavor": "It’s drowzy in daytime, but flies off in the evening in big groups. No one knows where they go.",
   "from": "Drifloon"
+ },
+ {
+  "id": 427,
+  "name": "Buneary",
+  "types": [
+   "normal"
+  ],
+  "genus": "Rabbit Pokémon",
+  "flavor": "It slams foes by sharply uncoiling its rolled ears. It stings enough to make a grown-up cry in pain.",
+  "from": null
  },
  {
   "id": 431,
@@ -2833,6 +3061,16 @@
   ],
   "genus": "Mime Pokémon",
   "flavor": "It habitually mimics foes. Once mimicked, the foe cannot take its eyes off this Pokémon.",
+  "from": null
+ },
+ {
+  "id": 440,
+  "name": "Happiny",
+  "types": [
+   "normal"
+  ],
+  "genus": "Playhouse Pokémon",
+  "flavor": "It loves round white things. It carries an egg-shaped rock in imitation of CHANSEY.",
   "from": null
  },
  {
@@ -2912,6 +3150,27 @@
   "from": null
  },
  {
+  "id": 453,
+  "name": "Croagunk",
+  "types": [
+   "poison",
+   "fighting"
+  ],
+  "genus": "Toxic Mouth Pokémon",
+  "flavor": "Its cheeks hold poison sacs. It tries to catch foes off guard to jab them with toxic fingers.",
+  "from": null
+ },
+ {
+  "id": 455,
+  "name": "Carnivine",
+  "types": [
+   "grass"
+  ],
+  "genus": "Bug Catcher Pokémon",
+  "flavor": "It attracts prey with its sweet- smelling saliva, then chomps down. It takes a whole day to eat prey.",
+  "from": null
+ },
+ {
   "id": 458,
   "name": "Mantyke",
   "types": [
@@ -2944,6 +3203,28 @@
   "from": "Electabuzz"
  },
  {
+  "id": 469,
+  "name": "Yanmega",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Ogre Darner Pokémon",
+  "flavor": "By churning its wings, it creates shock waves that inflict critical internal injuries to foes.",
+  "from": "Yanma"
+ },
+ {
+  "id": 472,
+  "name": "Gliscor",
+  "types": [
+   "ground",
+   "flying"
+  ],
+  "genus": "Fang Scorpion Pokémon",
+  "flavor": "It observes prey while hanging inverted from branches. When the chance presents itself, it swoops!",
+  "from": "Gligar"
+ },
+ {
   "id": 473,
   "name": "Mamoswine",
   "types": [
@@ -2953,6 +3234,17 @@
   "genus": "Twin Tusk Pokémon",
   "flavor": "Its impressive tusks are made of ice. The population thinned when it turned warm after the ice age.",
   "from": "Piloswine"
+ },
+ {
+  "id": 476,
+  "name": "Probopass",
+  "types": [
+   "rock",
+   "steel"
+  ],
+  "genus": "Compass Pokémon",
+  "flavor": "It exudes strong magnetism from all over. It controls three small units called Mini-Noses.",
+  "from": "Nosepass"
  },
  {
   "id": 477,
@@ -2973,6 +3265,60 @@
   ],
   "genus": "Plasma Pokémon",
   "flavor": "Its body is composed of plasma. It is known to infiltrate electronic devices and wreak havoc.",
+  "from": null
+ },
+ {
+  "id": 483,
+  "name": "Dialga",
+  "types": [
+   "steel",
+   "dragon"
+  ],
+  "genus": "Temporal Pokémon",
+  "flavor": "It has the power to control time. It appears in Sinnoh-region myths as an ancient deity.",
+  "from": null
+ },
+ {
+  "id": 484,
+  "name": "Palkia",
+  "types": [
+   "water",
+   "dragon"
+  ],
+  "genus": "Spatial Pokémon",
+  "flavor": "It has the ability to distort space. It is described as a deity in Sinnoh-region mythology.",
+  "from": null
+ },
+ {
+  "id": 485,
+  "name": "Heatran",
+  "types": [
+   "fire",
+   "steel"
+  ],
+  "genus": "Lava Dome Pokémon",
+  "flavor": "It dwells in volcanic caves. It digs in with its cross-shaped feet to crawl on ceilings and walls.",
+  "from": null
+ },
+ {
+  "id": 487,
+  "name": "Giratina",
+  "types": [
+   "ghost",
+   "dragon"
+  ],
+  "genus": "Renegade Pokémon",
+  "flavor": "A Pokémon that is said to live in a world on the reverse side of ours. It appears in an ancient cemetery.",
+  "from": null
+ },
+ {
+  "id": 493,
+  "name": "Arceus",
+  "types": [
+   "normal"
+  ],
+  "genus": "Alpha Pokémon",
+  "flavor": "It is described in mythology as the Pokémon that shaped the universe with its 1,000 arms.",
   "from": null
  },
  {

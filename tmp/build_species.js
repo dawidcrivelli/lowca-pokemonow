@@ -34,7 +34,7 @@ function card(i, name) {
   let atk = (c.attacks || []).filter(a => a.damage || cardFx(a.text)?.cond || cardFx(a.text)?.heal)   // bez obrażeń: tylko ze stanem albo leczeniem
     .map(a => [ATK_PL[a.name] || a.name, a.cost.map(e => ENERGY[e]).join(''), +(a.damage.match(/\d+/)?.[0] || 0), a.damage.replace(/\d+/, ''), cardFx(a.text)].filter(x => x !== undefined));
   if (!atk.length) atk = [[ATK_PL.Tackle || 'Tackle', 'CC', Math.max(10, Math.round(hp / 40) * 10), '']];   // same zdolności (Magikarp, Mew ex…) → prosty atak
-  return { img: i <= LAST ? undefined : c.images.small, hp, t: ENERGY[c.types[0]], st: ['Basic', 'Stage 1', 'Stage 2'].findIndex(s => c.subtypes.includes(s)), ex: c.subtypes.includes('ex') || undefined,
+  return { img: i <= LAST ? undefined : c.images.small, hp, t: ENERGY[c.types[0]], st: ['Basic', 'Stage 1', 'Stage 2'].findIndex(s => c.subtypes.includes(s)), ex: c.subtypes.includes('ex') || c.subtypes.includes('V') || undefined,
     weak: ENERGY[c.weaknesses?.[0]?.type], res: ENERGY[c.resistances?.[0]?.type], ret: c.convertedRetreatCost || 0, atk };
 }
 
