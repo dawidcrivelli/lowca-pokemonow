@@ -193,11 +193,16 @@ var(--paper-2);
   position:absolute;bottom:6px;right:6px;width:9px;height:9px;border-radius:50%;
   border:1.5px solid rgba(255,255,255,.75);
 }
-.tile .del{
-  position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;
-  background:#C4523C;color:#fff;border:0;font:900 12px var(--font-b);display:none;z-index:2;
+.tile .vis{
+  position:absolute;top:3px;right:3px;width:26px;height:26px;border-radius:50%;
+  background:#fff;border:2px solid var(--line);font:400 13px/22px var(--font-b);display:none;z-index:2;
 }
-body.editing .tile .del{display:block}
+body.editing .tile .vis{display:block}
+/* tryb rodzica: ukryte przygaszone, sylwetka zaprasza do odblokowania */
+body.editing .tile.hid{opacity:.45}
+body.editing .tile.hid .vis{background:#C4523C;border-color:#C4523C}
+body.editing .tile.ghost{cursor:copy}
+body.editing .tile.ghost:hover{border-color:var(--amber);border-style:solid}
 body.editing .rar{display:none}
 .tile.fresh{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pop{0%{transform:scale(.3) rotate(-14deg);opacity:0}100%{transform:none;opacity:1}}
