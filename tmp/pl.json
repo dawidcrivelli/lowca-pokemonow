@@ -1063,5 +1063,125 @@
   "kind": "Pokémon Tera",
   "hint": "Mały, niebieski żółwik z kolorowymi kryształami na skorupie.",
   "fact": "Zamienia energię w twarde kryształy. To tajemniczy Pokémon z wisiorka Liko!"
+ },
+ "443": {
+  "kind": "Pokémon Lądowy Rekin",
+  "hint": "Mały, granatowy smoczek z wielką paszczą i płetwą na grzbiecie, trochę jak rekin.",
+  "fact": "Mieszka w ciepłych jaskiniach i wyskakuje na zdobycz, która podejdzie za blisko."
+ },
+ "444": {
+  "kind": "Pokémon Jaskinia",
+  "hint": "Granatowy smok-rekin z płetwami na łokciach i ostrymi zębami.",
+  "fact": "Zbiera błyszczące kamienie i chowa je w swojej jaskini."
+ },
+ "445": {
+  "kind": "Pokémon Odrzutowiec",
+  "hint": "Duży granatowy smok-rekin z czerwonym brzuchem i płetwami jak skrzydła odrzutowca.",
+  "fact": "Składa ręce i leci tak szybko jak odrzutowiec. W serialu to Pokémon mistrzyni Cynthii."
+ },
+ "447": {
+  "kind": "Pokémon Emanacja",
+  "hint": "Mały, niebiesko-czarny piesek-szakal z czarną maską, stoi na dwóch łapach.",
+  "fact": "Wyczuwa uczucia innych i wysyła fale aury, gdy się boi albo cieszy."
+ },
+ "448": {
+  "kind": "Pokémon Aura",
+  "hint": "Niebiesko-czarny wojownik podobny do szakala, z kolcami na rękach i piersi.",
+  "fact": "Widzi aurę — energię wszystkiego, co żyje — i rozumie ludzką mowę. W serialu to partner Asha."
+ },
+ "570": {
+  "kind": "Pokémon Sprytny Lis",
+  "hint": "Mały szaro-czarny lisek z czerwonymi oczami i czerwonym czubkiem na głowie.",
+  "fact": "Zamienia się w ludzi albo inne Pokémony, żeby płatać figle."
+ },
+ "571": {
+  "kind": "Pokémon Lis Iluzji",
+  "hint": "Duży czarny lis z długą czerwono-czarną grzywą, chodzi na dwóch łapach.",
+  "fact": "Potrafi pokazać wszystkim złudzenie — jego iluzja może wyglądać jak cały krajobraz!"
+ },
+ "656": {
+  "kind": "Pokémon Bąbelkowa Żaba",
+  "hint": "Mała niebieska żabka z białą pianą wokół szyi jak szalik.",
+  "fact": "Pianka na szyi chroni jego ciało. W serialu to pierwszy Pokémon Asha z Kalos."
+ },
+ "657": {
+  "kind": "Pokémon Bąbelkowa Żaba",
+  "hint": "Niebieska, smukła żaba z białą pianą i długimi nogami.",
+  "fact": "Rzuca kamyczkami owiniętymi w pianę i trafia w cel z 30 metrów."
+ },
+ "658": {
+  "kind": "Pokémon Ninja",
+  "hint": "Granatowa żaba-ninja z różowym językiem owiniętym wokół szyi jak szalik.",
+  "fact": "Robi wodne gwiazdki ninja, które tną nawet metal. Pojawia się i znika jak prawdziwy ninja!"
+ },
+ "700": {
+  "kind": "Pokémon Wstążka",
+  "hint": "Różowo-biały lisek-kot z niebieskimi oczami i długimi wstążkami jak czułki.",
+  "fact": "To ewolucja Eevee. Wstążkami wysyła kojącą aurę, która uspokaja kłótnie."
+ },
+ "722": {
+  "kind": "Pokémon Trawiaste Pióro",
+  "hint": "Mała, okrągła sówka z zielonym listkiem jak muszka pod dziobem.",
+  "fact": "Za dnia zbiera energię ze słońca, a nocą atakuje. W serialu to Pokémon Asha z Alola."
+ },
+ "723": {
+  "kind": "Pokémon Pióro Ostrze",
+  "hint": "Brązowo-biała sowa z liśćmi-ostrzami na skrzydłach i fryzurą jak grzywka.",
+  "fact": "Dba o swoje pióra jak elegant — rzuca nimi jak ostrymi nożami."
+ },
+ "724": {
+  "kind": "Pokémon Pióro Strzała",
+  "hint": "Wysoka sowa-łucznik w zielonym kapturze z liści.",
+  "fact": "Wyciąga pióro ze skrzydła, napina pnącze jak łuk i trafia w cel ze 100 metrów."
+ },
+ "725": {
+  "kind": "Pokémon Ognisty Kot",
+  "hint": "Mały czarny kotek w czerwone paski, z żółtymi oczami.",
+  "fact": "Liże swoje futro i podpala je, żeby strzelać ognistymi kulkami. W serialu to Pokémon Asha z Alola."
+ },
+ "726": {
+  "kind": "Pokémon Ognisty Kot",
+  "hint": "Czarno-czerwony kot z dzwonkiem z ognia na szyi.",
+  "fact": "Dzwonek na szyi to płomień, który bije jasno, gdy Torracat strzela ogniem."
+ },
+ "727": {
+  "kind": "Pokémon Zapaśnik",
+  "hint": "Duży tygrys-zapaśnik na dwóch łapach, z płonącym pasem mistrza.",
+  "fact": "Lubi walczyć jak zapaśnik w ringu. Płonący pas na brzuchu daje mu siłę."
+ },
+ "778": {
+  "kind": "Pokémon Przebieraniec",
+  "hint": "Malutki Pokémon schowany pod szmatką przebraną za Pikachu, z krzywym uszkiem.",
+  "fact": "Przebiera się za Pikachu, bo bardzo chce, żeby wszyscy go lubili. Nikt nie wie, co jest pod szmatką!"
+ },
+ "813": {
+  "kind": "Pokémon Królik",
+  "hint": "Biały króliczek z czerwonym noskiem i pomarańczowymi uszkami.",
+  "fact": "Biega tak szybko, że ma gorące łapki — zostawia za sobą małe płomyki."
+ },
+ "814": {
+  "kind": "Pokémon Królik",
+  "hint": "Szaro-biały królik w opasce, z futrem jak bluza z kapturem.",
+  "fact": "Kopie ognistą kulkę z łatwością, jak piłkarz piłkę."
+ },
+ "815": {
+  "kind": "Pokémon Napastnik",
+  "hint": "Wysoki biały królik-piłkarz z płonącymi łapami i pomarańczową grzywą.",
+  "fact": "Podbija kamyk, aż zapali się w ognistą piłkę, i strzela nią w rywala jak gola."
+ },
+ "885": {
+  "kind": "Pokémon Błąkający się",
+  "hint": "Mały zielono-szary smoczek-duszek z pomarańczowymi oczami.",
+  "fact": "To duch dawnego Pokémona, który żył w morzu. Lubi straszyć ludzi dla zabawy."
+ },
+ "886": {
+  "kind": "Pokémon Opiekun",
+  "hint": "Zielono-szary smok-duch z głową jak trójkąt, na której nosi małego Dreepy.",
+  "fact": "Opiekuje się Dreepy i wozi go na głowie, aż maluch dorośnie."
+ },
+ "887": {
+  "kind": "Pokémon Niewidzialny",
+  "hint": "Duży zielony smok-duch z rogami jak odrzutowiec, w których siedzą Dreepy.",
+  "fact": "Wystrzeliwuje Dreepy z rogów szybciej niż samochód wyścigowy. Dreepy to uwielbiają!"
  }
 }

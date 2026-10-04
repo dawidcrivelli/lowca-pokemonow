@@ -9,7 +9,7 @@ const { SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.j
 const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.family, ...FAM.fam, ...FAM.family].filter((v, i, a) => a.indexOf(v) === i);
 const load = p => JSON.parse(fs.readFileSync(path.join(DIR, p.replace(/\//g, '_') + '.json')));
 // mirror: katalogi po numerze, nie po nazwie (ruchy: numer z adresu w danych Pokémona)
-const MOVE_NO = {}, mirror = p => MIRROR + p.replace(/^move\/([a-z-]+)$/, (_, n) => 'move/' + MOVE_NO[n]) + '/index.json';
+const MOVE_NO = {}, mirror = p => MIRROR + p.replace(/^move\/([a-z0-9-]+)$/, (_, n) => 'move/' + MOVE_NO[n]) + '/index.json';
 async function get(p, url) {
   const f = path.join(DIR, p.replace(/\//g, '_') + '.json');
   if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f));
