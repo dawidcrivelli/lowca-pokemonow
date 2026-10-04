@@ -5,8 +5,8 @@
 const fs = require('fs'), path = require('path');
 const API = 'https://pokeapi.co/api/v2/', MIRROR = 'https://raw.githubusercontent.com/PokeAPI/api-data/master/data/api/v2/', DIR = path.join(__dirname, 'pokeapi'), LAST = 151, TYPES = 18;
 const TCG = 'https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/';   // api.pokemontcg.io bywa niedostępne
-const { SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json');
-const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family].filter((v, i, a) => a.indexOf(v) === i);
+const { SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');
+const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family].filter((v, i, a) => a.indexOf(v) === i);
 const load = p => JSON.parse(fs.readFileSync(path.join(DIR, p.replace(/\//g, '_') + '.json')));
 // mirror: katalogi po numerze, nie po nazwie (ruchy: numer z adresu w danych Pokémona)
 const MOVE_NO = {}, mirror = p => MIRROR + p.replace(/^move\/([a-z0-9-]+)$/, (_, n) => 'move/' + MOVE_NO[n]) + '/index.json';

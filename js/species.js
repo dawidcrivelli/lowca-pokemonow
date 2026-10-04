@@ -1,4 +1,4 @@
-/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz: sezon, w którym widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) =================
+/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz: sezon, w którym widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) + z filmu „Arceus i Klejnot Życia” (m12) =================
    Wygenerowane: node tmp/build_species.js  (dane: PokeAPI, teksty: tmp/pl.json)
    hp/atk/def/satk/sdef/spd = statystyki bazowe z gier · m = wzrost, kg = waga · from = z kogo ewoluuje
    mv: 4 ruchy do areny (klucze MOVES, opis pól w tmp/build_species.js) · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1

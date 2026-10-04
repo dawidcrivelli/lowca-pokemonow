@@ -123,9 +123,9 @@ function renderGrid(freshId) {
   const t = freshId && el.grid.querySelector(`[data-id="${CSS.escape(freshId)}"]`);
   if (t) { t.classList.add('fresh'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 }
-// seria: Kanto (Red/Blue, seria Indigo), sezony Horyzontów, sławne z nowszych gier; licznik na chipie uwzględnia drugi filtr
-const SERIES = [['all', '⭐', 'Wszystkie'], ['kanto', '🗺️', 'Kanto (151)'], ['hz1', '📺', 'Horyzonty 1'], ['hz2', '📺', 'Horyzonty 2'], ['fam', '🌟', 'Sławne']];
-const inSeries = (s, k) => k === 'all' || (k === 'kanto' ? s.id <= 151 : k === 'hz1' ? s.hz === 1 : k === 'hz2' ? s.hz === 2 : s.fam);
+// seria: Kanto (Red/Blue, seria Indigo), sezony Horyzontów, film „Arceus i Klejnot Życia”, sławne z nowszych gier; licznik na chipie uwzględnia drugi filtr
+const SERIES = [['all', '⭐', 'Wszystkie'], ['kanto', '🗺️', 'Kanto (151)'], ['hz1', '📺', 'Horyzonty 1'], ['hz2', '📺', 'Horyzonty 2'], ['m12', '🎬', 'Arceus (film)'], ['fam', '🌟', 'Sławne']];
+const inSeries = (s, k) => k === 'all' || (k === 'kanto' ? s.id <= 151 : k === 'hz1' ? s.hz === 1 : k === 'hz2' ? s.hz === 2 : k === 'm12' ? s.m12 : s.fam);
 const inType = (s, k) => k === 'all' || s.types.includes(k);
 function renderChips() {
   const count = (f, got) => LIST.filter(s => f(s) && (!got || isCaught(s.id))).length;

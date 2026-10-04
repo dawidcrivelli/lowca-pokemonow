@@ -13,8 +13,8 @@ const score = c => (c.subtypes.includes('ex') ? 2 : 0) + (PLAIN.includes(c.rarit
 module.exports = Object.assign((id, name) => cards().filter(c => c.supertype === 'Pokémon' && c.nationalPokedexNumbers?.includes(id) && (c.name === name || c.name === 'Galarian ' + name))
   .reduce((best, c) => !best || score(c) < score(best) ? c : best, null), { SERIES });
 if (require.main === module) {
-  const HZ = require('./horizons.json'), FAM = require('./famous.json');
-  for (const id of [...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family].filter(i => i > 151)) {
+  const HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');
+  for (const id of [...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family].filter(i => i > 151)) {
     const sp = load('pokemon-species_' + id), name = sp.names.find(n => n.language.name === 'en').name, c = module.exports(id, name);
     console.log(id, name, c ? `${c.set}/${c.number} ${c.rarity} ${c.subtypes} hp${c.hp} ${c.evolvesFrom || ''}` : '— BRAK');
   }
