@@ -7,10 +7,10 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 
 ## Co jest w środku
 
-- **151 Pokémonów z Kanto** (Red/Blue, seria Indigo) i **Pokémony z serialu Horyzonty** (łuk „Liko and Roy's Departure”, odc. 1–25,
-  z ewolucjami; filtr 📺 Horyzonty; lista: `tmp/horizons.json`) oraz **10 najsłynniejszych z nowszych gier** (Lucario, Greninja, Mimikyu,
-  Sylveon, Garchomp, Dragapult, Decidueye, Zoroark, Cinderace, Incineroar, z ewolucjami; filtr 🌟 Sławne; lista: `tmp/famous.json`)
-  — niezłapane to czarne sylwetki: „Kto to za Pokémon?”.
+- **490 Pokémonów**: 151 z Kanto (Red/Blue, seria Indigo), **wszystkie z 1. sezonu Horyzontów** (HZ001–HZ045, także te w tle; lista:
+  `tmp/horizons.json`), z 2. sezonu na razie Teddiursa i Ursaring, oraz **10 najsłynniejszych z nowszych gier** (Lucario, Greninja, Mimikyu,
+  Sylveon, Garchomp, Dragapult, Decidueye, Zoroark, Cinderace, Incineroar; `tmp/famous.json`) — wszystkie z ewolucjami potrzebnymi kartom.
+  Dwa filtry naraz: seria / serial (⭐ 🗺️ Kanto, 📺 Horyzonty 1 / 2, 🌟 Sławne) × typ. Niezłapane to czarne sylwetki: „Kto to za Pokémon?”.
 - **Polskie podpowiedzi i ciekawostki** z Pokédexu; filtr po typach; wyszukiwarka odporna na literówki.
 - **Poké Ball wg rzadkości**: Poké / Great / Ultra / Master Ball (legendarne).
 - **Arena** — jak w grach, na poziomie 50: 4 ruchy z gry (Scarlet/Violet, wybór: `tmp/moves.js`), wzór na obrażenia, premia za własny typ,
@@ -34,7 +34,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 
 | plik | co robi |
 |---|---|
-| `js/species.js` | Pokédex (generowany: `node tmp/fetch.js && node tmp/build_species.js`; polskie teksty w `tmp/pl.json` — dopisują je `tmp/pl_hz.py`, `tmp/pl_fam.py` — nazwy ataków w `tmp/attacks_pl.json`, ruchów w `tmp/moves_pl.json`) |
+| `js/species.js` | Pokédex (generowany: `node tmp/fetch.js && node tmp/build_species.js`; polskie teksty w `tmp/pl.json` — dopisują je `tmp/pl_hz.py`, `tmp/pl_fam.py`, `tmp/pl_hz_s1.py` — nazwy ataków w `tmp/attacks_pl.json`, ruchów w `tmp/moves_pl.json`) |
 | `js/battle.js` | typy, stany, tereny, silnik walki i komputer, bez DOM; strojenie: `TUNE`, potem `node tmp/sim.js` |
 | `js/cards.js` | zasady walki kartami, bez DOM; `node tmp/sim_cards.js` — długość gier komputer vs komputer |
 | `js/app.js` | interfejs: łowy, Pokédex, karty, arena, walka kartami, tryb rodzica |

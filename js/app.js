@@ -93,11 +93,11 @@ function crack() {
 
 /* ---------------- elementy ---------------- */
 const $ = s => document.querySelector(s);
-const el = Object.fromEntries(['q', 'huntForm', 'sugg', 'huntMsg', 'grid', 'emptyMsg', 'chips', 'onlyMissing', 'pcCount', 'pcRank', 'pcBall',
+const el = Object.fromEntries(['q', 'huntForm', 'sugg', 'huntMsg', 'grid', 'emptyMsg', 'series', 'chips', 'onlyMissing', 'pcCount', 'pcRank', 'pcBall',
   'rockFill', 'rockMarks', 'brandBall', 'scene', 'sceneTarget', 'sceneBall', 'sceneFlash', 'sceneName', 'confetti', 'modal', 'modalBody',
   'huntBox', 'modalClose', 'btnArena', 'btnCards', 'btnEdit', 'modeSeg', 'zoom'].map(id => [id, document.getElementById(id)]));
 el.pill = $('.search-pill'); el.main = $('main.wrap');
-let filter = 'all', editing = false;
+let series = 'all', type = 'all', editing = false;   // filtry: seria/serial × typ
 
 const RANKS = [[0, 'Początkujący'], [5, 'Trener'], [15, 'Tropiciel'], [30, 'Zdobywca odznak'], [60, 'Lider sali'], [100, 'Elitarna Czwórka'], [SPECIES.length, 'Mistrz Pokémon']];
 const rankFor = n => RANKS.filter(([k]) => n >= k).pop()[1];
@@ -117,18 +117,22 @@ function tileHTML(sp) {
     <span class="grp" style="background:${TYPES[sp.types[0]][2]}"></span></button>`;
 }
 function renderGrid(freshId) {
-  const list = LIST.filter(s => inFilter(s, filter) && !(el.onlyMissing.checked && isCaught(s.id)));
+  const list = LIST.filter(s => inSeries(s, series) && inType(s, type) && !(el.onlyMissing.checked && isCaught(s.id)));
   el.grid.innerHTML = list.map(tileHTML).join('');
   el.emptyMsg.hidden = list.length > 0;
   const t = freshId && el.grid.querySelector(`[data-id="${CSS.escape(freshId)}"]`);
   if (t) { t.classList.add('fresh'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 }
-// filtr: 'all', 'hz' (widać w serialu Horyzonty), 'fam' (sławne z nowszych gier) albo typ
-const inFilter = (s, k) => k === 'all' || (k === 'hz' ? s.hz : k === 'fam' ? s.fam : s.types.includes(k));
+// seria: Kanto (Red/Blue, seria Indigo), sezony Horyzontów, sławne z nowszych gier; licznik na chipie uwzględnia drugi filtr
+const SERIES = [['all', '⭐', 'Wszystkie'], ['kanto', '🗺️', 'Kanto (151)'], ['hz1', '📺', 'Horyzonty 1'], ['hz2', '📺', 'Horyzonty 2'], ['fam', '🌟', 'Sławne']];
+const inSeries = (s, k) => k === 'all' || (k === 'kanto' ? s.id <= 151 : k === 'hz1' ? s.hz === 1 : k === 'hz2' ? s.hz === 2 : s.fam);
+const inType = (s, k) => k === 'all' || s.types.includes(k);
 function renderChips() {
-  const n = (k, got) => LIST.filter(s => inFilter(s, k) && (!got || isCaught(s.id))).length;
-  const chip = (k, emo, label) => `<button class="chip ${filter === k ? 'on' : ''}" data-f="${k}"><span class="emo">${emo}</span> ${label}<b>${n(k, 1)}/${n(k)}</b></button>`;
-  el.chips.innerHTML = chip('all', '⭐', 'Wszystkie') + chip('hz', '📺', 'Horyzonty') + (n('fam') ? chip('fam', '🌟', 'Sławne') : '') + Object.entries(TYPES).filter(([k]) => n(k)).map(([k, t]) => chip(k, t[1], t[0])).join('');
+  const count = (f, got) => LIST.filter(s => f(s) && (!got || isCaught(s.id))).length;
+  const chip = (attr, k, on, emo, label, f) => { const n = count(f); return n || on ? `<button class="chip ${on ? 'on' : ''}" ${attr}="${k}"><span class="emo">${emo}</span> ${label}<b>${count(f, 1)}/${n}</b></button>` : ''; };
+  el.series.innerHTML = SERIES.map(([k, emo, label]) => chip('data-series', k, series === k, emo, label, s => inSeries(s, k) && inType(s, type))).join('');
+  el.chips.innerHTML = chip('data-type', 'all', type === 'all', '🎨', 'Wszystkie typy', s => inSeries(s, series))
+    + Object.entries(TYPES).map(([k, t]) => chip('data-type', k, type === k, t[1], t[0], s => inSeries(s, series) && inType(s, k))).join('');
 }
 function renderProgress() {
   const total = LIST.length, n = LIST.filter(s => isCaught(s.id)).length, pct = total ? n / total : 0;
@@ -147,7 +151,8 @@ el.grid.addEventListener('click', e => {
   blip(isCaught(sp.id) ? 620 : 380, .07);
   openCard(sp);
 });
-el.chips.addEventListener('click', e => { const c = e.target.closest('[data-f]'); if (c) { filter = c.dataset.f; renderChips(); renderGrid(); } });
+el.series.addEventListener('click', e => { const c = e.target.closest('[data-series]'); if (c) { series = c.dataset.series; renderChips(); renderGrid(); } });
+el.chips.addEventListener('click', e => { const c = e.target.closest('[data-type]'); if (c) { type = c.dataset.type; renderChips(); renderGrid(); } });
 el.onlyMissing.addEventListener('change', () => renderGrid());
 const renderMode = () => el.modeSeg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.face === (binder() ? 'card' : 'art')));
 function setFace(face) { DB.settings.face = face; save(); renderMode(); renderGrid(); }

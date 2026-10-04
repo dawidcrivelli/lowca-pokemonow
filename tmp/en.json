@@ -1271,7 +1271,7 @@
   ],
   "genus": "Barrier Pokémon",
   "flavor": "If interrupted while it is miming, it will slap around the offender with its broad hands.",
-  "from": null
+  "from": "Mime Jr."
  },
  {
   "id": 123,
@@ -1313,7 +1313,7 @@
   ],
   "genus": "Spitfire Pokémon",
   "flavor": "Its body always burns with an orange glow that enables it to hide perfectly among flames.",
-  "from": null
+  "from": "Magby"
  },
  {
   "id": 127,
@@ -1577,6 +1577,258 @@
   "from": null
  },
  {
+  "id": 152,
+  "name": "Chikorita",
+  "types": [
+   "grass"
+  ],
+  "genus": "Leaf Pokémon",
+  "flavor": "A sweet aroma gently wafts from the leaf on its head. It is docile and loves to soak up the sun's rays.",
+  "from": null
+ },
+ {
+  "id": 153,
+  "name": "Bayleef",
+  "types": [
+   "grass"
+  ],
+  "genus": "Leaf Pokémon",
+  "flavor": "The scent of spices comes from around its neck. Somehow, sniffing it makes you want to fight.",
+  "from": "Chikorita"
+ },
+ {
+  "id": 155,
+  "name": "Cyndaquil",
+  "types": [
+   "fire"
+  ],
+  "genus": "Fire Mouse Pokémon",
+  "flavor": "It is timid, and always curls it self up in a ball. If attacked, it flares up its back for protection.",
+  "from": null
+ },
+ {
+  "id": 158,
+  "name": "Totodile",
+  "types": [
+   "water"
+  ],
+  "genus": "Big Jaw Pokémon",
+  "flavor": "Its well-developed jaws are powerful and capable of crushing anything. Even its trainer must be careful.",
+  "from": null
+ },
+ {
+  "id": 159,
+  "name": "Croconaw",
+  "types": [
+   "water"
+  ],
+  "genus": "Big Jaw Pokémon",
+  "flavor": "If it loses a fang, a new one grows back in its place. There are always 48 fangs lining its mouth.",
+  "from": "Totodile"
+ },
+ {
+  "id": 161,
+  "name": "Sentret",
+  "types": [
+   "normal"
+  ],
+  "genus": "Scout Pokémon",
+  "flavor": "A very cautious POKéMON, it raises itself up using its tail to get a better view of its surroundings.",
+  "from": null
+ },
+ {
+  "id": 162,
+  "name": "Furret",
+  "types": [
+   "normal"
+  ],
+  "genus": "Long Body Pokémon",
+  "flavor": "It makes a nest to suit its long and skinny body. The nest is impossible for other POKéMON to enter.",
+  "from": "Sentret"
+ },
+ {
+  "id": 163,
+  "name": "Hoothoot",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Owl Pokémon",
+  "flavor": "It always stands on one foot. It changes feet so fast, the movement can rarely be seen.",
+  "from": null
+ },
+ {
+  "id": 164,
+  "name": "Noctowl",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Owl Pokémon",
+  "flavor": "Its eyes are specially adapted. They concentrate even faint light and enable it to see in the dark.",
+  "from": "Hoothoot"
+ },
+ {
+  "id": 170,
+  "name": "Chinchou",
+  "types": [
+   "water",
+   "electric"
+  ],
+  "genus": "Angler Pokémon",
+  "flavor": "It shoots positive and negative elec tricity between the tips of its two antennae and zaps its enemies.",
+  "from": null
+ },
+ {
+  "id": 171,
+  "name": "Lanturn",
+  "types": [
+   "water",
+   "electric"
+  ],
+  "genus": "Light Pokémon",
+  "flavor": "The light it emits is so bright that it can illuminate the sea's surface from a depth of over three miles.",
+  "from": "Chinchou"
+ },
+ {
+  "id": 177,
+  "name": "Natu",
+  "types": [
+   "psychic",
+   "flying"
+  ],
+  "genus": "Tiny Bird Pokémon",
+  "flavor": "Because its wings aren't yet fully grown, it has to hop to get around. It is always star ing at something.",
+  "from": null
+ },
+ {
+  "id": 178,
+  "name": "Xatu",
+  "types": [
+   "psychic",
+   "flying"
+  ],
+  "genus": "Mystic Pokémon",
+  "flavor": "They say that it stays still and quiet because it is seeing both the past and future at the same time.",
+  "from": "Natu"
+ },
+ {
+  "id": 183,
+  "name": "Marill",
+  "types": [
+   "water",
+   "fairy"
+  ],
+  "genus": "Aqua Mouse Pokémon",
+  "flavor": "The tip of its tail, which con tains oil that is lighter than wa ter, lets it swim without drowning.",
+  "from": null
+ },
+ {
+  "id": 185,
+  "name": "Sudowoodo",
+  "types": [
+   "rock"
+  ],
+  "genus": "Imitation Pokémon",
+  "flavor": "Although it always pretends to be a tree, its composi tion appears to be closer to a rock than a plant.",
+  "from": "Bonsly"
+ },
+ {
+  "id": 187,
+  "name": "Hoppip",
+  "types": [
+   "grass",
+   "flying"
+  ],
+  "genus": "Cottonweed Pokémon",
+  "flavor": "To keep from being blown away by the wind, they gather in clusters. They do enjoy gentle breezes, though.",
+  "from": null
+ },
+ {
+  "id": 188,
+  "name": "Skiploom",
+  "types": [
+   "grass",
+   "flying"
+  ],
+  "genus": "Cottonweed Pokémon",
+  "flavor": "The bloom on top of its head opens and closes as the temperature fluc tuates up and down.",
+  "from": "Hoppip"
+ },
+ {
+  "id": 189,
+  "name": "Jumpluff",
+  "types": [
+   "grass",
+   "flying"
+  ],
+  "genus": "Cottonweed Pokémon",
+  "flavor": "Once it catches the wind, it deft ly controls its cotton-puff spores to float, even around the world.",
+  "from": "Skiploom"
+ },
+ {
+  "id": 190,
+  "name": "Aipom",
+  "types": [
+   "normal"
+  ],
+  "genus": "Long Tail Pokémon",
+  "flavor": "Its tail is so powerful that it can use it to grab a tree branch and hold itself up in the air.",
+  "from": null
+ },
+ {
+  "id": 191,
+  "name": "Sunkern",
+  "types": [
+   "grass"
+  ],
+  "genus": "Seed Pokémon",
+  "flavor": "It may drop out of the sky suddenly. If attacked by a SPEAROW, it will violently shake its leaves.",
+  "from": null
+ },
+ {
+  "id": 192,
+  "name": "Sunflora",
+  "types": [
+   "grass"
+  ],
+  "genus": "Sun Pokémon",
+  "flavor": "It converts sun light into energy. In the darkness after sunset, it closes its petals and becomes still.",
+  "from": "Sunkern"
+ },
+ {
+  "id": 194,
+  "name": "Wooper",
+  "types": [
+   "water",
+   "ground"
+  ],
+  "genus": "Water Fish Pokémon",
+  "flavor": "This POKéMON lives in cold water. It will leave the water to search for food when it gets cold outside.",
+  "from": null
+ },
+ {
+  "id": 195,
+  "name": "Quagsire",
+  "types": [
+   "water",
+   "ground"
+  ],
+  "genus": "Water Fish Pokémon",
+  "flavor": "This carefree POKéMON has an easy-going nature. While swimming, it always bumps into boat hulls.",
+  "from": "Wooper"
+ },
+ {
+  "id": 196,
+  "name": "Espeon",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Sun Pokémon",
+  "flavor": "It uses the fine hair that covers its body to sense air currents and predict its ene my's actions.",
+  "from": "Eevee"
+ },
+ {
   "id": 197,
   "name": "Umbreon",
   "types": [
@@ -1585,6 +1837,153 @@
   "genus": "Moonlight Pokémon",
   "flavor": "When agitated, this POKéMON pro tects itself by spraying poisonous sweat from its pores.",
   "from": "Eevee"
+ },
+ {
+  "id": 211,
+  "name": "Qwilfish",
+  "types": [
+   "water",
+   "poison"
+  ],
+  "genus": "Balloon Pokémon",
+  "flavor": "To fire its poison spikes, it must inflate its body by drinking over 2.6 gallons of water all at once.",
+  "from": null
+ },
+ {
+  "id": 213,
+  "name": "Shuckle",
+  "types": [
+   "bug",
+   "rock"
+  ],
+  "genus": "Mold Pokémon",
+  "flavor": "The BERRIES it stores in its vase-like shell decompose and become a gooey liquid.",
+  "from": null
+ },
+ {
+  "id": 215,
+  "name": "Sneasel",
+  "types": [
+   "dark",
+   "ice"
+  ],
+  "genus": "Sharp Claw Pokémon",
+  "flavor": "Its paws conceal sharp claws. If attacked, it sud denly extends the claws and startles its enemy.",
+  "from": null
+ },
+ {
+  "id": 216,
+  "name": "Teddiursa",
+  "types": [
+   "normal"
+  ],
+  "genus": "Little Bear Pokémon",
+  "flavor": "If it finds honey, its crescent mark glows. It always licks its paws because they are soaked with honey.",
+  "from": null
+ },
+ {
+  "id": 217,
+  "name": "Ursaring",
+  "types": [
+   "normal"
+  ],
+  "genus": "Hibernator Pokémon",
+  "flavor": "Although it is a good climber, it prefers to snap trees with its forelegs and eat fallen BERRIES.",
+  "from": "Teddiursa"
+ },
+ {
+  "id": 218,
+  "name": "Slugma",
+  "types": [
+   "fire"
+  ],
+  "genus": "Lava Pokémon",
+  "flavor": "It never sleeps. It has to keep moving because if it stopped, its magma body would cool and harden.",
+  "from": null
+ },
+ {
+  "id": 220,
+  "name": "Swinub",
+  "types": [
+   "ice",
+   "ground"
+  ],
+  "genus": "Pig Pokémon",
+  "flavor": "It rubs its snout on the ground to find and dig up food. It sometimes discovers hot springs.",
+  "from": null
+ },
+ {
+  "id": 221,
+  "name": "Piloswine",
+  "types": [
+   "ice",
+   "ground"
+  ],
+  "genus": "Swine Pokémon",
+  "flavor": "Because the long hair all over its body obscures its sight, it just keeps charging repeatedly.",
+  "from": "Swinub"
+ },
+ {
+  "id": 223,
+  "name": "Remoraid",
+  "types": [
+   "water"
+  ],
+  "genus": "Jet Pokémon",
+  "flavor": "It has superb ac curacy. The water it shoots out can strike even moving prey from more than 300 feet.",
+  "from": null
+ },
+ {
+  "id": 224,
+  "name": "Octillery",
+  "types": [
+   "water"
+  ],
+  "genus": "Jet Pokémon",
+  "flavor": "It traps enemies with its suction- cupped tentacles then smashes them with its rock-hard head.",
+  "from": "Remoraid"
+ },
+ {
+  "id": 226,
+  "name": "Mantine",
+  "types": [
+   "water",
+   "flying"
+  ],
+  "genus": "Kite Pokémon",
+  "flavor": "As it majestically swims, it doesn't care if REMORAID attach to it for scavenging its leftovers.",
+  "from": "Mantyke"
+ },
+ {
+  "id": 227,
+  "name": "Skarmory",
+  "types": [
+   "steel",
+   "flying"
+  ],
+  "genus": "Armor Bird Pokémon",
+  "flavor": "Its sturdy wings look heavy, but they are actually hollow and light, allowing it to fly freely in the sky.",
+  "from": null
+ },
+ {
+  "id": 235,
+  "name": "Smeargle",
+  "types": [
+   "normal"
+  ],
+  "genus": "Painter Pokémon",
+  "flavor": "A special fluid oozes from the tip of its tail. It paints the fluid everywhere to mark its territory.",
+  "from": null
+ },
+ {
+  "id": 237,
+  "name": "Hitmontop",
+  "types": [
+   "fighting"
+  ],
+  "genus": "Handstand Pokémon",
+  "flavor": "If you become enchanted by its smooth, elegant, dance-like kicks, you may get drilled hard.",
+  "from": null
  },
  {
   "id": 239,
@@ -1597,6 +1996,26 @@
   "from": null
  },
  {
+  "id": 240,
+  "name": "Magby",
+  "types": [
+   "fire"
+  ],
+  "genus": "Live Coal Pokémon",
+  "flavor": "Each and every time it inhales and exhales, hot embers dribble out of its mouth and nostrils.",
+  "from": null
+ },
+ {
+  "id": 242,
+  "name": "Blissey",
+  "types": [
+   "normal"
+  ],
+  "genus": "Happiness Pokémon",
+  "flavor": "Anyone who takes even one bite of BLISSEY's egg be comes unfailingly caring and pleas ant to everyone.",
+  "from": "Chansey"
+ },
+ {
   "id": 244,
   "name": "Entei",
   "types": [
@@ -1604,6 +2023,490 @@
   ],
   "genus": "Volcano Pokémon",
   "flavor": "Volcanoes erupt when it barks. Un able to restrain its extreme power, it races headlong around the land.",
+  "from": null
+ },
+ {
+  "id": 255,
+  "name": "Torchic",
+  "types": [
+   "fire"
+  ],
+  "genus": "Chick Pokémon",
+  "flavor": "TORCHIC sticks with its TRAINER, following behind with unsteady steps. This POKéMON breathes fire of over 1,800 degrees F, including fireballs that leave the foe scorched black.",
+  "from": null
+ },
+ {
+  "id": 270,
+  "name": "Lotad",
+  "types": [
+   "water",
+   "grass"
+  ],
+  "genus": "Water Weed Pokémon",
+  "flavor": "LOTAD live in ponds and lakes, where they float on the surface. It grows weak if its broad leaf dies. On rare occasions, this POKéMON travels on land in search of clean water.",
+  "from": null
+ },
+ {
+  "id": 271,
+  "name": "Lombre",
+  "types": [
+   "water",
+   "grass"
+  ],
+  "genus": "Jolly Pokémon",
+  "flavor": "LOMBRE is nocturnal - it will get active after dusk. It is also a mischief-maker. When this POKéMON spots anglers, it tugs on their fishing lines from beneath the surface and enjoys their consternation.",
+  "from": "Lotad"
+ },
+ {
+  "id": 272,
+  "name": "Ludicolo",
+  "types": [
+   "water",
+   "grass"
+  ],
+  "genus": "Carefree Pokémon",
+  "flavor": "LUDICOLO begins dancing as soon as it hears cheerful, festive music. This POKéMON is said to appear when it hears the singing of children on hiking outings.",
+  "from": "Lombre"
+ },
+ {
+  "id": 276,
+  "name": "Taillow",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Tiny Swallow Pokémon",
+  "flavor": "TAILLOW courageously stands its ground against foes, however strong they may be. This gutsy POKéMON will remain defiant even after a loss. On the other hand, it cries loudly if it becomes hungry.",
+  "from": null
+ },
+ {
+  "id": 278,
+  "name": "Wingull",
+  "types": [
+   "water",
+   "flying"
+  ],
+  "genus": "Seagull Pokémon",
+  "flavor": "WINGULL has the habit of carrying prey and valuables in its beak and hiding them in all sorts of locations. This POKéMON rides the winds and flies as if it were skating across the sky.",
+  "from": null
+ },
+ {
+  "id": 279,
+  "name": "Pelipper",
+  "types": [
+   "water",
+   "flying"
+  ],
+  "genus": "Water Bird Pokémon",
+  "flavor": "PELIPPER is a flying transporter that carries small POKéMON and eggs inside its massive bill. This POKéMON builds its nest on steep cliffs facing the sea.",
+  "from": "Wingull"
+ },
+ {
+  "id": 280,
+  "name": "Ralts",
+  "types": [
+   "psychic",
+   "fairy"
+  ],
+  "genus": "Feeling Pokémon",
+  "flavor": "RALTS senses the emotions of people using the horns on its head. This POKéMON rarely appears before people. But when it does, it draws closer if it senses that the person has a positive disposition.",
+  "from": null
+ },
+ {
+  "id": 283,
+  "name": "Surskit",
+  "types": [
+   "bug",
+   "water"
+  ],
+  "genus": "Pond Skater Pokémon",
+  "flavor": "From the tips of its feet, SURSKIT secretes an oil that enables it to walk on water as if it were skating. This POKéMON feeds on microscopic organisms in ponds and lakes.",
+  "from": null
+ },
+ {
+  "id": 284,
+  "name": "Masquerain",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Eyeball Pokémon",
+  "flavor": "MASQUERAIN intimidates enemies with the eyelike patterns on its antennas. This POKéMON flaps its four wings to freely fly in any direction - even sideways and backwards - as if it were a helicopter.",
+  "from": "Surskit"
+ },
+ {
+  "id": 285,
+  "name": "Shroomish",
+  "types": [
+   "grass"
+  ],
+  "genus": "Mushroom Pokémon",
+  "flavor": "SHROOMISH live in damp soil in the dark depths of forests. They are often found keeping still under fallen leaves. This POKéMON feeds on compost that is made up of fallen, rotted leaves.",
+  "from": null
+ },
+ {
+  "id": 286,
+  "name": "Breloom",
+  "types": [
+   "grass",
+   "fighting"
+  ],
+  "genus": "Mushroom Pokémon",
+  "flavor": "BRELOOM closes in on its foe with light and sprightly footwork, then throws punches with its stretchy arms. This POKéMON’s fighting technique puts boxers to shame.",
+  "from": "Shroomish"
+ },
+ {
+  "id": 287,
+  "name": "Slakoth",
+  "types": [
+   "normal"
+  ],
+  "genus": "Slacker Pokémon",
+  "flavor": "SLAKOTH lolls around for over twenty hours every day. Because it moves so little, it does not need much food. This POKéMON’s sole daily meal consists of just three leaves.",
+  "from": null
+ },
+ {
+  "id": 288,
+  "name": "Vigoroth",
+  "types": [
+   "normal"
+  ],
+  "genus": "Wild Monkey Pokémon",
+  "flavor": "VIGOROTH is always itching and agitated to go on a wild rampage. It simply can’t tolerate sitting still for even a minute. This POKéMON’s stress level rises if it can’t be moving constantly.",
+  "from": "Slakoth"
+ },
+ {
+  "id": 290,
+  "name": "Nincada",
+  "types": [
+   "bug",
+   "ground"
+  ],
+  "genus": "Trainee Pokémon",
+  "flavor": "NINCADA lives underground for many years in complete darkness. This POKéMON absorbs nutrients from the roots of trees. It stays motionless as it waits for evolution.",
+  "from": null
+ },
+ {
+  "id": 291,
+  "name": "Ninjask",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Ninja Pokémon",
+  "flavor": "NINJASK moves around at such a high speed that it cannot be seen, even while its crying can be clearly heard. For that reason, this POKéMON was long believed to be invisible.",
+  "from": "Nincada"
+ },
+ {
+  "id": 293,
+  "name": "Whismur",
+  "types": [
+   "normal"
+  ],
+  "genus": "Whisper Pokémon",
+  "flavor": "Normally, WHISMUR’s voice is very quiet - it is barely audible even if one is paying close attention. However, if this POKéMON senses danger, it starts crying at an earsplitting volume.",
+  "from": null
+ },
+ {
+  "id": 299,
+  "name": "Nosepass",
+  "types": [
+   "rock"
+  ],
+  "genus": "Compass Pokémon",
+  "flavor": "NOSEPASS’s magnetic nose is always pointed to the north. If two of these POKéMON meet, they cannot turn their faces to each other when they are close because their magnetic noses repel one another.",
+  "from": null
+ },
+ {
+  "id": 300,
+  "name": "Skitty",
+  "types": [
+   "normal"
+  ],
+  "genus": "Kitten Pokémon",
+  "flavor": "SKITTY has the habit of becoming fascinated by moving objects and chasing them around. This POKéMON is known to chase after its own tail and become dizzy.",
+  "from": null
+ },
+ {
+  "id": 301,
+  "name": "Delcatty",
+  "types": [
+   "normal"
+  ],
+  "genus": "Prim Pokémon",
+  "flavor": "DELCATTY prefers to live an unfettered existence in which it can do as it pleases at its own pace. Because this POKéMON eats and sleeps whenever it decides, its daily routines are completely random.",
+  "from": "Skitty"
+ },
+ {
+  "id": 302,
+  "name": "Sableye",
+  "types": [
+   "dark",
+   "ghost"
+  ],
+  "genus": "Darkness Pokémon",
+  "flavor": "SABLEYE lead quiet lives deep inside caverns. They are feared, however, because these POKéMON are thought to steal the spirits of people when their eyes burn with a sinister glow in the darkness.",
+  "from": null
+ },
+ {
+  "id": 307,
+  "name": "Meditite",
+  "types": [
+   "fighting",
+   "psychic"
+  ],
+  "genus": "Meditate Pokémon",
+  "flavor": "MEDITITE undertakes rigorous mental training deep in the mountains. However, whenever it meditates, this POKéMON always loses its concentration and focus. As a result, its training never ends.",
+  "from": null
+ },
+ {
+  "id": 308,
+  "name": "Medicham",
+  "types": [
+   "fighting",
+   "psychic"
+  ],
+  "genus": "Meditate Pokémon",
+  "flavor": "It is said that through meditation, MEDICHAM heightens energy inside its body and sharpens its sixth sense. This POKéMON hides its presence by merging itself with fields and mountains.",
+  "from": "Meditite"
+ },
+ {
+  "id": 315,
+  "name": "Roselia",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "genus": "Thorn Pokémon",
+  "flavor": "ROSELIA shoots sharp thorns as projectiles at any opponent that tries to steal the flowers on its arms. The aroma of this POKéMON brings serenity to living things.",
+  "from": null
+ },
+ {
+  "id": 318,
+  "name": "Carvanha",
+  "types": [
+   "water",
+   "dark"
+  ],
+  "genus": "Savage Pokémon",
+  "flavor": "CARVANHA’s strongly developed jaws and its sharply pointed fangs pack the destructive power to rip out boat hulls. Many boats have been attacked and sunk by this POKéMON.",
+  "from": null
+ },
+ {
+  "id": 319,
+  "name": "Sharpedo",
+  "types": [
+   "water",
+   "dark"
+  ],
+  "genus": "Brutal Pokémon",
+  "flavor": "Nicknamed “the bully of the sea,” SHARPEDO is widely feared. Its cruel fangs grow back immediately if they snap off. Just one of these POKéMON can thoroughly tear apart a supertanker.",
+  "from": "Carvanha"
+ },
+ {
+  "id": 320,
+  "name": "Wailmer",
+  "types": [
+   "water"
+  ],
+  "genus": "Ball Whale Pokémon",
+  "flavor": "WAILMER’s nostrils are located above its eyes. This playful POKéMON loves to startle people by forcefully snorting out seawater it stores inside its body out of its nostrils.",
+  "from": null
+ },
+ {
+  "id": 321,
+  "name": "Wailord",
+  "types": [
+   "water"
+  ],
+  "genus": "Float Whale Pokémon",
+  "flavor": "WAILORD is the largest of all identified POKéMON up to now. This giant POKéMON swims languorously in the vast open sea, eating massive amounts of food at once with its enormous mouth.",
+  "from": "Wailmer"
+ },
+ {
+  "id": 325,
+  "name": "Spoink",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Bounce Pokémon",
+  "flavor": "SPOINK bounces around on its tail. The shock of its bouncing makes its heart pump. As a result, this POKéMON cannot afford to stop bouncing - if it stops, its heart will stop.",
+  "from": null
+ },
+ {
+  "id": 326,
+  "name": "Grumpig",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Manipulate Pokémon",
+  "flavor": "GRUMPIG uses the black pearls on its body to amplify its psychic power waves for gaining total control over its foe. When this POKéMON uses its special power, its snorting breath grows labored.",
+  "from": "Spoink"
+ },
+ {
+  "id": 328,
+  "name": "Trapinch",
+  "types": [
+   "ground"
+  ],
+  "genus": "Ant Pit Pokémon",
+  "flavor": "TRAPINCH’s nest is a sloped, bowl-like pit dug in sand. This POKéMON patiently waits for prey to tumble down the pit. Its giant jaws have enough strength to crush even boulders.",
+  "from": null
+ },
+ {
+  "id": 329,
+  "name": "Vibrava",
+  "types": [
+   "ground",
+   "dragon"
+  ],
+  "genus": "Vibration Pokémon",
+  "flavor": "To make prey faint, VIBRAVA generates ultrasonic waves by vigorously making its two wings vibrate. This POKéMON’s ultrasonic waves are so powerful, they can bring on headaches in people.",
+  "from": "Trapinch"
+ },
+ {
+  "id": 330,
+  "name": "Flygon",
+  "types": [
+   "ground",
+   "dragon"
+  ],
+  "genus": "Mystic Pokémon",
+  "flavor": "FLYGON is nicknamed “the elemental spirit of the desert.” Because its flapping wings whip up a cloud of sand, this POKéMON is always enveloped in a sandstorm while flying.",
+  "from": "Vibrava"
+ },
+ {
+  "id": 331,
+  "name": "Cacnea",
+  "types": [
+   "grass"
+  ],
+  "genus": "Cactus Pokémon",
+  "flavor": "CACNEA lives in arid locations such as deserts. It releases a strong aroma from its flower to attract prey. When prey comes near, this POKéMON shoots sharp thorns from its body to bring the victim down.",
+  "from": null
+ },
+ {
+  "id": 333,
+  "name": "Swablu",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Cotton Bird Pokémon",
+  "flavor": "SWABLU has light and fluffy wings that are like cottony clouds. This POKéMON is not frightened of people. It lands on the heads of people and sits there like a cotton-fluff hat.",
+  "from": null
+ },
+ {
+  "id": 334,
+  "name": "Altaria",
+  "types": [
+   "dragon",
+   "flying"
+  ],
+  "genus": "Humming Pokémon",
+  "flavor": "ALTARIA dances and wheels through the sky among billowing, cotton-like clouds. By singing melodies in its crystal-clear voice, this POKéMON makes its listeners experience dreamy wonderment.",
+  "from": "Swablu"
+ },
+ {
+  "id": 345,
+  "name": "Lileep",
+  "types": [
+   "rock",
+   "grass"
+  ],
+  "genus": "Sea Lily Pokémon",
+  "flavor": "LILEEP became extinct approximately a hundred million years ago. This ancient POKéMON attaches itself to a rock on the seafloor and catches approaching prey using tentacles shaped like flower petals.",
+  "from": null
+ },
+ {
+  "id": 355,
+  "name": "Duskull",
+  "types": [
+   "ghost"
+  ],
+  "genus": "Requiem Pokémon",
+  "flavor": "DUSKULL can pass through any wall no matter how thick it may be. Once this POKéMON chooses a target, it will doggedly pursue the intended victim until the break of dawn.",
+  "from": null
+ },
+ {
+  "id": 356,
+  "name": "Dusclops",
+  "types": [
+   "ghost"
+  ],
+  "genus": "Beckon Pokémon",
+  "flavor": "DUSCLOPS’s body is completely hollow - there is nothing at all inside. It is said that its body is like a black hole. This POKéMON will absorb anything into its body, but nothing will ever come back out.",
+  "from": "Duskull"
+ },
+ {
+  "id": 357,
+  "name": "Tropius",
+  "types": [
+   "grass",
+   "flying"
+  ],
+  "genus": "Fruit Pokémon",
+  "flavor": "The bunches of fruit around TROPIUS’s neck are very popular with children. This POKéMON loves fruit, and eats it continuously. Apparently, its love for fruit resulted in its own outgrowth of fruit.",
+  "from": null
+ },
+ {
+  "id": 358,
+  "name": "Chimecho",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Wind Chime Pokémon",
+  "flavor": "CHIMECHO makes its cries echo inside its hollow body. When this POKéMON becomes enraged, its cries result in ultrasonic waves that have the power to knock foes flying.",
+  "from": null
+ },
+ {
+  "id": 361,
+  "name": "Snorunt",
+  "types": [
+   "ice"
+  ],
+  "genus": "Snow Hat Pokémon",
+  "flavor": "SNORUNT live in regions with heavy snowfall. In seasons without snow, such as spring and summer, this POKéMON steals away to live quietly among stalactites and stalagmites deep in caverns.",
+  "from": null
+ },
+ {
+  "id": 362,
+  "name": "Glalie",
+  "types": [
+   "ice"
+  ],
+  "genus": "Face Pokémon",
+  "flavor": "GLALIE has a body made of rock, which it hardens with an armor of ice. This POKéMON has the ability to freeze moisture in the atmosphere into any shape it desires.",
+  "from": "Snorunt"
+ },
+ {
+  "id": 366,
+  "name": "Clamperl",
+  "types": [
+   "water"
+  ],
+  "genus": "Bivalve Pokémon",
+  "flavor": "CLAMPERL’s sturdy shell is not only good for protection - it is also used for clamping and catching prey. A fully grown CLAMPERL’s shell will be scored with nicks and scratches all over.",
+  "from": null
+ },
+ {
+  "id": 367,
+  "name": "Huntail",
+  "types": [
+   "water"
+  ],
+  "genus": "Deep Sea Pokémon",
+  "flavor": "HUNTAIL’s presence went unnoticed by people for a long time because it lives at extreme depths in the sea. This POKéMON’s eyes can see clearly even in the murky dark depths of the ocean.",
+  "from": "Clamperl"
+ },
+ {
+  "id": 370,
+  "name": "Luvdisc",
+  "types": [
+   "water"
+  ],
+  "genus": "Rendezvous Pokémon",
+  "flavor": "LUVDISC live in shallow seas in the tropics. This heart-shaped POKéMON earned its name by swimming after loving couples it spotted in the ocean’s waves.",
   "from": null
  },
  {
@@ -1648,6 +2551,299 @@
   ],
   "genus": "Sky High Pokémon",
   "flavor": "RAYQUAZA lived for hundreds of millions of years in the earth’s ozone layer, never descending to the ground. This POKéMON appears to feed on water and particles in the atmosphere.",
+  "from": null
+ },
+ {
+  "id": 387,
+  "name": "Turtwig",
+  "types": [
+   "grass"
+  ],
+  "genus": "Tiny Leaf Pokémon",
+  "flavor": "Made from soil, the shell on its back hardens when it drinks water. It lives along lakes.",
+  "from": null
+ },
+ {
+  "id": 388,
+  "name": "Grotle",
+  "types": [
+   "grass"
+  ],
+  "genus": "Grove Pokémon",
+  "flavor": "It lives along water in forests. In the daytime, it leaves the forest to sunbathe its treed shell.",
+  "from": "Turtwig"
+ },
+ {
+  "id": 389,
+  "name": "Torterra",
+  "types": [
+   "grass",
+   "ground"
+  ],
+  "genus": "Continent Pokémon",
+  "flavor": "Small Pokémon occasionally gather on its unmoving back to begin building their nests.",
+  "from": "Grotle"
+ },
+ {
+  "id": 390,
+  "name": "Chimchar",
+  "types": [
+   "fire"
+  ],
+  "genus": "Chimp Pokémon",
+  "flavor": "It agilely scales sheer cliffs to live atop craggy mountains. Its fire is put out when it sleeps.",
+  "from": null
+ },
+ {
+  "id": 393,
+  "name": "Piplup",
+  "types": [
+   "water"
+  ],
+  "genus": "Penguin Pokémon",
+  "flavor": "Because it is very proud, it hates accepting food from people. Its thick down guards it from cold.",
+  "from": null
+ },
+ {
+  "id": 396,
+  "name": "Starly",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Starling Pokémon",
+  "flavor": "They flock in great numbers. Though small, they flap their wings with great power.",
+  "from": null
+ },
+ {
+  "id": 397,
+  "name": "Staravia",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Starling Pokémon",
+  "flavor": "It flies around forests and fields in search of bug Pokémon. It stays within a huge flock.",
+  "from": "Starly"
+ },
+ {
+  "id": 399,
+  "name": "Bidoof",
+  "types": [
+   "normal"
+  ],
+  "genus": "Plump Mouse Pokémon",
+  "flavor": "With nerves of steel, nothing can perturb it. It is more agile and active than it appears.",
+  "from": null
+ },
+ {
+  "id": 400,
+  "name": "Bibarel",
+  "types": [
+   "normal",
+   "water"
+  ],
+  "genus": "Beaver Pokémon",
+  "flavor": "It makes its nest by damming streams with bark and mud. It is known as an industrious worker.",
+  "from": "Bidoof"
+ },
+ {
+  "id": 403,
+  "name": "Shinx",
+  "types": [
+   "electric"
+  ],
+  "genus": "Flash Pokémon",
+  "flavor": "All of its fur dazzles if danger is sensed. It flees while the foe is momentarily blinded.",
+  "from": null
+ },
+ {
+  "id": 404,
+  "name": "Luxio",
+  "types": [
+   "electric"
+  ],
+  "genus": "Spark Pokémon",
+  "flavor": "Its claws loose electricity with enough amperage to cause fainting. They live in small groups.",
+  "from": "Shinx"
+ },
+ {
+  "id": 405,
+  "name": "Luxray",
+  "types": [
+   "electric"
+  ],
+  "genus": "Gleam Eyes Pokémon",
+  "flavor": "It has eyes that can see through anything. It spots and captures prey hiding behind objects.",
+  "from": "Luxio"
+ },
+ {
+  "id": 415,
+  "name": "Combee",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Tiny Bee Pokémon",
+  "flavor": "A Pokémon formed by three others. It busily carries sweet floral honey to VESPIQUEN.",
+  "from": null
+ },
+ {
+  "id": 416,
+  "name": "Vespiquen",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Beehive Pokémon",
+  "flavor": "Its abdomen is a honeycomb for grubs. It raises its grubs on honey collected by COMBEE.",
+  "from": "Combee"
+ },
+ {
+  "id": 418,
+  "name": "Buizel",
+  "types": [
+   "water"
+  ],
+  "genus": "Sea Weasel Pokémon",
+  "flavor": "It has a flotation sac that is like an inflatable collar. It floats on water with its head out.",
+  "from": null
+ },
+ {
+  "id": 419,
+  "name": "Floatzel",
+  "types": [
+   "water"
+  ],
+  "genus": "Sea Weasel Pokémon",
+  "flavor": "It floats using its well-developed flotation sac. It assists in the rescues of drowning people.",
+  "from": "Buizel"
+ },
+ {
+  "id": 422,
+  "name": "Shellos",
+  "types": [
+   "water"
+  ],
+  "genus": "Sea Slug Pokémon",
+  "flavor": "Its colors and shapes differ from region to region. In the Sinnoh region, two types are confirmed.",
+  "from": null
+ },
+ {
+  "id": 424,
+  "name": "Ambipom",
+  "types": [
+   "normal"
+  ],
+  "genus": "Long Tail Pokémon",
+  "flavor": "To eat, it deftly shucks nuts with its two tails. It rarely uses its arms now.",
+  "from": "Aipom"
+ },
+ {
+  "id": 425,
+  "name": "Drifloon",
+  "types": [
+   "ghost",
+   "flying"
+  ],
+  "genus": "Balloon Pokémon",
+  "flavor": "A Pokémon formed by the spirits of people and Pokémon. It loves damp, humid seasons.",
+  "from": null
+ },
+ {
+  "id": 426,
+  "name": "Drifblim",
+  "types": [
+   "ghost",
+   "flying"
+  ],
+  "genus": "Blimp Pokémon",
+  "flavor": "It’s drowzy in daytime, but flies off in the evening in big groups. No one knows where they go.",
+  "from": "Drifloon"
+ },
+ {
+  "id": 431,
+  "name": "Glameow",
+  "types": [
+   "normal"
+  ],
+  "genus": "Catty Pokémon",
+  "flavor": "It claws if displeased and purrs when affectionate. Its fickleness is very popular among some.",
+  "from": null
+ },
+ {
+  "id": 432,
+  "name": "Purugly",
+  "types": [
+   "normal"
+  ],
+  "genus": "Tiger Cat Pokémon",
+  "flavor": "It is a brazen brute that barges its way into another Pokémon’s nest and claims it as its own.",
+  "from": "Glameow"
+ },
+ {
+  "id": 434,
+  "name": "Stunky",
+  "types": [
+   "poison",
+   "dark"
+  ],
+  "genus": "Skunk Pokémon",
+  "flavor": "It protects itself by spraying a noxious fluid from its rear. The stench lingers for 24 hours.",
+  "from": null
+ },
+ {
+  "id": 436,
+  "name": "Bronzor",
+  "types": [
+   "steel",
+   "psychic"
+  ],
+  "genus": "Bronze Pokémon",
+  "flavor": "Implements shaped like it were discovered in ancient tombs. It is unknown if they are related.",
+  "from": null
+ },
+ {
+  "id": 437,
+  "name": "Bronzong",
+  "types": [
+   "steel",
+   "psychic"
+  ],
+  "genus": "Bronze Bell Pokémon",
+  "flavor": "One caused a news sensation when it was dug up at a construction site after a 2,000-year sleep.",
+  "from": "Bronzor"
+ },
+ {
+  "id": 438,
+  "name": "Bonsly",
+  "types": [
+   "rock"
+  ],
+  "genus": "Bonsai Pokémon",
+  "flavor": "It looks as if it is always crying. It is actually adjusting its body’s fluid levels by eliminating excess.",
+  "from": null
+ },
+ {
+  "id": 439,
+  "name": "Mime Jr.",
+  "types": [
+   "psychic",
+   "fairy"
+  ],
+  "genus": "Mime Pokémon",
+  "flavor": "It habitually mimics foes. Once mimicked, the foe cannot take its eyes off this Pokémon.",
+  "from": null
+ },
+ {
+  "id": 441,
+  "name": "Chatot",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Music Note Pokémon",
+  "flavor": "It can learn and speak human words. If they gather, they all learn the same saying.",
   "from": null
  },
  {
@@ -1705,6 +2901,39 @@
   "from": "Riolu"
  },
  {
+  "id": 451,
+  "name": "Skorupi",
+  "types": [
+   "poison",
+   "bug"
+  ],
+  "genus": "Scorpion Pokémon",
+  "flavor": "It grips prey with its tail claws and injects poison. It tenaciously hangs on until the poison takes.",
+  "from": null
+ },
+ {
+  "id": 458,
+  "name": "Mantyke",
+  "types": [
+   "water",
+   "flying"
+  ],
+  "genus": "Kite Pokémon",
+  "flavor": "A friendly Pokémon that captures the subtle flows of seawater using its two antennae.",
+  "from": null
+ },
+ {
+  "id": 461,
+  "name": "Weavile",
+  "types": [
+   "dark",
+   "ice"
+  ],
+  "genus": "Sharp Claw Pokémon",
+  "flavor": "They live in cold regions, forming groups of four or five that hunt prey with impressive coordination.",
+  "from": "Sneasel"
+ },
+ {
   "id": 466,
   "name": "Electivire",
   "types": [
@@ -1713,6 +2942,316 @@
   "genus": "Thunderbolt Pokémon",
   "flavor": "It pushes the tips of its two tails against the foe, then lets loose with over 20,000 volts of power.",
   "from": "Electabuzz"
+ },
+ {
+  "id": 473,
+  "name": "Mamoswine",
+  "types": [
+   "ice",
+   "ground"
+  ],
+  "genus": "Twin Tusk Pokémon",
+  "flavor": "Its impressive tusks are made of ice. The population thinned when it turned warm after the ice age.",
+  "from": "Piloswine"
+ },
+ {
+  "id": 477,
+  "name": "Dusknoir",
+  "types": [
+   "ghost"
+  ],
+  "genus": "Gripper Pokémon",
+  "flavor": "The antenna on its head captures radio waves from the world of spirits that command it to take people there.",
+  "from": "Dusclops"
+ },
+ {
+  "id": 479,
+  "name": "Rotom",
+  "types": [
+   "electric",
+   "ghost"
+  ],
+  "genus": "Plasma Pokémon",
+  "flavor": "Its body is composed of plasma. It is known to infiltrate electronic devices and wreak havoc.",
+  "from": null
+ },
+ {
+  "id": 495,
+  "name": "Snivy",
+  "types": [
+   "grass"
+  ],
+  "genus": "Grass Snake Pokémon",
+  "flavor": "It is very intelligent and calm. Being exposed to lots of sunlight makes its movements swifter.",
+  "from": null
+ },
+ {
+  "id": 496,
+  "name": "Servine",
+  "types": [
+   "grass"
+  ],
+  "genus": "Grass Snake Pokémon",
+  "flavor": "It moves along the ground as if sliding. Its swift movements befuddle its foes, and it then attacks with a vine whip.",
+  "from": "Snivy"
+ },
+ {
+  "id": 497,
+  "name": "Serperior",
+  "types": [
+   "grass"
+  ],
+  "genus": "Regal Pokémon",
+  "flavor": "It can stop its opponents’ movements with just a glare. It takes in solar energy and boosts it internally.",
+  "from": "Servine"
+ },
+ {
+  "id": 498,
+  "name": "Tepig",
+  "types": [
+   "fire"
+  ],
+  "genus": "Fire Pig Pokémon",
+  "flavor": "It can deftly dodge its foe’s attacks while shooting fireballs from its nose. It roasts berries before it eats them.",
+  "from": null
+ },
+ {
+  "id": 499,
+  "name": "Pignite",
+  "types": [
+   "fire",
+   "fighting"
+  ],
+  "genus": "Fire Pig Pokémon",
+  "flavor": "When its internal fire flares up, its movements grow sharper and faster. When in trouble, it emits smoke.",
+  "from": "Tepig"
+ },
+ {
+  "id": 501,
+  "name": "Oshawott",
+  "types": [
+   "water"
+  ],
+  "genus": "Sea Otter Pokémon",
+  "flavor": "It fights using the scalchop on its stomach. In response to an attack, it retaliates immediately by slashing.",
+  "from": null
+ },
+ {
+  "id": 504,
+  "name": "Patrat",
+  "types": [
+   "normal"
+  ],
+  "genus": "Scout Pokémon",
+  "flavor": "Using food stored in cheek pouches, they can keep watch for days. They use their tails to communicate with others.",
+  "from": null
+ },
+ {
+  "id": 509,
+  "name": "Purrloin",
+  "types": [
+   "dark"
+  ],
+  "genus": "Devious Pokémon",
+  "flavor": "They steal from people for fun, but their victims can’t help but forgive them. Their deceptively cute act is perfect.",
+  "from": null
+ },
+ {
+  "id": 510,
+  "name": "Liepard",
+  "types": [
+   "dark"
+  ],
+  "genus": "Cruel Pokémon",
+  "flavor": "These Pokémon vanish and appear unexpectedly. Many Trainers are drawn to their beautiful form and fur.",
+  "from": "Purrloin"
+ },
+ {
+  "id": 511,
+  "name": "Pansage",
+  "types": [
+   "grass"
+  ],
+  "genus": "Grass Monkey Pokémon",
+  "flavor": "This Pokémon dwells deep in the forest. Eating a leaf from its head whisks weariness away as if by magic.",
+  "from": null
+ },
+ {
+  "id": 517,
+  "name": "Munna",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Dream Eater Pokémon",
+  "flavor": "Munna always float in the air. People whose dreams are eaten by them forget what the dreams had been about.",
+  "from": null
+ },
+ {
+  "id": 524,
+  "name": "Roggenrola",
+  "types": [
+   "rock"
+  ],
+  "genus": "Mantle Pokémon",
+  "flavor": "Its ear is hexagonal in shape. Compressed underground, its body is as hard as steel.",
+  "from": null
+ },
+ {
+  "id": 527,
+  "name": "Woobat",
+  "types": [
+   "psychic",
+   "flying"
+  ],
+  "genus": "Bat Pokémon",
+  "flavor": "Its habitat is dark forests and caves. It emits ultrasonic waves from its nose to learn about its surroundings.",
+  "from": null
+ },
+ {
+  "id": 529,
+  "name": "Drilbur",
+  "types": [
+   "ground"
+  ],
+  "genus": "Mole Pokémon",
+  "flavor": "It can dig through the ground at a speed of 30 mph. It could give a car running aboveground a good race.",
+  "from": null
+ },
+ {
+  "id": 531,
+  "name": "Audino",
+  "types": [
+   "normal"
+  ],
+  "genus": "Hearing Pokémon",
+  "flavor": "It touches others with the feelers on its ears, using the sound of their heartbeats to tell how they are feeling.",
+  "from": null
+ },
+ {
+  "id": 532,
+  "name": "Timburr",
+  "types": [
+   "fighting"
+  ],
+  "genus": "Muscular Pokémon",
+  "flavor": "It fights by swinging a piece of lumber around. It is close to evolving when it can handle the lumber without difficulty.",
+  "from": null
+ },
+ {
+  "id": 540,
+  "name": "Sewaddle",
+  "types": [
+   "bug",
+   "grass"
+  ],
+  "genus": "Sewing Pokémon",
+  "flavor": "Leavanny dress it in clothes they made for it when it hatched. It hides its head in its hood while it is sleeping.",
+  "from": null
+ },
+ {
+  "id": 546,
+  "name": "Cottonee",
+  "types": [
+   "grass",
+   "fairy"
+  ],
+  "genus": "Cotton Puff Pokémon",
+  "flavor": "When attacked, it escapes by shooting cotton from its body. The cotton serves as a decoy to distract the attacker.",
+  "from": null
+ },
+ {
+  "id": 547,
+  "name": "Whimsicott",
+  "types": [
+   "grass",
+   "fairy"
+  ],
+  "genus": "Windveiled Pokémon",
+  "flavor": "Like the wind, it can slip through any gap, no matter how small. It leaves balls of white fluff behind.",
+  "from": "Cottonee"
+ },
+ {
+  "id": 551,
+  "name": "Sandile",
+  "types": [
+   "ground",
+   "dark"
+  ],
+  "genus": "Desert Croc Pokémon",
+  "flavor": "They live buried in the sands of the desert. The sun-warmed sands prevent their body temperature from dropping.",
+  "from": null
+ },
+ {
+  "id": 552,
+  "name": "Krokorok",
+  "types": [
+   "ground",
+   "dark"
+  ],
+  "genus": "Desert Croc Pokémon",
+  "flavor": "They live in groups of a few individuals. Protective membranes shield their eyes from sandstorms.",
+  "from": "Sandile"
+ },
+ {
+  "id": 553,
+  "name": "Krookodile",
+  "types": [
+   "ground",
+   "dark"
+  ],
+  "genus": "Intimidation Pokémon",
+  "flavor": "They never allow prey to escape. Their jaws are so powerful, they can crush the body of an automobile.",
+  "from": "Krokorok"
+ },
+ {
+  "id": 554,
+  "name": "Darumaka",
+  "types": [
+   "fire"
+  ],
+  "genus": "Zen Charm Pokémon",
+  "flavor": "When its internal fire is burning, it cannot calm down and it runs around. When the fire diminishes, it falls asleep.",
+  "from": null
+ },
+ {
+  "id": 555,
+  "name": "Darmanitan",
+  "types": [
+   "fire"
+  ],
+  "genus": "Blazing Pokémon",
+  "flavor": "Its internal fire burns at 2,500° F, making enough power that it can destroy a dump truck with one punch.",
+  "from": "Darumaka"
+ },
+ {
+  "id": 556,
+  "name": "Maractus",
+  "types": [
+   "grass"
+  ],
+  "genus": "Cactus Pokémon",
+  "flavor": "It uses an up-tempo song and dance to drive away the bird Pokémon that prey on its flower seeds.",
+  "from": null
+ },
+ {
+  "id": 562,
+  "name": "Yamask",
+  "types": [
+   "ghost"
+  ],
+  "genus": "Spirit Pokémon",
+  "flavor": "Each of them carries a mask that used to be its face when it was human. Sometimes they look at it and cry.",
+  "from": null
+ },
+ {
+  "id": 568,
+  "name": "Trubbish",
+  "types": [
+   "poison"
+  ],
+  "genus": "Trash Bag Pokémon",
+  "flavor": "Inhaling the gas they belch will make you sleep for a week. They prefer unsanitary places.",
+  "from": null
  },
  {
   "id": 570,
@@ -1733,6 +3272,230 @@
   "genus": "Illusion Fox Pokémon",
   "flavor": "Bonds between these Pokémon are very strong. It protects the safety of its pack by tricking its opponents.",
   "from": "Zorua"
+ },
+ {
+  "id": 572,
+  "name": "Minccino",
+  "types": [
+   "normal"
+  ],
+  "genus": "Chinchilla Pokémon",
+  "flavor": "They greet one another by rubbing each other with their tails, which are always kept well groomed and clean.",
+  "from": null
+ },
+ {
+  "id": 577,
+  "name": "Solosis",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Cell Pokémon",
+  "flavor": "They drive away attackers by unleashing psychic power. They can use telepathy to talk with others.",
+  "from": null
+ },
+ {
+  "id": 582,
+  "name": "Vanillite",
+  "types": [
+   "ice"
+  ],
+  "genus": "Fresh Snow Pokémon",
+  "flavor": "The temperature of their breath is -58° F. They create snow crystals and make snow fall in the areas around them.",
+  "from": null
+ },
+ {
+  "id": 585,
+  "name": "Deerling",
+  "types": [
+   "normal",
+   "grass"
+  ],
+  "genus": "Season Pokémon",
+  "flavor": "The color and scent of their fur changes to match the mountain grass. When they sense hostility, they hide in the grass.",
+  "from": null
+ },
+ {
+  "id": 586,
+  "name": "Sawsbuck",
+  "types": [
+   "normal",
+   "grass"
+  ],
+  "genus": "Season Pokémon",
+  "flavor": "They migrate according to the seasons. People can tell the season by looking at Sawsbuck’s horns.",
+  "from": "Deerling"
+ },
+ {
+  "id": 590,
+  "name": "Foongus",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "genus": "Mushroom Pokémon",
+  "flavor": "It lures people in with its Poké Ball pattern, then releases poison spores. Why it resembles a Poké Ball is unknown.",
+  "from": null
+ },
+ {
+  "id": 591,
+  "name": "Amoonguss",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "genus": "Mushroom Pokémon",
+  "flavor": "It lures prey close by dancing and waving its arm caps, which resemble Poké Balls, in a swaying motion.",
+  "from": "Foongus"
+ },
+ {
+  "id": 592,
+  "name": "Frillish",
+  "types": [
+   "water",
+   "ghost"
+  ],
+  "genus": "Floating Pokémon",
+  "flavor": "With its thin, veil-like arms wrapped around the body of its opponent, it sinks to the ocean floor.",
+  "from": null
+ },
+ {
+  "id": 593,
+  "name": "Jellicent",
+  "types": [
+   "water",
+   "ghost"
+  ],
+  "genus": "Floating Pokémon",
+  "flavor": "The fate of the ships and crew that wander into Jellicent’s habitat: all sunken, all lost, all vanished.",
+  "from": "Frillish"
+ },
+ {
+  "id": 597,
+  "name": "Ferroseed",
+  "types": [
+   "grass",
+   "steel"
+  ],
+  "genus": "Thorn Seed Pokémon",
+  "flavor": "When threatened, it attacks by shooting a barrage of spikes, which gives it a chance to escape by rolling away.",
+  "from": null
+ },
+ {
+  "id": 599,
+  "name": "Klink",
+  "types": [
+   "steel"
+  ],
+  "genus": "Gear Pokémon",
+  "flavor": "The two minigears that mesh together are predetermined. Each will rebound from other minigears without meshing.",
+  "from": null
+ },
+ {
+  "id": 605,
+  "name": "Elgyem",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Cerebral Pokémon",
+  "flavor": "It uses its strong psychic power to squeeze its opponent’s brain, causing unendurable headaches.",
+  "from": null
+ },
+ {
+  "id": 606,
+  "name": "Beheeyem",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Cerebral Pokémon",
+  "flavor": "It can manipulate an opponent’s memory. Apparently, it communicates by flashing its three different-colored fingers.",
+  "from": "Elgyem"
+ },
+ {
+  "id": 607,
+  "name": "Litwick",
+  "types": [
+   "ghost",
+   "fire"
+  ],
+  "genus": "Candle Pokémon",
+  "flavor": "Litwick shines a light that absorbs the life energy of people and Pokémon, which becomes the fuel that it burns.",
+  "from": null
+ },
+ {
+  "id": 608,
+  "name": "Lampent",
+  "types": [
+   "ghost",
+   "fire"
+  ],
+  "genus": "Lamp Pokémon",
+  "flavor": "This ominous Pokémon is feared. Through cities it wanders, searching for the spirits of the fallen.",
+  "from": "Litwick"
+ },
+ {
+  "id": 609,
+  "name": "Chandelure",
+  "types": [
+   "ghost",
+   "fire"
+  ],
+  "genus": "Luring Pokémon",
+  "flavor": "It absorbs a spirit, which it then burns. By waving the flames on its arms, it puts its foes into a hypnotic trance.",
+  "from": "Lampent"
+ },
+ {
+  "id": 622,
+  "name": "Golett",
+  "types": [
+   "ground",
+   "ghost"
+  ],
+  "genus": "Automaton Pokémon",
+  "flavor": "The energy that burns inside it enables it to move, but no one has yet been able to identify this energy.",
+  "from": null
+ },
+ {
+  "id": 629,
+  "name": "Vullaby",
+  "types": [
+   "dark",
+   "flying"
+  ],
+  "genus": "Diapered Pokémon",
+  "flavor": "Its wings are too tiny to allow it to fly. As the time approaches for it to evolve, it discards the bones it was wearing.",
+  "from": null
+ },
+ {
+  "id": 630,
+  "name": "Mandibuzz",
+  "types": [
+   "dark",
+   "flying"
+  ],
+  "genus": "Bone Vulture Pokémon",
+  "flavor": "It makes a nest out of bones it finds. It grabs weakened prey in its talons and hauls it to its nest of bones.",
+  "from": "Vullaby"
+ },
+ {
+  "id": 632,
+  "name": "Durant",
+  "types": [
+   "bug",
+   "steel"
+  ],
+  "genus": "Iron Ant Pokémon",
+  "flavor": "They attack in groups, covering themselves in steel armor to protect themselves from Heatmor.",
+  "from": null
+ },
+ {
+  "id": 653,
+  "name": "Fennekin",
+  "types": [
+   "fire"
+  ],
+  "genus": "Fox Pokémon",
+  "flavor": "Eating a twig fills it with energy, and its roomy ears give vent to air hotter than 390 degrees Fahrenheit.",
+  "from": null
  },
  {
   "id": 656,
@@ -1766,6 +3529,258 @@
   "from": "Frogadier"
  },
  {
+  "id": 659,
+  "name": "Bunnelby",
+  "types": [
+   "normal"
+  ],
+  "genus": "Digging Pokémon",
+  "flavor": "They use their large ears to dig burrows. They will dig the whole night through.",
+  "from": null
+ },
+ {
+  "id": 660,
+  "name": "Diggersby",
+  "types": [
+   "normal",
+   "ground"
+  ],
+  "genus": "Digging Pokémon",
+  "flavor": "With their powerful ears, they can heft boulders of a ton or more with ease. They can be a big help at construction sites.",
+  "from": "Bunnelby"
+ },
+ {
+  "id": 661,
+  "name": "Fletchling",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Tiny Robin Pokémon",
+  "flavor": "These friendly Pokémon send signals to one another with beautiful chirps and tail-feather movements.",
+  "from": null
+ },
+ {
+  "id": 664,
+  "name": "Scatterbug",
+  "types": [
+   "bug"
+  ],
+  "genus": "Scatterdust Pokémon",
+  "flavor": "When under attack from bird Pokémon, it spews a poisonous black powder that causes paralysis on contact.",
+  "from": null
+ },
+ {
+  "id": 665,
+  "name": "Spewpa",
+  "types": [
+   "bug"
+  ],
+  "genus": "Scatterdust Pokémon",
+  "flavor": "It lives hidden within thicket shadows. When predators attack, it quickly bristles the fur covering its body in an effort to threaten them.",
+  "from": "Scatterbug"
+ },
+ {
+  "id": 666,
+  "name": "Vivillon",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "genus": "Scale Pokémon",
+  "flavor": "Vivillon with many different patterns are found all over the world. These patterns are affected by the climate of their habitat.",
+  "from": "Spewpa"
+ },
+ {
+  "id": 667,
+  "name": "Litleo",
+  "types": [
+   "fire",
+   "normal"
+  ],
+  "genus": "Lion Cub Pokémon",
+  "flavor": "The stronger the opponent it faces, the more heat surges from its mane and the more power flows through its body.",
+  "from": null
+ },
+ {
+  "id": 669,
+  "name": "Flabébé",
+  "types": [
+   "fairy"
+  ],
+  "genus": "Single Bloom Pokémon",
+  "flavor": "It draws out and controls the hidden power of flowers. The flower Flabébé holds is most likely part of its body.",
+  "from": null
+ },
+ {
+  "id": 670,
+  "name": "Floette",
+  "types": [
+   "fairy"
+  ],
+  "genus": "Single Bloom Pokémon",
+  "flavor": "It flutters around fields of flowers and cares for flowers that are starting to wilt. It draws out the hidden power of flowers to battle.",
+  "from": "Flabébé"
+ },
+ {
+  "id": 672,
+  "name": "Skiddo",
+  "types": [
+   "grass"
+  ],
+  "genus": "Mount Pokémon",
+  "flavor": "Thought to be one of the first Pokémon to live in harmony with humans, it has a placid disposition.",
+  "from": null
+ },
+ {
+  "id": 677,
+  "name": "Espurr",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Restraint Pokémon",
+  "flavor": "The organ that emits its intense psychic power is sheltered by its ears to keep power from leaking out.",
+  "from": null
+ },
+ {
+  "id": 678,
+  "name": "Meowstic",
+  "types": [
+   "psychic"
+  ],
+  "genus": "Constraint Pokémon",
+  "flavor": "When in danger, it raises its ears and releases enough psychic power to grind a 10-ton truck into dust.",
+  "from": "Espurr"
+ },
+ {
+  "id": 679,
+  "name": "Honedge",
+  "types": [
+   "steel",
+   "ghost"
+  ],
+  "genus": "Sword Pokémon",
+  "flavor": "Apparently this Pokémon is born when a departed spirit inhabits a sword. It attaches itself to people and drinks their life force.",
+  "from": null
+ },
+ {
+  "id": 680,
+  "name": "Doublade",
+  "types": [
+   "steel",
+   "ghost"
+  ],
+  "genus": "Sword Pokémon",
+  "flavor": "When Honedge evolves, it divides into two swords, which cooperate via telepathy to coordinate attacks and slash their enemies to ribbons.",
+  "from": "Honedge"
+ },
+ {
+  "id": 684,
+  "name": "Swirlix",
+  "types": [
+   "fairy"
+  ],
+  "genus": "Cotton Candy Pokémon",
+  "flavor": "To entangle its opponents in battle, it extrudes white threads as sweet and sticky as cotton candy.",
+  "from": null
+ },
+ {
+  "id": 685,
+  "name": "Slurpuff",
+  "types": [
+   "fairy"
+  ],
+  "genus": "Meringue Pokémon",
+  "flavor": "It can distinguish the faintest of scents. It puts its sensitive sense of smell to use by helping pastry chefs in their work.",
+  "from": "Swirlix"
+ },
+ {
+  "id": 688,
+  "name": "Binacle",
+  "types": [
+   "rock",
+   "water"
+  ],
+  "genus": "Two-Handed Pokémon",
+  "flavor": "Two Binacle live together on one rock. When they fight, one of them will move to a different rock.",
+  "from": null
+ },
+ {
+  "id": 689,
+  "name": "Barbaracle",
+  "types": [
+   "rock",
+   "water"
+  ],
+  "genus": "Collective Pokémon",
+  "flavor": "When they evolve, two Binacle multiply into seven. They fight with the power of seven Binacle.",
+  "from": "Binacle"
+ },
+ {
+  "id": 690,
+  "name": "Skrelp",
+  "types": [
+   "poison",
+   "water"
+  ],
+  "genus": "Mock Kelp Pokémon",
+  "flavor": "Camouflaged as rotten kelp, they spray liquid poison on prey that approaches unawares and then finish it off.",
+  "from": null
+ },
+ {
+  "id": 691,
+  "name": "Dragalge",
+  "types": [
+   "poison",
+   "dragon"
+  ],
+  "genus": "Mock Kelp Pokémon",
+  "flavor": "Their poison is strong enough to eat through the hull of a tanker, and they spit it indiscriminately at anything that enters their territory.",
+  "from": "Skrelp"
+ },
+ {
+  "id": 692,
+  "name": "Clauncher",
+  "types": [
+   "water"
+  ],
+  "genus": "Water Gun Pokémon",
+  "flavor": "They knock down flying prey by firing compressed water from their massive claws like shooting a pistol.",
+  "from": null
+ },
+ {
+  "id": 693,
+  "name": "Clawitzer",
+  "types": [
+   "water"
+  ],
+  "genus": "Howitzer Pokémon",
+  "flavor": "Their enormous claws launch cannonballs of water powerful enough to pierce tanker hulls.",
+  "from": "Clauncher"
+ },
+ {
+  "id": 698,
+  "name": "Amaura",
+  "types": [
+   "rock",
+   "ice"
+  ],
+  "genus": "Tundra Pokémon",
+  "flavor": "This ancient Pokémon was restored from part of its body that had been frozen in ice for over 100 million years.",
+  "from": null
+ },
+ {
+  "id": 699,
+  "name": "Aurorus",
+  "types": [
+   "rock",
+   "ice"
+  ],
+  "genus": "Tundra Pokémon",
+  "flavor": "The diamond-shaped crystals on its body expel air as cold as -240 degrees Fahrenheit, surrounding its enemies and encasing them in ice.",
+  "from": "Amaura"
+ },
+ {
   "id": 700,
   "name": "Sylveon",
   "types": [
@@ -1774,6 +3789,57 @@
   "genus": "Intertwining Pokémon",
   "flavor": "It sends a soothing aura from its ribbonlike feelers to calm fights.",
   "from": "Eevee"
+ },
+ {
+  "id": 704,
+  "name": "Goomy",
+  "types": [
+   "dragon"
+  ],
+  "genus": "Soft Tissue Pokémon",
+  "flavor": "The weakest Dragon-type Pokémon, it lives in damp, shady places, so its body doesn’t dry out.",
+  "from": null
+ },
+ {
+  "id": 705,
+  "name": "Sliggoo",
+  "types": [
+   "dragon"
+  ],
+  "genus": "Soft Tissue Pokémon",
+  "flavor": "It drives away opponents by excreting a sticky liquid that can dissolve anything. Its eyes devolved, so it can’t see anything.",
+  "from": "Goomy"
+ },
+ {
+  "id": 712,
+  "name": "Bergmite",
+  "types": [
+   "ice"
+  ],
+  "genus": "Ice Chunk Pokémon",
+  "flavor": "It blocks opponents’ attacks with the ice that shields its body. It uses cold air to repair any cracks with new ice.",
+  "from": null
+ },
+ {
+  "id": 713,
+  "name": "Avalugg",
+  "types": [
+   "ice"
+  ],
+  "genus": "Iceberg Pokémon",
+  "flavor": "Its ice-covered body is as hard as steel. Its cumbersome frame crushes anything that stands in its way.",
+  "from": "Bergmite"
+ },
+ {
+  "id": 718,
+  "name": "Zygarde",
+  "types": [
+   "dragon",
+   "ground"
+  ],
+  "genus": "Order Pokémon",
+  "flavor": "When the Kalos region’s ecosystem falls into disarray, it appears and reveals its secret power.",
+  "from": null
  },
  {
   "id": 722,
@@ -1840,6 +3906,49 @@
   "from": "Torracat"
  },
  {
+  "id": 731,
+  "name": "Pikipek",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Woodpecker Pokémon",
+  "flavor": "It can peck at a rate of 16 times a second to drill holes in trees. It uses the holes for food storage and for nesting.",
+  "from": null
+ },
+ {
+  "id": 732,
+  "name": "Trumbeak",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "genus": "Bugle Beak Pokémon",
+  "flavor": "It eats berries and stores their seeds in its beak. When it encounters enemies or prey, it fires off all the seeds in a burst.",
+  "from": "Pikipek"
+ },
+ {
+  "id": 739,
+  "name": "Crabrawler",
+  "types": [
+   "fighting"
+  ],
+  "genus": "Boxing Pokémon",
+  "flavor": "While guarding its weak points with its pincers, it looks for an opening and unleashes punches. When it loses, it foams at the mouth and faints.",
+  "from": null
+ },
+ {
+  "id": 742,
+  "name": "Cutiefly",
+  "types": [
+   "bug",
+   "fairy"
+  ],
+  "genus": "Bee Fly Pokémon",
+  "flavor": "It feeds on the nectar and pollen of flowers. Because it’s able to sense auras, it can identify which flowers are about to bloom.",
+  "from": null
+ },
+ {
   "id": 744,
   "name": "Rockruff",
   "types": [
@@ -1860,6 +3969,121 @@
   "from": "Rockruff"
  },
  {
+  "id": 746,
+  "name": "Wishiwashi",
+  "types": [
+   "water"
+  ],
+  "genus": "Small Fry Pokémon",
+  "flavor": "When it’s in trouble, its eyes moisten and begin to shine. The shining light attracts its comrades, and they stand together against their enemies.",
+  "from": null
+ },
+ {
+  "id": 749,
+  "name": "Mudbray",
+  "types": [
+   "ground"
+  ],
+  "genus": "Donkey Pokémon",
+  "flavor": "The mud stuck to Mudbray’s hooves enhances its grip and its powerful running gait.",
+  "from": null
+ },
+ {
+  "id": 750,
+  "name": "Mudsdale",
+  "types": [
+   "ground"
+  ],
+  "genus": "Draft Horse Pokémon",
+  "flavor": "It spits a mud that provides resistance to both wind and rain, so the walls of old houses were often coated with it.",
+  "from": "Mudbray"
+ },
+ {
+  "id": 755,
+  "name": "Morelull",
+  "types": [
+   "grass",
+   "fairy"
+  ],
+  "genus": "Illuminating Pokémon",
+  "flavor": "It scatters spores that flicker and glow. Anyone seeing these lights falls into a deep slumber.",
+  "from": null
+ },
+ {
+  "id": 756,
+  "name": "Shiinotic",
+  "types": [
+   "grass",
+   "fairy"
+  ],
+  "genus": "Illuminating Pokémon",
+  "flavor": "Forests where Shiinotic live are treacherous to enter at night. People confused by its strange lights can never find their way home again.",
+  "from": "Morelull"
+ },
+ {
+  "id": 757,
+  "name": "Salandit",
+  "types": [
+   "poison",
+   "fire"
+  ],
+  "genus": "Toxic Lizard Pokémon",
+  "flavor": "It burns its bodily fluids to create a poisonous gas. When its enemies become disoriented from inhaling the gas, it attacks them.",
+  "from": null
+ },
+ {
+  "id": 759,
+  "name": "Stufful",
+  "types": [
+   "normal",
+   "fighting"
+  ],
+  "genus": "Flailing Pokémon",
+  "flavor": "Despite its adorable appearance, when it gets angry and flails about, its arms and legs could knock a pro wrestler sprawling.",
+  "from": null
+ },
+ {
+  "id": 761,
+  "name": "Bounsweet",
+  "types": [
+   "grass"
+  ],
+  "genus": "Fruit Pokémon",
+  "flavor": "A delectable aroma pours from its body. They are often swallowed whole by Toucannon lured by that wafting deliciousness.",
+  "from": null
+ },
+ {
+  "id": 762,
+  "name": "Steenee",
+  "types": [
+   "grass"
+  ],
+  "genus": "Fruit Pokémon",
+  "flavor": "The sepals on its head developed to protect its body. These are quite hard, so even if pecked by bird Pokémon, this Pokémon is totally fine.",
+  "from": "Bounsweet"
+ },
+ {
+  "id": 764,
+  "name": "Comfey",
+  "types": [
+   "fairy"
+  ],
+  "genus": "Posy Picker Pokémon",
+  "flavor": "It attaches flowers to its highly nutritious vine. This revitalizes the flowers, and they give off an aromatic scent.",
+  "from": null
+ },
+ {
+  "id": 769,
+  "name": "Sandygast",
+  "types": [
+   "ghost",
+   "ground"
+  ],
+  "genus": "Sand Heap Pokémon",
+  "flavor": "Born from a sand mound playfully built by a child, this Pokémon embodies the grudges of the departed.",
+  "from": null
+ },
+ {
   "id": 778,
   "name": "Mimikyu",
   "types": [
@@ -1868,6 +4092,17 @@
   ],
   "genus": "Disguise Pokémon",
   "flavor": "Its actual appearance is unknown. A scholar who saw what was under its rag was overwhelmed by terror and died from the shock.",
+  "from": null
+ },
+ {
+  "id": 781,
+  "name": "Dhelmise",
+  "types": [
+   "ghost",
+   "grass"
+  ],
+  "genus": "Sea Creeper Pokémon",
+  "flavor": "Swinging its massive anchor, it can KO Wailord in a single blow. What appears to be green seaweed is actually its body.",
   "from": null
  },
  {
@@ -1899,6 +4134,36 @@
   "genus": "Striker Pokémon",
   "flavor": "It juggles a pebble with its feet, turning it into a burning soccer ball. Its shots strike opponents hard and leave them scorched.",
   "from": "Raboot"
+ },
+ {
+  "id": 816,
+  "name": "Sobble",
+  "types": [
+   "water"
+  ],
+  "genus": "Water Lizard Pokémon",
+  "flavor": "When scared, this Pokémon cries. Its tears pack the chemical punch of 100 onions, and attackers won’t be able to resist weeping.",
+  "from": null
+ },
+ {
+  "id": 819,
+  "name": "Skwovet",
+  "types": [
+   "normal"
+  ],
+  "genus": "Cheeky Pokémon",
+  "flavor": "Found throughout the Galar region, this Pokémon becomes uneasy if its cheeks are ever completely empty of berries.",
+  "from": null
+ },
+ {
+  "id": 820,
+  "name": "Greedent",
+  "types": [
+   "normal"
+  ],
+  "genus": "Greedy Pokémon",
+  "flavor": "It stashes berries in its tail—so many berries that they fall out constantly. But this Pokémon is a bit slow-witted, so it doesn’t notice the loss.",
+  "from": "Skwovet"
  },
  {
   "id": 821,
@@ -1964,6 +4229,77 @@
   "from": "Dottler"
  },
  {
+  "id": 829,
+  "name": "Gossifleur",
+  "types": [
+   "grass"
+  ],
+  "genus": "Flowering Pokémon",
+  "flavor": "It anchors itself in the ground with its single leg, then basks in the sun. After absorbing enough sunlight, its petals spread as it blooms brilliantly.",
+  "from": null
+ },
+ {
+  "id": 830,
+  "name": "Eldegoss",
+  "types": [
+   "grass"
+  ],
+  "genus": "Cotton Bloom Pokémon",
+  "flavor": "The seeds attached to its cotton fluff are full of nutrients. It spreads them on the wind so that plants and other Pokémon can benefit from them.",
+  "from": "Gossifleur"
+ },
+ {
+  "id": 831,
+  "name": "Wooloo",
+  "types": [
+   "normal"
+  ],
+  "genus": "Sheep Pokémon",
+  "flavor": "Its curly fleece is such an effective cushion that this Pokémon could fall off a cliff and stand right back up at the bottom, unharmed.",
+  "from": null
+ },
+ {
+  "id": 833,
+  "name": "Chewtle",
+  "types": [
+   "water"
+  ],
+  "genus": "Snapping Pokémon",
+  "flavor": "Apparently the itch of its teething impels it to snap its jaws at anything in front of it.",
+  "from": null
+ },
+ {
+  "id": 834,
+  "name": "Drednaw",
+  "types": [
+   "water",
+   "rock"
+  ],
+  "genus": "Bite Pokémon",
+  "flavor": "With jaws that can shear through steel rods, this highly aggressive Pokémon chomps down on its unfortunate prey.",
+  "from": "Chewtle"
+ },
+ {
+  "id": 835,
+  "name": "Yamper",
+  "types": [
+   "electric"
+  ],
+  "genus": "Puppy Pokémon",
+  "flavor": "This Pokémon is very popular as a herding dog in the Galar region. As it runs, it generates electricity from the base of its tail.",
+  "from": null
+ },
+ {
+  "id": 836,
+  "name": "Boltund",
+  "types": [
+   "electric"
+  ],
+  "genus": "Dog Pokémon",
+  "flavor": "This Pokémon generates electricity and channels it into its legs to keep them going strong. Boltund can run nonstop for three full days.",
+  "from": "Yamper"
+ },
+ {
   "id": 837,
   "name": "Rolycoly",
   "types": [
@@ -1994,6 +4330,113 @@
   "genus": "Coal Pokémon",
   "flavor": "It’s usually peaceful, but the vandalism of mines enrages it. Offenders will be incinerated with flames that reach 2,700 degrees Fahrenheit.",
   "from": "Carkol"
+ },
+ {
+  "id": 840,
+  "name": "Applin",
+  "types": [
+   "grass",
+   "dragon"
+  ],
+  "genus": "Apple Core Pokémon",
+  "flavor": "It spends its entire life inside an apple. It hides from its natural enemies, bird Pokémon, by pretending it’s just an apple and nothing more.",
+  "from": null
+ },
+ {
+  "id": 841,
+  "name": "Flapple",
+  "types": [
+   "grass",
+   "dragon"
+  ],
+  "genus": "Apple Wing Pokémon",
+  "flavor": "It ate a sour apple, and that induced its evolution. In its cheeks, it stores an acid capable of causing chemical burns.",
+  "from": "Applin"
+ },
+ {
+  "id": 842,
+  "name": "Appletun",
+  "types": [
+   "grass",
+   "dragon"
+  ],
+  "genus": "Apple Nectar Pokémon",
+  "flavor": "Eating a sweet apple caused its evolution. A nectarous scent wafts from its body, luring in the bug Pokémon it preys on.",
+  "from": "Applin"
+ },
+ {
+  "id": 846,
+  "name": "Arrokuda",
+  "types": [
+   "water"
+  ],
+  "genus": "Rush Pokémon",
+  "flavor": "If it sees any movement around it, this Pokémon charges for it straightaway, leading with its sharply pointed jaw. It’s very proud of that jaw.",
+  "from": null
+ },
+ {
+  "id": 848,
+  "name": "Toxel",
+  "types": [
+   "electric",
+   "poison"
+  ],
+  "genus": "Baby Pokémon",
+  "flavor": "It stores poison in an internal poison sac and secretes that poison through its skin. If you touch this Pokémon, a tingling sensation follows.",
+  "from": null
+ },
+ {
+  "id": 849,
+  "name": "Toxtricity",
+  "types": [
+   "electric",
+   "poison"
+  ],
+  "genus": "Punk Pokémon",
+  "flavor": "When this Pokémon sounds as if it’s strumming a guitar, it’s actually clawing at the protrusions on its chest to generate electricity.",
+  "from": "Toxel"
+ },
+ {
+  "id": 850,
+  "name": "Sizzlipede",
+  "types": [
+   "fire",
+   "bug"
+  ],
+  "genus": "Radiator Pokémon",
+  "flavor": "It stores flammable gas in its body and uses it to generate heat. The yellow sections on its belly get particularly hot.",
+  "from": null
+ },
+ {
+  "id": 851,
+  "name": "Centiskorch",
+  "types": [
+   "fire",
+   "bug"
+  ],
+  "genus": "Radiator Pokémon",
+  "flavor": "When it heats up, its body temperature reaches about 1,500 degrees Fahrenheit. It lashes its body like a whip and launches itself at enemies.",
+  "from": "Sizzlipede"
+ },
+ {
+  "id": 854,
+  "name": "Sinistea",
+  "types": [
+   "ghost"
+  ],
+  "genus": "Black Tea Pokémon",
+  "flavor": "This Pokémon is said to have been born when a lonely spirit possessed a cold, leftover cup of tea.",
+  "from": null
+ },
+ {
+  "id": 855,
+  "name": "Polteageist",
+  "types": [
+   "ghost"
+  ],
+  "genus": "Black Tea Pokémon",
+  "flavor": "This species lives in antique teapots. Most pots are forgeries, but on rare occasions, an authentic work is found.",
+  "from": "Sinistea"
  },
  {
   "id": 856,
@@ -2027,6 +4470,38 @@
   "from": "Hattrem"
  },
  {
+  "id": 859,
+  "name": "Impidimp",
+  "types": [
+   "dark",
+   "fairy"
+  ],
+  "genus": "Wily Pokémon",
+  "flavor": "Through its nose, it sucks in the emanations produced by people and Pokémon when they feel annoyed. It thrives off this negative energy.",
+  "from": null
+ },
+ {
+  "id": 863,
+  "name": "Perrserker",
+  "types": [
+   "steel"
+  ],
+  "genus": "Viking Pokémon",
+  "flavor": "What appears to be an iron helmet is actually hardened hair. This Pokémon lives for the thrill of battle.",
+  "from": "Meowth"
+ },
+ {
+  "id": 867,
+  "name": "Runerigus",
+  "types": [
+   "ground",
+   "ghost"
+  ],
+  "genus": "Grudge Pokémon",
+  "flavor": "A powerful curse was woven into an ancient painting. After absorbing the spirit of a Yamask, the painting began to move.",
+  "from": "Yamask"
+ },
+ {
   "id": 868,
   "name": "Milcery",
   "types": [
@@ -2045,6 +4520,80 @@
   "genus": "Cream Pokémon",
   "flavor": "When it trusts a Trainer, it will treat them to berries it’s decorated with cream.",
   "from": "Milcery"
+ },
+ {
+  "id": 871,
+  "name": "Pincurchin",
+  "types": [
+   "electric"
+  ],
+  "genus": "Sea Urchin Pokémon",
+  "flavor": "It feeds on seaweed, using its teeth to scrape it off rocks. Electric current flows from the tips of its spines.",
+  "from": null
+ },
+ {
+  "id": 872,
+  "name": "Snom",
+  "types": [
+   "ice",
+   "bug"
+  ],
+  "genus": "Worm Pokémon",
+  "flavor": "It spits out thread imbued with a frigid sort of energy and uses it to tie its body to branches, disguising itself as an icicle while it sleeps.",
+  "from": null
+ },
+ {
+  "id": 873,
+  "name": "Frosmoth",
+  "types": [
+   "ice",
+   "bug"
+  ],
+  "genus": "Frost Moth Pokémon",
+  "flavor": "Icy scales fall from its wings like snow as it flies over fields and mountains. The temperature of its wings is less than −290 degrees Fahrenheit.",
+  "from": "Snom"
+ },
+ {
+  "id": 874,
+  "name": "Stonjourner",
+  "types": [
+   "rock"
+  ],
+  "genus": "Big Rock Pokémon",
+  "flavor": "It stands in grasslands, watching the sun’s descent from zenith to horizon. This Pokémon has a talent for delivering dynamic kicks.",
+  "from": null
+ },
+ {
+  "id": 876,
+  "name": "Indeedee",
+  "types": [
+   "psychic",
+   "normal"
+  ],
+  "genus": "Emotion Pokémon",
+  "flavor": "It uses the horns on its head to sense the emotions of others. Males will act as valets for those they serve, looking after their every need.",
+  "from": null
+ },
+ {
+  "id": 877,
+  "name": "Morpeko",
+  "types": [
+   "electric",
+   "dark"
+  ],
+  "genus": "Two-Sided Pokémon",
+  "flavor": "As it eats the seeds stored up in its pocket-like pouches, this Pokémon is not just satisfying its constant hunger. It’s also generating electricity.",
+  "from": null
+ },
+ {
+  "id": 878,
+  "name": "Cufant",
+  "types": [
+   "steel"
+  ],
+  "genus": "Copperderm Pokémon",
+  "flavor": "It digs up the ground with its trunk. It’s also very strong, being able to carry loads of over five tons without any problem at all.",
+  "from": null
  },
  {
   "id": 885,
@@ -2204,6 +4753,26 @@
   "from": "Lechonk"
  },
  {
+  "id": 917,
+  "name": "Tarountula",
+  "types": [
+   "bug"
+  ],
+  "genus": "String Ball Pokémon",
+  "flavor": "The ball of threads wrapped around its body is elastic enough to deflect the scythes of Scyther, this Pokémon’s natural enemy.",
+  "from": null
+ },
+ {
+  "id": 918,
+  "name": "Spidops",
+  "types": [
+   "bug"
+  ],
+  "genus": "Trap Pokémon",
+  "flavor": "It clings to branches and ceilings using its threads and moves without a sound. It takes out its prey before the prey even notices it.",
+  "from": "Tarountula"
+ },
+ {
   "id": 921,
   "name": "Pawmi",
   "types": [
@@ -2234,6 +4803,26 @@
   "genus": "Hands-On Pokémon",
   "flavor": "This Pokémon normally is slow to react, but once it enters battle, it will strike down its enemies with lightning-fast movements.",
   "from": "Pawmo"
+ },
+ {
+  "id": 924,
+  "name": "Tandemaus",
+  "types": [
+   "normal"
+  ],
+  "genus": "Couple Pokémon",
+  "flavor": "Exhibiting great teamwork, they use their incisors to cut pieces out of any material that might be useful for a nest, then make off with them.",
+  "from": null
+ },
+ {
+  "id": 925,
+  "name": "Maushold",
+  "types": [
+   "normal"
+  ],
+  "genus": "Family Pokémon",
+  "flavor": "The two little ones just appeared one day. The group might be a family of related Pokémon, but nobody knows for sure.",
+  "from": "Tandemaus"
  },
  {
   "id": 926,
@@ -2415,6 +5004,49 @@
   "from": "Shroodle"
  },
  {
+  "id": 946,
+  "name": "Bramblin",
+  "types": [
+   "grass",
+   "ghost"
+  ],
+  "genus": "Tumbleweed Pokémon",
+  "flavor": "A soul unable to move on to the afterlife was blown around by the wind until it got tangled up with dried grass and became a Pokémon.",
+  "from": null
+ },
+ {
+  "id": 947,
+  "name": "Brambleghast",
+  "types": [
+   "grass",
+   "ghost"
+  ],
+  "genus": "Tumbleweed Pokémon",
+  "flavor": "It will open the branches of its head to envelop its prey. Once it absorbs all the life energy it needs, it expels the prey and discards it.",
+  "from": "Bramblin"
+ },
+ {
+  "id": 950,
+  "name": "Klawf",
+  "types": [
+   "rock"
+  ],
+  "genus": "Ambush Pokémon",
+  "flavor": "Klawf hangs upside-down from cliffs, waiting for prey. But Klawf can’t remain in this position for long because its blood rushes to its head.",
+  "from": null
+ },
+ {
+  "id": 957,
+  "name": "Tinkatink",
+  "types": [
+   "fairy",
+   "steel"
+  ],
+  "genus": "Metalsmith Pokémon",
+  "flavor": "It swings its handmade hammer around to protect itself, but the hammer is often stolen by Pokémon that eat metal.",
+  "from": null
+ },
+ {
   "id": 960,
   "name": "Wiglett",
   "types": [
@@ -2463,6 +5095,27 @@
   ],
   "genus": "Mount Pokémon",
   "flavor": "Apparently Cyclizar has been allowing people to ride on its back since ancient times. Depictions of this have been found in 10,000-year-old murals.",
+  "from": null
+ },
+ {
+  "id": 968,
+  "name": "Orthworm",
+  "types": [
+   "steel"
+  ],
+  "genus": "Earthworm Pokémon",
+  "flavor": "When attacked, this Pokémon will wield the tendrils on its body like fists and pelt the opponent with a storm of punches.",
+  "from": null
+ },
+ {
+  "id": 1006,
+  "name": "Iron Valiant",
+  "types": [
+   "fairy",
+   "fighting"
+  ],
+  "genus": "Paradox Pokémon",
+  "flavor": "It has some similarities to a mad scientist’s invention covered in a paranormal magazine.",
   "from": null
  },
  {
