@@ -7,7 +7,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 
 ## Co jest w środku
 
-- **523 Pokémony**: 151 z Kanto (Red/Blue, seria Indigo), **wszystkie z 1. sezonu Horyzontów** (HZ001–HZ045, także te w tle; lista:
+- **534 Pokémony**: 151 z Kanto (Red/Blue, seria Indigo), **wszystkie z 1. sezonu Horyzontów** (HZ001–HZ045, także te w tle; lista:
   `tools/horizons.json`), z 2. sezonu na razie Teddiursa i Ursaring, z filmu **„Arceus i Klejnot Życia”** (2009; `tools/movies.json`) oraz **10 najsłynniejszych z nowszych gier** (Lucario, Greninja, Mimikyu,
   Sylveon, Garchomp, Dragapult, Decidueye, Zoroark, Cinderace, Incineroar; `tools/famous.json`) — wszystkie z ewolucjami potrzebnymi kartom.
   Dwa filtry naraz: seria / serial (⭐ 🗺️ Kanto, 📺 Horyzonty 1 / 2, 🎬 Arceus (film), 🌟 Sławne) × typ. Niezłapane to czarne sylwetki: „Kto to za Pokémon?”.

@@ -2613,5 +2613,75 @@
   "kind": "Pokémon Donośny Głos",
   "hint": "Niebieski, okrągły stwór z wielką buzią i dużymi uszami jak głośniki.",
   "fact": "Krzyczy tak głośno, że jego głos potrafi odepchnąć przeciwnika jak podmuch wiatru."
+ },
+ "174": {
+  "kind": "Pokémon Balonik",
+  "hint": "Malutka, różowa kuleczka z loczkiem na czubku głowy i wielkimi oczami.",
+  "fact": "Jest tak miękki i sprężysty, że gdy zacznie się toczyć, trudno go zatrzymać."
+ },
+ "179": {
+  "kind": "Pokémon Wełna",
+  "hint": "Puszysta owieczka z białą wełną, niebieską głową i kulką na końcu ogona.",
+  "fact": "Jej wełna zbiera prąd z powietrza, więc dotknięcie jej może kopnąć jak iskra."
+ },
+ "180": {
+  "kind": "Pokémon Wełna",
+  "hint": "Różowa owca na dwóch nogach z resztką wełny na głowie i brzuchu oraz świecącą kulką na ogonie.",
+  "fact": "Wełny ma mało, bo prąd jej nie przepuszcza, za to skóra chroni ją przed porażeniem."
+ },
+ "206": {
+  "kind": "Pokémon Wąż Ziemny",
+  "hint": "Żółty, pękaty wąż z małymi skrzydełkami i niebieskimi paskami na grzbiecie.",
+  "fact": "Ogonem kopie dziury w ziemi i ucieka w nie tyłem, gdy ktoś go zobaczy."
+ },
+ "209": {
+  "kind": "Pokémon Wróżka",
+  "hint": "Różowy piesek-buldog z wielkimi kłami i groźną minką, choć jest bardzo przyjazny.",
+  "fact": "Wygląda groźnie, więc małe Pokémony uciekają, a on jest przez to smutny."
+ },
+ "420": {
+  "kind": "Pokémon Wiśnia",
+  "hint": "Dwie różowe wisienki na jednej łodyżce z listkami; jedna ma buzię.",
+  "fact": "Mała wisienka jest pełna składników odżywczych, które dają mu siłę do ewolucji."
+ },
+ "421": {
+  "kind": "Pokémon Kwiat Wiśni",
+  "hint": "Fioletowy pąk z płatkami; gdy świeci słońce, rozkwita w różowy, uśmiechnięty kwiat.",
+  "fact": "W pochmurne dni zamyka się w pąku, a w słońcu rozkwita i robi się wesoły."
+ },
+ "500": {
+  "kind": "Pokémon Ognista Świnia",
+  "hint": "Wielki, czarno-czerwony dzik z płonącą brodą i złotymi ozdobami na ramionach.",
+  "fact": "Ma brodę z ognia, a jego pięści płoną, gdy walczy w obronie przyjaciół."
+ },
+ "557": {
+  "kind": "Pokémon Kamienny Dom",
+  "hint": "Mały, pomarańczowy krab-pustelnik, który nosi na grzbiecie kamień zamiast muszli.",
+  "fact": "Wydrąża w kamieniach dziury i nosi je jak domek. Bez kamienia czuje się bezbronny."
+ },
+ "624": {
+  "kind": "Pokémon Ostrze",
+  "hint": "Mały, czerwono-czarny wojownik z ostrzami na głowie i rękach.",
+  "fact": "Walczy w grupie, a ostrza ma tak ostre, że z czasem się tępią i trzeba je ostrzyć kamieniem."
+ },
+ "625": {
+  "kind": "Pokémon Ostrze Miecza",
+  "hint": "Czerwono-czarny rycerz z ostrzem na hełmie i ostrzami na rękach.",
+  "fact": "Rządzi gromadą Pawniardów i nie pozwala im przegrywać."
+ },
+ "860": {
+  "kind": "Pokémon Łobuz",
+  "hint": "Mały, czarny chochlik z różowymi włosami jak język i chytrą minką.",
+  "fact": "Udaje, że się poddaje, a potem nagle atakuje ostrymi włosami."
+ },
+ "948": {
+  "kind": "Pokémon Grzybek Pływak",
+  "hint": "Biały grzybek z kapeluszem i długimi wiszącymi czułkami jak meduza.",
+  "fact": "Chociaż wygląda jak meduza, żyje w lasach i karmi się światłem słońca."
+ },
+ "949": {
+  "kind": "Pokémon Grzybek Pływak",
+  "hint": "Wysoki, ciemny grzyb-meduza z długimi mackami, który biega po lesie.",
+  "fact": "Bardzo szybko biega na swoich mackach i ciągnie za sobą chwasty z ziemi."
  }
 }
