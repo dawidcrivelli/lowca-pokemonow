@@ -76,7 +76,7 @@ for (const i of IDS) {
     from: (n => IDS.includes(n) ? n : null)(+sp.evolves_from_species?.url.match(/(\d+)\/$/)[1]),   // Pichu & co. spoza listy pomijamy
     legend: sp.is_legendary || sp.is_mythical || undefined,
     mega: megas(sp, en(sp.names)[0].name),
-    genus: en(sp.genera)[0].genus, flavor: clean(red.flavor_text), card: card(i, en(sp.names)[0].name), mv: moveset(p, p.types.map(t => t.type.name)),
+    genus: en(sp.genera)[0].genus, flavor: clean(red.flavor_text), card: card(i, en(sp.names)[0].name), vars: (v => v.length ? v : undefined)(pick.variants(i)), mv: moveset(p, p.types.map(t => t.type.name)),
   });
 }
 // typ atakujący → {typ broniący: mnożnik}; tylko odstępstwa od 1

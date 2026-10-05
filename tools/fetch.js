@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /* Pobiera z PokeAPI dane 1. generacji + Pokémonów z Horyzontów (tools/horizons.json) i sławnych (tools/famous.json) oraz tabelę typów,
-   a z pokemon-tcg-data karty z zestawów SERIES (tools/pick_cards.js) do tmp/pokeapi/
+   a z pokemon-tcg-data karty z zestawów SERIES i VAR_SERIES (tools/pick_cards.js) do tmp/pokeapi/
    (cache: ponowne uruchomienie nic nie pobiera). Gdy pokeapi.co nie odpowiada: kopia statyczna PokeAPI/api-data na GitHubie (MIRROR). */
 const fs = require('fs'), path = require('path');
 const API = 'https://pokeapi.co/api/v2/', MIRROR = 'https://raw.githubusercontent.com/PokeAPI/api-data/master/data/api/v2/', DIR = path.join(__dirname, '..', 'tmp', 'pokeapi'), LAST = 151, TYPES = 18;
 const TCG = 'https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/';   // api.pokemontcg.io bywa niedostępne
-const { SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');
+const { SERIES, VAR_SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');
 const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family].filter((v, i, a) => a.indexOf(v) === i);
 const MEGA = /^(?!.*female).*-mega(-[xyz])?$/;   // meowstic-female-mega pomijamy: ta sama Mega co samca
 const load = p => JSON.parse(fs.readFileSync(path.join(DIR, p.replace(/\//g, '_') + '.json')));
@@ -29,7 +29,7 @@ async function get(p, url) {
   const moves = new Set(['tackle', ...IDS.flatMap(i => learnset(load(`pokemon/${i}`)).moves.map(m => m.name))]);   // ruchy do areny: tools/moves.js
   for (const m of moves) await get(`move/${m}`);
   for (let i = 1; i <= TYPES; i++) await get(`type/${i}`);
-  const sets = (await get('tcg_sets', TCG + 'sets/en.json')).filter(s => SERIES.includes(s.series));
+  const sets = (await get('tcg_sets', TCG + 'sets/en.json')).filter(s => SERIES.includes(s.series) || VAR_SERIES.includes(s.series));
   for (const s of sets) await get(`tcg_${s.id}`, `${TCG}cards/en/${s.id}.json`);
   console.log('ok', fs.readdirSync(DIR).length);
 })();

@@ -316,6 +316,10 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
   border-radius:12px;padding:11px 13px;font-size:14.5px;line-height:1.5;font-weight:600;
 }
 .m-fact b{display:block;font-family:var(--font-h);font-size:13px;color:var(--amber-dk);margin-bottom:2px;letter-spacing:.6px}
+.m-vars{margin:10px 0}
+.m-vars b{display:block;font-family:var(--font-h);font-size:13px;color:var(--amber-dk);margin-bottom:4px;letter-spacing:.6px}
+.m-vars div{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}   /* przewijane w bok: Charizard ma 8 */
+.m-vars img{height:150px;border-radius:7px;cursor:zoom-in;flex:none}
 .m-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .stat{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 11px}
 .stat span{display:block;font-size:11px;color:#8C9A96;font-weight:800;letter-spacing:.5px}

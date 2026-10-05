@@ -1,0 +1,5 @@
+[
+  { "name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{sound:false}}));location.reload()", "wait": 2500 },
+  { "name": "charizard", "js": "document.querySelector('.tile[data-id=\"6\"]').click();document.querySelector('.m-vars').scrollIntoView()", "wait": 3500, "shot": "v1_charizard.png", "h": 900 },
+  { "name": "zoom", "js": "document.querySelectorAll('.m-vars img')[6].click()", "wait": 3500, "shot": "v2_zoom.png", "h": 900 }
+]

@@ -273,6 +273,7 @@ function caughtCard(sp) {
       <div class="stat"><span>WZROST</span><b>${sp.m} m</b></div>
       ${evo ? `<div class="stat wide"><span>EWOLUCJA</span><b class="small">${evo}</b></div>` : ''}
     </div>
+    ${sp.vars ? `<div class="m-vars"><b>✨ KARTY SPECJALNE · Mega i V</b><div>${sp.vars.map(u => (big => `<img src="${u}" data-zoom="${big}" alt="" loading="lazy">`)(CARD_URL({ card: { img: u } }, 'big'))).join('')}</div></div>` : ''}
     ${statBars(st)}
     <p class="traits"><span class="record">⚔️ ${r.w} wygranych · ${r.l} przegranych</span></p>
     <div class="m-actions">
