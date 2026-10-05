@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Karty: komputer kontra komputer na losowych drużynach Podstawowych — długość gry i kto wygrywa.  użycie: node tmp/sim_cards.js */
+/* Karty: komputer kontra komputer na losowych drużynach Podstawowych — długość gry i kto wygrywa.  użycie: node tools/sim_cards.js */
 const { SPECIES } = require('../js/species.js');
 global.SPECIES = SPECIES;
 const C = require('../js/cards.js');

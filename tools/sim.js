@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Kontrolne pojedynki i ranking na silniku z js/battle.js.  użycie: node tmp/sim.js */
+/* Kontrolne pojedynki i ranking na silniku z js/battle.js.  użycie: node tools/sim.js */
 const { CHART, MOVES, SPECIES } = require('../js/species.js');
 Object.assign(global, { CHART, MOVES });
 const { autoBattle, newBattle, playRound } = require('../js/battle.js');

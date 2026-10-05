@@ -2,7 +2,7 @@
    Jak w grach, na poziomie LEVEL: statystyki z bazowych (js/species.js), 4 ruchy z gry (sp.mv → MOVES), wzór na obrażenia z gier,
    premia za własny typ (STAB), tabela typów (CHART), stany (trucizna, oparzenie, paraliż, sen, zamrożenie, dezorientacja), stopnie statystyk.
    Zdarzenie (ev) opisuje jedną rzecz na scenie: ruch, pudło, stan, ładowanie, obrażenia od trucizny… — widok 2D i 3D tylko je odtwarzają.
-   Strojenie: node tmp/sim.js */
+   Strojenie: node tools/sim.js */
 const LEVEL = 50, ROUNDS = 15;
 const TUNE = {
   hp: 2.5,               // życie × hp: w grach walka na poziomie 50 trwa ~2 tury, za krótko, żeby zobaczyć stany i animacje

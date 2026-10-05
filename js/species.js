@@ -1,8 +1,8 @@
 /* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz: sezon, w którym widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) + z filmu „Arceus i Klejnot Życia” (m12) =================
-   Wygenerowane: node tmp/build_species.js  (dane: PokeAPI, teksty: tmp/pl.json)
+   Wygenerowane: node tools/build_species.js  (dane: PokeAPI, teksty: tools/pl.json)
    hp/atk/def/satk/sdef/spd = statystyki bazowe z gier · m = wzrost, kg = waga · from = z kogo ewoluuje
-   mv: 4 ruchy do areny (klucze MOVES, opis pól w tmp/build_species.js) · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1
-   card: karta z zestawu „Pokémon 151” (Scarlet & Violet, 2023) albo card.img, opis pól w tmp/build_species.js
+   mv: 4 ruchy do areny (klucze MOVES, opis pól w tools/build_species.js) · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1
+   card: karta z zestawu „Pokémon 151” (Scarlet & Violet, 2023) albo card.img, opis pól w tools/build_species.js
    Obrazki i głosy z repozytoriów PokeAPI na GitHubie, karty z images.pokemontcg.io (CORS dozwolony, potrzebny arenie 3D) */
 const POKEAPI_RAW = 'https://raw.githubusercontent.com/PokeAPI/';
 const ART_URL = id => `${POKEAPI_RAW}sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;   // duża grafika, ~100 kB

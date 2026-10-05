@@ -4,7 +4,7 @@
    - w swojej turze: 1× dołącz energię do aktywnego, 1× ewoluuj go (nie w turze, w której wszedł), 1× odwrót (zapłać energią),
      na koniec atak (koszt = liczba energii) — atak kończy turę
    - słabość ×2, odporność −30; „×” = obrażenia za każdego orła z 2 rzutów, „+” = orzeł dokłada drugie tyle
-   - efekty z opisu ataku (fx, tmp/build_species.js): stany, leczenie, obrażenia na ławce i w siebie, zrzut energii
+   - efekty z opisu ataku (fx, tools/build_species.js): stany, leczenie, obrażenia na ławce i w siebie, zrzut energii
    - stany jak w grze: zatruty −10 i oparzony −20 (potem rzut: orzeł leczy) między turami; śpiący: rzut, orzeł budzi;
      sparaliżowany: przechodzi po swojej następnej turze; śpiący i sparaliżowany nie atakuje ani nie ucieka;
      zdezorientowany: przy ataku rzut, reszka = 30 w siebie i koniec. Ewolucja i odwrót leczą stany.

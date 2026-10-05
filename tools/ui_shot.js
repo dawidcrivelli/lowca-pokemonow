@@ -1,5 +1,5 @@
 /* Zrzuty ekranu UI przez headless Chrome + DevTools Protocol (bez puppeteera).
-   użycie: node tmp/ui_shot.js */
+   użycie: node tools/ui_shot.js */
 const { spawn, execSync } = require('child_process');
 const http = require('http');
 const fs = require('fs');
@@ -9,7 +9,7 @@ const root = path.join(__dirname, '..');
 const PORT = 9333;
 const chrome = spawn('google-chrome', [
   '--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run',
-  `--remote-debugging-port=${PORT}`, `--user-data-dir=${__dirname}/chrome-prof`,
+  `--remote-debugging-port=${PORT}`, `--user-data-dir=${root}/tmp/chrome-prof`,
   '--window-size=430,2400', 'about:blank'
 ], { stdio: 'ignore' });
 
@@ -31,7 +31,7 @@ function get(p) {
   const ws = new WS(target.webSocketDebuggerUrl);
   await ws.open();
 
-  const steps = JSON.parse(fs.readFileSync(path.join(__dirname, process.argv[2] || 'ui_steps.json'), 'utf8'));   // użycie: node tmp/ui_shot.js [plik kroków]
+  const steps = JSON.parse(fs.readFileSync(path.join(__dirname, process.argv[2] || 'ui_steps.json'), 'utf8'));   // użycie: node tools/ui_shot.js [plik kroków]
   await ws.send('Page.enable');
   await ws.send('Runtime.enable');
   await ws.send('Page.addScriptToEvaluateOnNewDocument', { source: "window.__errs=[];addEventListener('error',e=>__errs.push((e.message||String(e.target?.src))+' @'+e.filename+':'+e.lineno),true)" });
@@ -46,7 +46,7 @@ function get(p) {
     if (s.shot) {
       if (s.h) await ws.send('Emulation.setDeviceMetricsOverride', { width: s.w || 430, height: s.h, deviceScaleFactor: 1, mobile: true });
       const r = await ws.send('Page.captureScreenshot', { format: 'png' });
-      fs.writeFileSync(path.join(__dirname, s.shot), Buffer.from(r.data, 'base64'));
+      fs.writeFileSync(path.join(root, 'tmp', s.shot), Buffer.from(r.data, 'base64'));
       console.log('->', s.shot);
     }
   }

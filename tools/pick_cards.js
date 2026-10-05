@@ -1,6 +1,6 @@
 /* karta dla Pokémonów spoza 1. generacji: najwcześniejszy zestaw z SERIES (w tej kolejności), zwykła rzadkość, bez ex, jeśli się da.
    użycie: require('./pick_cards.js')(id, nazwa) → karta z pokemon-tcg-data (z polem set) */
-const fs = require('fs'), path = require('path'), DIR = path.join(__dirname, 'pokeapi');
+const fs = require('fs'), path = require('path'), DIR = path.join(__dirname, '..', 'tmp', 'pokeapi');
 const load = f => JSON.parse(fs.readFileSync(path.join(DIR, f + '.json')));
 const SERIES = ['Scarlet & Violet', 'Mega Evolution', 'Sword & Shield', 'Sun & Moon'];   // Hatenna, Rayquaza, Kleavor nie mają kart SV; Pichu, Happiny, Giratina, Arceus – zwykłe dopiero w SM
 const PLAIN = ['Common', 'Uncommon', 'Rare'];
