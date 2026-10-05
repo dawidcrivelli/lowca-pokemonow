@@ -99,7 +99,6 @@ fs.writeFileSync(path.join(__dirname, '..', 'js', 'species.js'), `/* ===========
 const POKEAPI_RAW = 'https://raw.githubusercontent.com/PokeAPI/';
 const ART_URL = id => \`\${POKEAPI_RAW}sprites/master/sprites/pokemon/other/official-artwork/\${id}.png\`;   // duża grafika, ~100 kB
 const SPRITE_URL = id => \`\${POKEAPI_RAW}sprites/master/sprites/pokemon/\${id}.png\`;                     // piksele z gier, ~1 kB
-const CRY_URL = id => \`\${POKEAPI_RAW}cries/main/cries/pokemon/\${id <= ${LAST} ? 'legacy' : 'latest'}/\${id}.ogg\`;   // Kanto: głos z Red/Blue
 // karta: ~150 kB / ~1 MB; duża wersja: pokemontcg.io „_hires”, scrydex „/large”
 const CARD_URL = (sp, big) => (sp.card.img || \`https://images.pokemontcg.io/sv3pt5/\${sp.id}.png\`).replace(/\\.png$|\\/small$/, m => big ? (m === '.png' ? '_hires.png' : '/large') : m);
 const CHART = ${JSON.stringify(CHART)};
@@ -109,6 +108,6 @@ const MOVES = {
 const SPECIES = [
   ${rows.join(',\n  ')},
 ];
-if (typeof module !== 'undefined') module.exports = { CHART, MOVES, SPECIES, ART_URL, SPRITE_URL, CRY_URL, CARD_URL };
+if (typeof module !== 'undefined') module.exports = { CHART, MOVES, SPECIES, ART_URL, SPRITE_URL, CARD_URL };
 `);
 console.log('-> js/species.js', mons.length);

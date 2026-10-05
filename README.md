@@ -26,7 +26,6 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **Walka kartami** (🃏 w nagłówku) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
   energia, ewolucja (tylko w złapane!), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
   Efekty z opisu ataku: stany (☠️ 🔥 💤 ⚡ 💫, jak w grze), leczenie, obrażenia na ławce i w siebie, zrzut energii.
-- **Oryginalne okrzyki** z Red/Blue.
 - **Tryb rodzica** — przytrzymaj ⚙️ przez sekundę: dotknięcie kafelka łapie albo wypuszcza Pokémona, zapis/odczyt pliku, reset.
 
 ## Uruchomienie
@@ -42,7 +41,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 | `js/cards.js` | zasady walki kartami, bez DOM; `node tools/sim_cards.js` — długość gier komputer vs komputer |
 | `js/app.js` | interfejs: łowy, Pokédex, karty, arena, walka kartami, tryb rodzica |
 | `js/arena3d.js`, `vendor/three.min.js` | widok walki 3D: wytłoczone grafiki Pokémonów na terenie low-poly |
-| `js/voices.js`, `sounds/` | okrzyki (PokeAPI) i odgłosy walki (CC0) |
+| `js/sfx.js`, `sounds/` | odgłosy walki (CC0) |
 
 Zrzuty ekranu: `node tools/ui_shot.js [ui_steps_3d.json | ui_steps_cards.json]` → `tmp/`.
 

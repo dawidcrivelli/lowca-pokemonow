@@ -1,7 +1,7 @@
 [
   { "name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{sound:false}}));location.reload()", "wait": 2500 },
   { "name": "karta", "js": "document.querySelector('.tile[data-id=\"25\"]').click();document.querySelector('[data-flip]').click()", "wait": 2500, "shot": "c1_card.png", "h": 1000 },
-  { "name": "segregator", "js": "document.querySelector('#modalClose').click();document.querySelector('#binder').click()", "wait": 2500, "shot": "c2_binder.png", "h": 1200 },
+  { "name": "segregator", "js": "document.querySelector('#modalClose').click();document.querySelector('[data-face=\"card\"]').click()", "wait": 2500, "shot": "c2_binder.png", "h": 1200 },
   { "name": "wybór", "js": "document.querySelector('#btnCards').click();for(const id of [4,25,1])document.querySelector('[data-dpick=\"'+id+'\"]').click()", "wait": 2500, "shot": "c3_pick.png", "h": 1000 },
   { "name": "start", "js": "document.querySelector('[data-dstart]').click()", "wait": 2500, "shot": "c4_duel.png", "h": 1100 },
   { "name": "tura1", "js": "document.querySelector('[data-denergy]').click();document.querySelector('[data-dend]').click()", "wait": 4500 },

@@ -37,7 +37,7 @@
 <script>
 const $ = s => document.querySelector(s), KEY = 'sounds.pick';
 const CRY = (id, v) => `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/${v}/${id}.ogg`;
-const MODES = { zwykły: [1, .8], atak: [1.15, .5], nokaut: [.7, .7] };   // jak VOICE_MODES w js/voices.js
+const MODES = { zwykły: [1, .8], atak: [1.15, .5], nokaut: [.7, .7] };   // tempo i głośność okrzyku: zwykły / przy ataku / nokaut
 const CRY_IDS = [25, 6, 94, 143, 150, 1, 130, 906];
 let pick = {}; try { pick = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
 function play(src, rate = 1, vol = 1) {

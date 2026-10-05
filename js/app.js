@@ -1,5 +1,5 @@
 /* ================= ŁOWCA POKÉMONÓW – logika aplikacji =================
-   Dane: js/species.js · walka: js/battle.js · głosy: js/voices.js */
+   Dane: js/species.js · walka: js/battle.js · odgłosy: js/sfx.js */
 (function () {
 'use strict';
 
@@ -79,8 +79,7 @@ function tone(type, f0, f1, dur, vol, filter) {
   n.connect(g); g.connect(ac.destination); o.start(t0); o.stop(t0 + dur + 0.02);
 }
 const blip = (f, d = .1) => tone('triangle', f, f, d, .13);
-const cry = (sp, mode) => DB.settings.sound && voice(sp, mode);   // głos gatunku i odgłosy walki: js/voices.js
-const fx = name => DB.settings.sound && sfx(name);
+const fx = name => DB.settings.sound && sfx(name);   // odgłosy walki: js/sfx.js
 const thud = () => tone('sine', 140, 50, .18, .3);
 function crack() {
   const ac = audio(); if (!ac) return;
@@ -217,7 +216,7 @@ function runCatch(sp) {
     [2320, () => {
       el.sceneTarget.innerHTML = art(sp); el.sceneTarget.className = 'scene-target show';
       el.sceneName.textContent = sp.name; el.sceneName.className = 'scene-name show';
-      cry(sp, 'call'); confettiBurst(sp);
+      confettiBurst(sp);
       DB.caught[sp.id] = { t: Date.now() }; save();
     }],
     [3900, () => { el.scene.hidden = true; busy = false; renderAll(sp.id); say(`Złapany! <b>${esc(sp.name)}</b> dołącza do kolekcji.`, 'good'); openCard(sp); }],
@@ -368,9 +367,9 @@ function onArenaClick(e) {
   if (d.pick) {
     const sp = byId(d.pick), other = A.slot === 'a' ? 'b' : 'a', a0 = A.a;
     if (A[other] === sp) A[other] = A[A.slot];
-    A[A.slot] = sp; A.slot = other; if (A.a !== a0) A.form = 0; cry(sp, 'attack'); renderSetup();
+    A[A.slot] = sp; A.slot = other; if (A.a !== a0) A.form = 0; blip(500, .05); renderSetup();
   }
-  if (d.random) { A.b = randomOther(A.a.id); cry(A.b, 'attack'); renderSetup(); }
+  if (d.random) { A.b = randomOther(A.a.id); blip(500, .05); renderSetup(); }
   if (d.form) { A.form = (A.form + 1) % forms(A.a).length; blip(A.form ? 880 : 440, .1); renderSetup(); }
   if (d.mode) { DB.settings.mode = d.mode; save(); renderSetup(); }
   if (d.fight || d.rematch) startFight();
@@ -420,12 +419,12 @@ function floatText(side, text, cls = '') {
   const d = $(`#dmg-${side}`); d.textContent = text; d.className = 'dmg ' + cls; void d.offsetWidth; d.classList.add('show');
 }
 function showEvents(evs, done) {
-  const B = A.B, who = k => B[k].s, wet = B.arena === ARENAS.deep;   // pod wodą: plusk i bąble zamiast uderzeń i świstu
+  const B = A.B, wet = B.arena === ARENAS.deep;   // pod wodą: plusk i bąble zamiast uderzeń i świstu
   evs.forEach((ev, i) => later(i * STEP_MS, () => {
     window.Arena3D?.event(ev);
     if (ev.as) {
       const { as, ds } = ev, f = $(`#f-${as}`), g = $(`#f-${ev.tick || ev.selfHit ? as : ds}`), on = ev.on || ds;
-      if (ev.m && !ev.charge) { cry(who(as), 'attack'); f.classList.remove('attacking'); void f.offsetWidth; f.classList.add('attacking'); }
+      if (ev.m && !ev.charge) { f.classList.remove('attacking'); void f.offsetWidth; f.classList.add('attacking'); }
       if (ev.damage) { g.classList.remove('hit'); void g.offsetWidth; g.classList.add('hit'); later(150, () => fx(wet ? 'splash' : 'hit')); navigator.vibrate?.(18);
         floatText(ev.tick || ev.selfHit ? as : ds, `−${ev.damage}`); }
       else if (ev.heal || ev.drain) { floatText(as, `+${ev.heal || ev.drain}`, 'heal'); blip(880, .08); }
@@ -440,7 +439,6 @@ function showEvents(evs, done) {
       else if (ev.charge) { floatText(as, '✨', 'icon'); blip(700, .06); }
       for (const k of ['a', 'b']) {
         const p = B[k], hp = ev.hp[k], pct = 100 * hp / p.hp0;
-        if (hp === 0 && $(`#hpn-${k}`).textContent !== `0/${p.hp0}`) later(250, () => cry(who(k), 'ko'));
         Object.assign($(`#hp-${k}`).style, { width: pct + '%', backgroundPosition: `${pct}% 0` });
         $(`#hpn-${k}`).textContent = `${hp}/${p.hp0}`;
         $(`#st-${k}`).textContent = ev.st[k] ? STATUS[ev.st[k]][0] : '';
@@ -466,7 +464,7 @@ function finish() {
       <button class="btn ghost" data-change="1">🔄 Zmień</button>
     </div>`;
   r.hidden = false; r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  cry(w.s, 'call'); navigator.vibrate?.([35, 45, 70]);
+  navigator.vibrate?.([35, 45, 70]);
 }
 el.btnArena.addEventListener('click', () => openArena());
 
@@ -538,10 +536,8 @@ function duelEvent(ev, who) {
   if (!ev) return false;
   K.log.push(ev.text); renderDuel();
   const att = K.D[who].team[0];
-  if (ev.evolve) cry(att.sp, 'call');
-  if (ev.attack) { cry(att.sp, 'attack'); $(`#da-${who}`)?.classList.add('go'); }
+  if (ev.attack) $(`#da-${who}`)?.classList.add('go');
   if (ev.dmg || ev.self) { later(150, () => fx('hit')); $(`#da-${ev.self ? who : ev.on}`)?.classList.add('hit'); navigator.vibrate?.(18); }
-  ev.ko?.forEach((sp, i) => later(300 + 400 * i, () => cry(sp, 'ko')));
   return true;
 }
 function cpuPlays() {
@@ -551,7 +547,7 @@ function cpuPlays() {
 }
 function finishDuel() {
   if (!K.D.winner) return;
-  if (K.D.winner === 'me') { cry(K.D.me.team[0].sp, 'call'); navigator.vibrate?.([35, 45, 70]); }
+  if (K.D.winner === 'me') navigator.vibrate?.([35, 45, 70]);
 }
 function playerDuel(d) {
   const D = K.D; if (!D || D.who !== 'me' || D.winner) return;
