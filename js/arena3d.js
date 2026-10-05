@@ -83,11 +83,31 @@ window.Arena3D = (() => {
     for (const z of depth ? [-d, d] : [0]) mesh(g, new THREE.PlaneGeometry(W, H), face, V(0, H * .5, z)).castShadow = false;
     if (depth) mesh(g, walls, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide }), V(0, 0)).castShadow = false;
     img.onload = () => {
-      const c = cv.getContext('2d'); c.drawImage(img, 0, 0, CV_W, CV_H); tex.needsUpdate = true;
+      const c = cv.getContext('2d'); c.drawImage(img, 0, 0, CV_W, CV_H); if (sp.form === 'tera') facets(c); tex.needsUpdate = true;
       if (depth) extrude(c.getImageData(0, 0, CV_W, CV_H).data, walls, W, H, d);
     };
     img.crossOrigin = 'anonymous'; img.src = ART_URL(sp.art || sp.id);   // CORS: bez tego getImageData() rzuca wyjątek
     return {};
+  }
+  /* Tera: rysunek pocięty na kryształowe ścianki — trójkąty jaśniejsze / błękitne i jasne krawędzie, tylko na samym Pokémonie (source-atop) */
+  function facets(c, cell = 56) {
+    c.save(); c.globalCompositeOperation = 'source-atop'; c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.5;
+    for (let y = 0; y < CV_H; y += cell * .87) for (let x = -cell; x < CV_W + cell; x += cell) {
+      const o = (Math.round(y / (cell * .87)) % 2) * cell / 2, X = x + o;
+      for (const [p, q, r] of [[[X, y], [X + cell, y], [X + cell / 2, y + cell * .87]], [[X + cell, y], [X + cell * 1.5, y + cell * .87], [X + cell / 2, y + cell * .87]]]) {
+        c.beginPath(); c.moveTo(...p); c.lineTo(...q); c.lineTo(...r); c.closePath();
+        c.fillStyle = Math.random() < .5 ? `rgba(255,255,255,${.1 + Math.random() * .3})` : `rgba(127,227,255,${.15 + Math.random() * .3})`; c.fill(); c.stroke();
+      }
+    }
+    c.restore();
+  }
+  // Klejnot Tera nad głową: korona z ostrosłupów, kręci się (animate)
+  function crown(g, H) {
+    const m = new THREE.MeshPhongMaterial({ color: TERA, emissive: 0x1A6A88, shininess: 90, flatShading: true, transparent: true, opacity: .9 }), k = new THREE.Group();
+    [[0, .5, 0], [.22, .32, .5], [-.22, .32, -.5], [.12, .26, 2.6], [-.12, .26, -2.6]].forEach(([x, h, r]) => {
+      const o = mesh(k, new THREE.ConeGeometry(h * .32, h, 4), m, V(x, h / 2)); o.rotation.z = -x * 1.4; o.rotation.y = r;
+    });
+    k.position.y = H * .97; k.scale.setScalar(Math.max(.7, H / 2.4)); g.add(k); return k;
   }
   /* ścianki boczne: siatka komórek maski alfa; tam, gdzie pełna komórka graniczy z pustą, stawiamy prostokąt w kolorze rysunku
      (brany kilka komórek w głąb, żeby nie był czarnym konturem), przyciemniony — jak wytłoczone przedmioty w Minecrafcie */
@@ -117,8 +137,8 @@ window.Arena3D = (() => {
     shadow.rotation.x = -Math.PI / 2; shadow.position.set(-dir * GAP, .02, 0); S.scene.add(shadow, root);
     const mats = []; root.traverse(c => c.material && mats.push(c.material));
     const badge = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthTest: false })); badge.scale.setScalar(BADGE); badge.visible = false; S.scene.add(badge);
-    const tint = new THREE.Color(0xFFFFFF).lerp(new THREE.Color(TERA), sp.form === 'tera' ? .5 : 0);   // Tera: kryształowy odcień
-    return { root, inner, shadow, badge, H, dir, lift, mats, tint, x0: -dir * GAP, anim: null, ko: false, won: false, phase: Math.random() * 6, swim: water || fly };
+    const tera = sp.form === 'tera', tint = new THREE.Color(0xFFFFFF).lerp(new THREE.Color(TERA), tera ? .2 : 0);   // Tera: lekko błękitny
+    return { root, inner, shadow, badge, H, dir, lift, mats, tint, jewel: tera && crown(body, H), x0: -dir * GAP, anim: null, ko: false, won: false, phase: Math.random() * 6, swim: water || fly };
   }
 
   /* ---------- teren ---------- */
@@ -365,7 +385,8 @@ window.Arena3D = (() => {
     f.root.position.set(f.x0 + dx, f.lift + dy, dz); f.shadow.position.set(f.x0 + dx, .02, dz);
     [f.inner.rotation.x, f.inner.rotation.z] = a?.k === 'ko' || f.ko ? [rz, 0] : [0, rz];
     f.inner.scale.y = sy; f.inner.rotation.y = ry;
-    f.badge.position.set(f.x0 + dx, f.lift + dy + f.H + BADGE * (.7 + .08 * Math.sin(tm * 4)), dz);   // ikona stanu nad głową
+    f.badge.position.set(f.x0 + dx, f.lift + dy + f.H + BADGE * (.7 + .08 * Math.sin(tm * 4)) + (f.jewel ? .5 : 0), dz);   // ikona stanu nad głową (nad klejnotem Tera)
+    if (f.jewel && !f.ko) { f.jewel.rotation.y += dt * 1.2; if (Math.random() < dt * 2.5) burst(f, 1, TERA, { g: -1.5, up: .3, life: .9, size: .05 }); }   // Tera: klejnot się kręci, iskry w górę
     for (const m of f.mats) m.emissive ? m.emissive.setRGB(flash * .8, glow * .35, 0) : m.color.setRGB(1, 1 - flash * .6, 1 - flash * .6).multiply(f.tint);
     if (a?.k === 'ko' || f.ko) {   // przewrócony obraca się wokół stóp → podnieś, żeby leżał NA ziemi, nie pod nią
       f.root.updateMatrixWorld(true);

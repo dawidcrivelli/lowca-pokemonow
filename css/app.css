@@ -381,6 +381,12 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .fighter.side-b .art{transform:scaleX(-1)}
 /* forma walki: Mega złota poświata, Tera kryształowa */
 .mega .art img{filter:drop-shadow(0 0 7px #F5A524)}.tera .art img{filter:drop-shadow(0 0 7px #7FE3FF) saturate(1.2)}
+/* Tera: kryształowe ścianki na samym Pokémonie (maska = jego obrazek, --m) */
+.tera .art{position:relative}
+.tera .art::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
+  background:linear-gradient(60deg,#FFF6 0 18%,#7FE3FF55 18% 34%,#0000 34% 52%,#FFF5 52% 66%,#7FE3FF44 66% 80%,#0000 80%),
+    linear-gradient(-60deg,#0000 0 22%,#FFF4 22% 40%,#0000 40% 60%,#7FE3FF55 60% 76%,#0000 76%);
+  -webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
 .ar-bar .form{white-space:nowrap}
 .ar-bar{display:flex;gap:8px;align-items:stretch;justify-content:center;margin:12px 0 10px;flex-wrap:wrap}
 .seg{display:flex;background:#fff;border:2px solid var(--line);border-radius:14px;padding:3px;gap:3px}

@@ -342,7 +342,7 @@ function slotHTML(k) {
   const sp = k === 'a' ? formA() : formB();
   return `<button class="ar-slot ${A.slot === k ? 'active' : ''} side-${k} ${sp.form || ''}" data-slot="${k}">
     <span class="who">${k === 'a' ? '🙂 Ty' : '🎯 Rywal'}</span>
-    <span class="art">${art(sp)}</span><span class="nm">${esc(sp.name)}</span>${statBars(statsOf(sp))}</button>`;
+    <span class="art" style="--m:url(${ART_URL(sp.art || sp.id)})">${art(sp)}</span><span class="nm">${esc(sp.name)}</span>${statBars(statsOf(sp))}</button>`;
 }
 function renderSetup() {
   const mode = DB.settings.mode;
@@ -382,7 +382,7 @@ el.modalBody.addEventListener('click', onArenaClick);
 
 function fighterHTML(p, side) {
   return `<div class="fighter side-${side} ${p.s.form || ''}" id="f-${side}">
-    <div class="art">${art(p.s)}</div><div class="nm">${esc(p.name)}</div>
+    <div class="art" style="--m:url(${ART_URL(p.s.art || p.s.id)})">${art(p.s)}</div><div class="nm">${esc(p.name)}</div>
     <div class="hp"><i id="hp-${side}"></i></div><div class="hpn" id="hpn-${side}">${p.hp}/${p.hp0}</div><div class="stg" id="sg-${side}"></div>
     <span class="stb" id="st-${side}"></span><span class="dmg" id="dmg-${side}"></span></div>`;
 }
