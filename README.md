@@ -35,7 +35,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 
 | plik | co robi |
 |---|---|
-| `js/species.js` | Pokédex (generowany: `node tmp/fetch.js && node tmp/build_species.js`; polskie teksty w `tmp/pl.json` — dopisują je `tmp/pl_hz.py`, `tmp/pl_fam.py`, `tmp/pl_hz_s1.py`, `tmp/pl_m12.py` — nazwy ataków w `tmp/attacks_pl.json`, ruchów w `tmp/moves_pl.json`) |
+| `js/species.js` | Pokédex (generowany: `node tmp/fetch.js && node tmp/build_species.js`; polskie teksty w `tmp/pl.json`, nazwy ataków w `tmp/attacks_pl.json`, ruchów w `tmp/moves_pl.json`) |
 | `js/battle.js` | typy, stany, tereny, silnik walki i komputer, bez DOM; strojenie: `TUNE`, potem `node tmp/sim.js` |
 | `js/cards.js` | zasady walki kartami, bez DOM; `node tmp/sim_cards.js` — długość gier komputer vs komputer |
 | `js/app.js` | interfejs: łowy, Pokédex, karty, arena, walka kartami, tryb rodzica |

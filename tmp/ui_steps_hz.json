@@ -1,9 +1,0 @@
-[
-  { "name": "część złapanych, tryb kart", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:{25:{t:1},6:{t:1},906:{t:1},384:{t:1},856:{t:1}},settings:{sound:false,face:'card'}}));location.reload()", "wait": 3000 },
-  { "name": "filtr horyzonty", "js": "document.querySelector('[data-f=\"hz\"]').click()", "wait": 3500, "shot": "h1_hz_cards.png", "h": 1300 },
-  { "name": "chips", "print": 1, "js": "document.querySelector('[data-f=\"hz\"]').textContent + ' | ' + document.querySelector('.pc-count, #pcCount').textContent" },
-  { "name": "karta rayquazy (scrydex)", "js": "document.querySelector('.tile[data-id=\"384\"]').click()", "wait": 3500, "shot": "h2_rayquaza.png", "h": 1000 },
-  { "name": "zgadywanie", "js": "document.querySelector('#modalClose').click();document.querySelector('.tile[data-id=\"909\"]').click()", "wait": 1500, "shot": "h3_hint.png", "h": 900 },
-  { "name": "tryb obrazków", "js": "document.querySelector('#modalClose').click();document.querySelector('[data-face=\"art\"]').click()", "wait": 2500, "shot": "h4_hz_art.png", "h": 1100 },
-  { "name": "walka kartami", "js": "document.querySelector('#btnCards').click()", "wait": 2500, "shot": "h5_duel.png", "h": 1000 }
-]

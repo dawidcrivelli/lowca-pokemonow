@@ -1,8 +1,0 @@
-[
-  { "name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{sound:false}}));location.reload()", "wait": 2500, "shot": "z1_top_art.png", "h": 900 },
-  { "name": "tryb kart", "js": "document.querySelector('[data-face=\"card\"]').click()", "wait": 2500, "shot": "z2_top_cards.png", "h": 1100 },
-  { "name": "karta", "js": "document.querySelector('.tile[data-id=\"6\"]').click()", "wait": 3000, "shot": "z3_modal_card.png", "h": 1100 },
-  { "name": "powiększ", "js": "document.querySelector('.m-hero .tcg').click()", "wait": 1500, "shot": "z4_zoom.png", "h": 900 },
-  { "name": "zamknij, obrazek", "js": "document.querySelector('#zoom').click();document.querySelector('[data-flip]').click();document.querySelector('.m-hero .art').click()", "wait": 1500, "shot": "z5_zoom_art.png", "h": 900 },
-  { "name": "siatka po flipie", "js": "document.querySelector('#zoom').click();document.querySelector('#modalClose').click()", "wait": 1000, "shot": "z6_grid_art.png", "h": 900 }
-]

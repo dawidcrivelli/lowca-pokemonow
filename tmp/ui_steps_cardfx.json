@@ -1,6 +1,0 @@
-[
-  { "name": "start", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:{29:{t:1},48:{t:1},60:{t:1}},settings:{sound:false}}));location.reload()", "wait": 2500 },
-  { "name": "drużyna", "js": "document.querySelector('#btnCards').click();document.querySelectorAll('[data-dpick]').forEach(b=>b.click());document.querySelector('[data-dstart]').click()", "wait": 1500 },
-  { "name": "gra: energia i najsilniejszy atak, aż coś się stanie", "js": "new Promise(r=>{let n=0;const t=setInterval(()=>{const q=s=>document.querySelector(s);if(q('.d-acts .winner')||n++>120||/zatruty|sparaliż|zasypia|zdezor|trucizna/.test(q('.d-log').textContent)){clearInterval(t);r()}else{const e=q('[data-denergy]:not([disabled])');if(e)e.click();else{const a=[...document.querySelectorAll('[data-dattack]:not([disabled])')].pop();(a||q('[data-dend]'))?.click()}}},700)})", "wait": 400, "shot": "c1_cond.png", "h": 1100 },
-  { "name": "log", "print": 1, "js": "document.querySelector('.d-log').textContent" }
-]

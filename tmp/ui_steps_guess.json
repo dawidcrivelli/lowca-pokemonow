@@ -1,8 +1,0 @@
-[
-  { "name": "nic złapane", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:{},settings:{sound:false}}));location.reload()", "wait": 2500 },
-  { "name": "TEST 3 litery", "print": 1, "js": "(()=>{const q=document.querySelector('#q');q.value='pik';q.dispatchEvent(new Event('input'));return new Promise(r=>setTimeout(()=>r([...document.querySelectorAll('#sugg [data-pick]')].map(b=>b.textContent.trim().split(/\\s+/)[0]).join(',')),300))})()" },
-  { "name": "nieznany", "js": "document.querySelector('#q').value='';document.querySelector('.tile[data-id=\"25\"]').click()", "wait": 1500, "shot": "g1_hint.png", "h": 1000 },
-  { "name": "wpisz w oknie", "js": "const q=document.querySelector('.m-hunt #q');q.value='pika';q.focus();q.dispatchEvent(new Event('input'))", "wait": 800, "shot": "g2_sugg.png", "h": 1000 },
-  { "name": "złap", "js": "document.querySelector('#huntForm').requestSubmit()", "wait": 5500, "shot": "g3_caught.png", "h": 1000 },
-  { "name": "TEST złapany + wyszukiwarka wróciła", "print": 1, "js": "JSON.parse(localStorage.getItem('pokeTracker.v1')).caught[25]&&document.querySelector('section.hunt #huntBox')&&!document.querySelector('.m-hunt #huntBox')?'PASS':'FAIL'" }
-]

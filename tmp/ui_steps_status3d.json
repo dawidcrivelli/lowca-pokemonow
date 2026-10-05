@@ -1,6 +1,0 @@
-[
-  { "name": "start", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:{25:{t:1},1:{t:1}},settings:{view:'3d',mode:'play',sound:false}}));location.reload()", "wait": 2500 },
-  { "name": "3d", "js": "document.querySelector('.tile[data-id=\"25\"]').click();document.querySelector('[data-arena]').click();document.querySelector('[data-fight]').click()", "wait": 3000 },
-  { "name": "stany", "js": "Arena3D.event({as:'a',ds:'b',status:'poison',on:'b',hp:{a:100,b:100},st:{a:'paralysis',b:'poison'}});Arena3D.event({as:'a',ds:'b',m:{t:'electric',c:'s'},damage:30,eff:1,hp:{a:100,b:70},st:{a:'paralysis',b:'poison'}})", "wait": 250, "shot": "s1_status.png", "h": 800 },
-  { "name": "statystyka", "js": "Arena3D.event({as:'b',ds:'a',stat:'atk',n:2,on:'b',hp:{a:100,b:70},st:{a:'paralysis',b:'poison'}})", "wait": 300, "shot": "s2_stat.png", "h": 800 }
-]
