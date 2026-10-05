@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Odgłosy walki</title>
+<!-- Odsłuch i wybór odgłosów walki. Kandydaci: node tools/sound_candidates.js → tmp/snd/candidates.js. Otwórz plik w przeglądarce. -->
+<style>
+  :root{--bg:#F4F6FB;--card:#fff;--ink:#1D2A3A;--soft:#6A7788;--line:#DCE2EC;--on:#F5A524}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,sans-serif}
+  main{max-width:760px;margin:auto;padding:16px}
+  h1{font-size:22px;margin:4px 0 2px}h2{font-size:16px;margin:22px 0 8px}
+  p.sub{color:var(--soft);margin:0 0 12px}
+  .slot{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0}
+  .slot b{display:block;margin-bottom:6px}
+  .opts{display:flex;flex-wrap:wrap;gap:6px}
+  button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 10px;cursor:pointer;text-align:left}
+  button small{display:block;color:var(--soft);font-size:11px}
+  button.on{border:2px solid var(--on);background:#FFF6E3}
+  .bar{position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--line)}
+  select{font:inherit;padding:6px;border-radius:9px;border:1px solid var(--line)}
+  textarea{width:100%;height:110px;font:12px monospace;box-sizing:border-box;margin-top:8px}
+</style>
+</head>
+<body><main>
+<h1>Odgłosy walki</h1>
+<p class="sub">Kliknij, żeby posłuchać. Drugie kliknięcie w ten sam = wybór (złota ramka). Na dole: wybór do skopiowania.</p>
+<div class="bar">
+  <select id="type"></select><label><input type="checkbox" id="withCry" checked> okrzyk przy ruchu</label>
+  <button id="round">▶ Runda (wybrane)</button><button id="ko">▶ Nokaut</button>
+</div>
+<h2>Okrzyki: Red/Blue (stare) vs nowe</h2><div id="cries"></div>
+<h2>Odgłosy</h2><div id="slots"></div>
+<h2>Wybór</h2><textarea id="out" readonly></textarea>
+</main>
+<script src="../js/species.js"></script>
+<script src="../tmp/snd/candidates.js"></script>
+<script>
+const $ = s => document.querySelector(s), KEY = 'sounds.pick';
+const CRY = (id, v) => `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/${v}/${id}.ogg`;
+const MODES = { zwykły: [1, .8], atak: [1.15, .5], nokaut: [.7, .7] };   // jak VOICE_MODES w js/voices.js
+const CRY_IDS = [25, 6, 94, 143, 150, 1, 130, 906];
+let pick = {}; try { pick = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+function play(src, rate = 1, vol = 1) {
+  const a = new Audio(src); a.preservesPitch = a.webkitPreservesPitch = false; a.playbackRate = rate; a.volume = vol; a.play().catch(() => {}); return a;
+}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(pick)); } catch {} $('#out').value = JSON.stringify(pick, null, 1); };
+const name = id => SPECIES.find(s => s.id === id)?.name || id;
+
+// okrzyki: każdy Pokémon × stary / nowy × tryb; wybór wersji jeden dla wszystkich (pick.cry)
+$('#cries').innerHTML = CRY_IDS.map(id => `<div class="slot"><b>${name(id)}</b><div class="opts">${['legacy', 'latest'].filter(v => id <= 151 || v === 'latest').flatMap(v =>
+  Object.keys(MODES).map(m => `<button data-cry="${id}" data-v="${v}" data-m="${m}">${v === 'legacy' ? '📼 stary' : '🔊 nowy'}<small>${m}</small></button>`)).join('')}</div></div>`).join('')
+  + `<div class="slot"><b>Wersja okrzyków w walce</b><div class="opts">${['legacy', 'latest'].map(v => `<button data-cryv="${v}" class="${pick.cry === v ? 'on' : ''}">${v === 'legacy' ? '📼 stare (Red/Blue)' : '🔊 nowe'}</button>`).join('')}</div></div>`;
+$('#slots').innerHTML = Object.entries(CANDS).map(([slot, cs]) => `<div class="slot"><b>${slot}</b><div class="opts">${cs.map((c, i) =>
+  `<button data-slot="${slot}" data-i="${i}" class="${pick[slot] === c.src ? 'on' : ''}">${c.name.slice(0, 32)}<small>${c.by}</small></button>`).join('')}</div></div>`).join('');
+const TYPES = Object.keys(CANDS).filter(k => !['hit', 'hit_big', 'miss', 'ko', 'heal', 'stat_up', 'stat_down', 'charge', 'transform'].includes(k));
+$('#type').innerHTML = ['normal', ...TYPES].map(t => `<option>${t}</option>`).join('');
+
+let last = null;
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; const d = b.dataset;
+  if (d.cry) play(CRY(d.cry, d.v), ...MODES[d.m]);
+  if (d.cryv) { pick.cry = d.cryv; b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); save(); }
+  if (d.slot) {
+    const c = CANDS[d.slot][d.i];
+    if (last === b) { pick[d.slot] = c.src; b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); save(); }
+    else play(c.src);
+    last = b;
+  }
+});
+// próbna runda z wybranych: okrzyk atakującego → odgłos typu → trafienie; nokaut: mocne trafienie → okrzyk nokautu → upadek
+const at = (ms, fn) => setTimeout(fn, ms), P = s => pick[s] && play(pick[s]);
+const cryOf = (id, m) => play(CRY(id, id <= 151 ? pick.cry || 'legacy' : 'latest'), ...MODES[m]);
+$('#round').onclick = () => { const t = $('#type').value; if ($('#withCry').checked) cryOf(25, 'atak'); at(250, () => P(t)); at(650, () => P('hit')); };
+$('#ko').onclick = () => { P('hit_big'); at(300, () => cryOf(6, 'nokaut')); at(1100, () => P('ko')); };
+save();
+</script>
+</body>
+</html>
