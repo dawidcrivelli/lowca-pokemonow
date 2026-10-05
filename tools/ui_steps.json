@@ -52,15 +52,8 @@
   "h": 1100
  },
  {
-  "name": "walka 2d",
-  "js": "document.querySelector('[data-view=\"2d\"]').click();document.querySelector('[data-fight]').click()",
-  "wait": 6000,
-  "shot": "ui9_fight2d.png",
-  "h": 1100
- },
- {
   "name": "walka 3d",
-  "js": "document.querySelector('[data-change]')?.click();document.querySelector('[data-view=\"3d\"]').click();document.querySelector('[data-fight]').click()",
+  "js": "document.querySelector('[data-fight]').click()",
   "wait": 5000,
   "shot": "ui10_fight3d.png",
   "h": 1100

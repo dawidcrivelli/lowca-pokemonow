@@ -1,5 +1,5 @@
 [
-  { "name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{view:'3d',mode:'play',sound:false}}));location.reload()", "wait": 2500 },
+  { "name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{mode:'play',sound:false}}));location.reload()", "wait": 2500 },
   { "name": "arena", "js": "document.querySelector('#btnArena').click();document.querySelector('[data-fight]').click()", "wait": 3500, "shot": "d1.png", "h": 900 },
   { "name": "mats", "js": "JSON.stringify(Object.values(Arena3D.S.byId).map(f=>f.mats.map(m=>[m.type,m.color.getHexString(),m.map&&m.map.colorSpace])))", "print": 1 }
 ]

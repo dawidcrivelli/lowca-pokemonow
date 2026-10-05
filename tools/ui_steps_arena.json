@@ -1,0 +1,5 @@
+[
+  { "name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{mode:'play',sound:false}}));location.reload()", "wait": 2500 },
+  { "name": "małe", "js": "document.querySelector('#btnArena').click();document.querySelector('[data-slot=\"a\"]').click();document.querySelector('[data-pick=\"25\"]').click();document.querySelector('[data-pick=\"1\"]').click();document.querySelector('[data-fight]').click()", "wait": 3500, "shot": "a1_small.png", "h": 900 },
+  { "name": "duże", "js": "document.querySelector('#modalClose').click();document.querySelector('#btnArena').click();document.querySelector('[data-slot=\"a\"]').click();document.querySelector('[data-pick=\"6\"]').click();document.querySelector('[data-pick=\"130\"]').click();document.querySelector('[data-fight]').click()", "wait": 3500, "shot": "a2_big.png", "h": 900 }
+]

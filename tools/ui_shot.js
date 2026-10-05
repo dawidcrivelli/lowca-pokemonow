@@ -7,8 +7,9 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 
 const PORT = 9333;
-const chrome = spawn('google-chrome', [
-  '--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run',
+const CHROME = process.env.CHROME || (process.platform === 'darwin' ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : 'google-chrome');
+const chrome = spawn(CHROME, [
+  '--headless=new', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--hide-scrollbars', '--no-first-run',
   `--remote-debugging-port=${PORT}`, `--user-data-dir=${root}/tmp/chrome-prof`,
   '--window-size=430,2400', 'about:blank'
 ], { stdio: 'ignore' });

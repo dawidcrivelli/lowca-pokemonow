@@ -1,4 +1,4 @@
-/* ================= ARENA 3D (widok opcjonalny) =================
+/* ================= ARENA 3D (bez WebGL zostaje widok 2D) =================
    Tylko prezentacja: te same zdarzenia z playRound() co widok 2D, paski życia i dziennik zostają w HTML.
    Pokémony stoją jako wytłoczone obrazki (oficjalne grafiki z PokeAPI) na terenie z low-poly.
    Three.js ładowany dopiero przy pierwszej walce 3D. Brak WebGL / pliku → zostaje widok 2D.
@@ -11,7 +11,7 @@
 window.Arena3D = (() => {
   const THREE_SRC = 'vendor/three.min.js';
   const ok = (() => { try { return !!document.createElement('canvas').getContext('webgl'); } catch { return false; } })();
-  const GAP = 2.2, YAW = 0.35;                    // połowa dystansu między zawodnikami; obrót 3/4 do kamery
+  const GAP = 1.6, YAW = 0.35;                    // połowa dystansu między zawodnikami; obrót 3/4 do kamery
   const H_MAX = 2.4, RATIO_MIN = 0.5;              // wysokość większego; najmniejszy ułamek
   const DODGE = { back: .9, up: 1.1 };  // unik: odskok do tyłu i w górę z obrotem
   const CV_W = 400, CV_H = 400;  // płótno obrazka (grafiki są kwadratowe)
@@ -19,7 +19,7 @@ window.Arena3D = (() => {
   const GROUND_EPS = .03;  // leżący nad gruntem, nie w nim (inaczej migocze)
   const ANIM_MS = 440, HIT_DELAY = 170, BIG_HIT = 60, SHAKE = 0.22, LUNGE = 0.9;
   const SHOT_MS = 380, BOLT_TOP = 7, BADGE = .55;   // lot pocisku; wysokość, z której spada piorun; wielkość ikony stanu
-  const ORBIT = 0.32, ORBIT_MS = 9000, CAM_Y = 2.7, CAM_D = 7.8, LOOK_Y = 1.3;
+  const ORBIT = 0.32, ORBIT_MS = 9000, CAM_Y = 2.4, CAM_D = 6, LOOK_Y = 1.3;
   const PIXEL_RATIO_MAX = 2, SHADOW_MAP = 1024;
   /* Każdy teren z battle.js ma kilka wyglądów (biomów), losowanych na walkę.
      props: element tła → ile sztuk; far: dalekie tło → szansa; rock: kolory skał; herd/fly: typy ciał dalekich rysunków;
@@ -273,6 +273,7 @@ window.Arena3D = (() => {
     const Hof = s => H_MAX * Math.max(RATIO_MIN, cube(s) / big);
     S.side = { a: fighter(B.a.s, 'a', Hof(B.a.s), theme), b: fighter(B.b.s, 'b', Hof(B.b.s), theme) };
     S.byId = { [B.a.id]: S.side.a, [B.b.id]: S.side.b };
+    S.lookY = Math.max(LOOK_Y, ...Object.values(S.side).map(f => f.lift + f.H * .6));   // latający / wielcy: kamera wyżej, głowy nie chowają się pod paskami życia
     const sea = [B.a, B.b].map((p, i) => p.s.types.includes('water') ? (i ? 1 : -1) : 0).find(Boolean) || 0;
     terrain(theme, rnd, key === 'coast' ? sea : 0);
     S.ro = new ResizeObserver(() => { const { clientWidth: w, clientHeight: h } = stage; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); });
@@ -378,8 +379,8 @@ window.Arena3D = (() => {
     S.todo = S.todo.filter(([at, fn]) => at > now || void fn());
     const th = ORBIT * Math.sin((now - S.t0) / ORBIT_MS * 2 * Math.PI), c = S.camera;
     const d = CAM_D / Math.min(1, c.aspect / 1.5);  // wąski ekran telefonu → kamera dalej
-    c.position.set(d * Math.sin(th) + (Math.random() - .5) * S.shake, CAM_Y + (Math.random() - .5) * S.shake, d * Math.cos(th));
-    c.lookAt(0, LOOK_Y, 0); S.shake *= .88;
+    c.position.set(d * Math.sin(th) + (Math.random() - .5) * S.shake, CAM_Y + S.lookY - LOOK_Y + (Math.random() - .5) * S.shake, d * Math.cos(th));
+    c.lookAt(0, S.lookY, 0); S.shake *= .88;
     for (const f of Object.values(S.byId)) animate(f, now, dt);
     S.parts = S.parts.filter(p => { p.t += dt; p.v.y -= p.g * dt; p.o.position.addScaledVector(p.v, dt); p.o.scale.setScalar(Math.max(.01, 1 - p.t / p.life));
       return p.t < p.life || void S.scene.remove(p.o); });
