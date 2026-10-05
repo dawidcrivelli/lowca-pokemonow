@@ -289,7 +289,7 @@ function hintCard(sp) {
   <div class="m-hero"><div class="art">${art(sp, 'ghost')}</div></div>
   <div class="m-body">
     <div class="m-hint">
-      <p class="q">Kto to za Pokémon?</p><div class="lbl">PODPOWIEDŹ</div><p>${esc(sp.hint || '')}</p>
+      <p class="q">Kto to za Pokémon?</p><p class="m-lat">${dexNo(sp)}</p><div class="lbl">PODPOWIEDŹ</div><p>${esc(sp.hint || '')}</p>
       <div class="hint-fields">${sp.types.map(typeTag).join('')}<span>${size} (${sp.m} m)</span><span>${'★'.repeat(sp.rarity)}</span></div>
     </div>
     <div class="m-hunt"></div>

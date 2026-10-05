@@ -184,7 +184,7 @@ var(--paper-2);
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .tile.ghost .nm{color:#9A8B70;font-weight:800;letter-spacing:1px}
-.tile .no{position:absolute;top:5px;left:7px;font:800 10px var(--font-b);color:#BCAF93}
+.tile .no{position:absolute;z-index:1;top:3px;left:5px;padding:0 3px;border-radius:5px;background:#fff;font:800 10px var(--font-b);color:#8C7E62}
 .rar{position:absolute;top:5px;right:6px;display:flex;gap:1.5px}
 .rar i{width:5px;height:5px;border-radius:50%;background:var(--amber);display:block}
 .tile.ghost .rar i{background:#C6B593}
