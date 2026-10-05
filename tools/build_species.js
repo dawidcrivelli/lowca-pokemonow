@@ -58,6 +58,11 @@ function move(name) {
 }
 const moveset = (p, types) => MV.pickMoves(types, MV.learnset(p).moves, n => load(`move/${n}`)).map(m => move(m.name));
 
+// formy Mega (arena): n nazwa · art numer grafiki w PokeAPI · typy i statystyki bazowe jak wyżej; ruchy te same co zwykłej formy
+const MEGA = /^(?!.*female).*-mega(-[xyz])?$/;   // samica Meowstic: ta sama Mega co samiec
+const baseStats = p => (st => ({ hp: st.hp, atk: st.attack, def: st.defense, satk: st['special-attack'], sdef: st['special-defense'], spd: st.speed }))(Object.fromEntries(p.stats.map(s => [s.stat.name, s.base_stat])));
+const megas = (sp, name) => (m => m.length ? m : undefined)(sp.varieties.filter(v => MEGA.test(v.pokemon.name)).map(v => load(`pokemon/${v.pokemon.name}`))
+  .map(p => ({ n: `Mega ${name}${(p.name.match(MEGA)[1] || '').toUpperCase().replace('-', ' ')}`, art: p.id, types: p.types.map(t => t.type.name), ...baseStats(p), kg: p.weight / 10 })));
 const mons = [];
 for (const i of IDS) {
   const p = load(`pokemon/${i}`), sp = load(`pokemon-species/${i}`);
@@ -70,6 +75,7 @@ for (const i of IDS) {
     m: p.height / 10, kg: p.weight / 10, rarity: rarity(sp, bst),
     from: (n => IDS.includes(n) ? n : null)(+sp.evolves_from_species?.url.match(/(\d+)\/$/)[1]),   // Pichu & co. spoza listy pomijamy
     legend: sp.is_legendary || sp.is_mythical || undefined,
+    mega: megas(sp, en(sp.names)[0].name),
     genus: en(sp.genera)[0].genus, flavor: clean(red.flavor_text), card: card(i, en(sp.names)[0].name), mv: moveset(p, p.types.map(t => t.type.name)),
   });
 }

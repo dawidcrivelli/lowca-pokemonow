@@ -1,0 +1,8 @@
+[
+  {"name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:151},(_,i)=>[i+1,{t:1}])),settings:{mode:'play',sound:false}}));location.reload()", "wait": 2500},
+  {"name": "zwykły", "js": "document.querySelector('#btnArena').click();document.querySelector('[data-slot=\"a\"]').click();document.querySelector('[data-pick=\"6\"]').click();document.querySelector('[data-pick=\"130\"]').click()", "wait": 1500, "shot": "f1_basic.png", "h": 900},
+  {"name": "mega", "js": "document.querySelector('[data-form]').click()", "wait": 1500, "shot": "f2_mega.png", "h": 900},
+  {"name": "tera", "js": "document.querySelector('[data-form]').click();document.querySelector('[data-form]').click()", "wait": 1500, "shot": "f3_tera.png", "h": 900},
+  {"name": "walka mega", "js": "for(let i=0;i<2;i++)document.querySelector('[data-form]').click();document.querySelector('[data-fight]').click()", "wait": 4000, "shot": "f4_megafight.png", "h": 900},
+  {"name": "walka tera", "js": "document.querySelector('#modalClose').click();document.querySelector('#btnArena').click();for(let i=0;i<2;i++)document.querySelector('[data-form]').click();document.querySelector('[data-fight]').click()", "wait": 4000, "shot": "f5_terafight.png", "h": 900}
+]

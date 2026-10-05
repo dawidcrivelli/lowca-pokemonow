@@ -1,12 +1,12 @@
 /* ================= ARENA – silnik walki (bez DOM) =================
    Jak w grach, na poziomie LEVEL: statystyki z bazowych (js/species.js), 4 ruchy z gry (sp.mv → MOVES), wzór na obrażenia z gier,
-   premia za własny typ (STAB), tabela typów (CHART), stany (trucizna, oparzenie, paraliż, sen, zamrożenie, dezorientacja), stopnie statystyk.
+   premia za własny typ (STAB), formy Mega / Tera (forms), tabela typów (CHART), stany (trucizna, oparzenie, paraliż, sen, zamrożenie, dezorientacja), stopnie statystyk.
    Zdarzenie (ev) opisuje jedną rzecz na scenie: ruch, pudło, stan, ładowanie, obrażenia od trucizny… — widok 2D i 3D tylko je odtwarzają.
    Strojenie: node tools/sim.js */
 const LEVEL = 50, ROUNDS = 15;
 const TUNE = {
   hp: 2.5,               // życie × hp: w grach walka na poziomie 50 trwa ~2 tury, za krótko, żeby zobaczyć stany i animacje
-  stab: 1.5, crit: [1 / 24, 1 / 8, 1 / 2], critMult: 1.5, roll: [.85, .15],   // krytyk wg premii ruchu (0, 1, 2+); losowo ×[.85, 1]
+  stab: 1.5, tera: 2, crit: [1 / 24, 1 / 8, 1 / 2], critMult: 1.5, roll: [.85, .15],   // krytyk wg premii ruchu (0, 1, 2+); losowo ×[.85, 1]
   arena: 1.2, sleep: [1, 3], confuse: [2, 5], selfHit: 1 / 3, selfHitPower: 40, para: .25, thaw: .2,
   poison: 1 / 8, burn: 1 / 16, struggle: 50, struggleRecoil: 1 / 4, ohkoAcc: 30,
   ai: { random: .15, status: .3, boost: .25, healBelow: .5 },   // komputer: czasem losowo, wartość ruchu ze stanem / wzmocnienia (× życia rywala)
@@ -58,6 +58,11 @@ function pickArena(a, b, rnd = Math.random) {
   return fit.length ? fit[Math.floor(rnd() * fit.length)] : ARENAS.plains;
 }
 
+/* ---------- formy: [zwykła, ...Mega, Tera]; Mega ma własne typy i statystyki, Tera = jeden typ w obronie (pierwszy), w nim STAB ×TUNE.tera, pozostałe typy zachowują zwykły STAB — jak w grach ---------- */
+const forms = s => [s, ...(s.mega || []).map(m => ({ ...s, ...m, name: m.n, mega: undefined, form: 'mega' })), { ...s, types: s.types.slice(0, 1), stab: s.types, tera: s.types[0], name: `${s.name} 💎`, form: 'tera' }];
+// rywal w tej samej formie co gracz, jeśli ją ma (Mega: pierwsza z jego Meg), inaczej zwykły
+const formLike = (s, f) => forms(s).find(x => x.form && x.form === f.form) || s;
+
 /* ---------- zawodnik ---------- */
 function fighter(s) {
   const st = { atk: lvStat(s.atk), def: lvStat(s.def), satk: lvStat(s.satk), sdef: lvStat(s.sdef), spd: lvStat(s.spd) }, hp = lvHP(s.hp);
@@ -77,7 +82,7 @@ function damageOf(B, att, def, m, { crit = false, avg = false } = {}) {
   const phys = m.c === 'p', [ak, dk] = phys ? ['atk', 'def'] : ['satk', 'sdef'];
   const A = crit ? att.st[ak] * Math.max(1, stageMult(att.stage[ak])) : eff(att, ak), D = crit ? def.st[dk] * Math.min(1, stageMult(def.stage[dk])) : eff(def, dk);
   let d = Math.floor(Math.floor(Math.floor(2 * LEVEL / 5 + 2) * m.p * A / D) / 50) + 2;
-  d *= (att.s.types.includes(m.t) ? TUNE.stab : 1) * typeMult(m.t, def.s.types) * (B.arena.types.includes(m.t) ? TUNE.arena : 1);
+  d *= (att.s.tera === m.t ? TUNE.tera : (att.s.stab || att.s.types).includes(m.t) ? TUNE.stab : 1) * typeMult(m.t, def.s.types) * (B.arena.types.includes(m.t) ? TUNE.arena : 1);
   d *= (crit ? TUNE.critMult : 1) * (phys && att.status === 'burn' ? .5 : 1) * (avg ? TUNE.roll[0] + TUNE.roll[1] / 2 : TUNE.roll[0] + B.rnd() * TUNE.roll[1]);
   return typeMult(m.t, def.s.types) ? Math.max(1, Math.floor(d)) : 0;
 }
@@ -227,4 +232,4 @@ function autoBattle(sa, sb, rnd) {
   return B;
 }
 
-if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, newBattle, playRound, autoBattle, aiMove };
+if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove };

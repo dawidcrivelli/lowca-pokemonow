@@ -375,6 +375,9 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .ar-slot .art,.fighter .art,.ar-pick .art{display:block;width:100%;aspect-ratio:1}
 .sugg .s-art img{width:100%;height:100%;display:block}
 .fighter.side-b .art{transform:scaleX(-1)}
+/* forma walki: Mega złota poświata, Tera kryształowa */
+.mega .art img{filter:drop-shadow(0 0 7px #F5A524)}.tera .art img{filter:drop-shadow(0 0 7px #7FE3FF) saturate(1.2)}
+.ar-bar .form{white-space:nowrap}
 .ar-bar{display:flex;gap:8px;align-items:stretch;justify-content:center;margin:12px 0 10px;flex-wrap:wrap}
 .seg{display:flex;background:#fff;border:2px solid var(--line);border-radius:14px;padding:3px;gap:3px}
 .seg button,.move{

@@ -7,6 +7,7 @@ const API = 'https://pokeapi.co/api/v2/', MIRROR = 'https://raw.githubuserconten
 const TCG = 'https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/';   // api.pokemontcg.io bywa niedostępne
 const { SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');
 const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family].filter((v, i, a) => a.indexOf(v) === i);
+const MEGA = /^(?!.*female).*-mega(-[xyz])?$/;   // meowstic-female-mega pomijamy: ta sama Mega co samca
 const load = p => JSON.parse(fs.readFileSync(path.join(DIR, p.replace(/\//g, '_') + '.json')));
 // mirror: katalogi po numerze, nie po nazwie (ruchy: numer z adresu w danych Pokémona)
 const MOVE_NO = {}, mirror = p => MIRROR + p.replace(/^move\/([a-z0-9-]+)$/, (_, n) => 'move/' + MOVE_NO[n]) + '/index.json';
@@ -20,7 +21,8 @@ async function get(p, url) {
 (async () => {
   fs.mkdirSync(DIR, { recursive: true });
   for (const i of IDS) {
-    const p = await get(`pokemon/${i}`); await get(`pokemon-species/${i}`);
+    const p = await get(`pokemon/${i}`), sp = await get(`pokemon-species/${i}`);
+    for (const v of sp.varieties.filter(v => MEGA.test(v.pokemon.name))) await get(`pokemon/${v.pokemon.name}`);   // formy Mega do areny
     for (const m of p.moves) MOVE_NO[m.move.name] = +m.move.url.match(/(\d+)\/$/)[1];
   }
   MOVE_NO.tackle ||= 33;

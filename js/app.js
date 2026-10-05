@@ -42,7 +42,7 @@ const LIST = SPECIES;
 const byId = id => LIST.find(s => s.id === +id);
 const isCaught = id => !!DB.caught[id];
 // ghost = czarna sylwetka; small = pikselowy sprite z gier do siatki (lekki), inaczej duża grafika
-const art = (sp, mode = 'color', small) => `<img src="${(small ? SPRITE_URL : ART_URL)(sp.id)}" crossorigin="anonymous" alt="" loading="lazy" draggable="false" class="${small ? 'px' : ''} ${mode}">`;
+const art = (sp, mode = 'color', small) => `<img src="${(small ? SPRITE_URL : ART_URL)(sp.art || sp.id)}" crossorigin="anonymous" alt="" loading="lazy" draggable="false" class="${small ? 'px' : ''} ${mode}">`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const typeTag = t => `<span class="tag type" style="background:${TYPES[t][2]}">${TYPES[t][1]} ${TYPES[t][0]}</span>`;
 const dexNo = sp => '#' + String(sp.id).padStart(3, '0');
@@ -318,7 +318,10 @@ el.modalBody.addEventListener('click', e => {
 
 /* ================= ARENA =================
    Wybór zawodników obrazkami (młodszy nie musi czytać), tryb ▶️ oglądam / 👆 walczę. */
-const A = { a: null, b: null, slot: 'a', B: null, timers: [], token: 0 };
+const A = { a: null, b: null, slot: 'a', form: 0, B: null, timers: [], token: 0 };
+/* forma walki (przycisk w ustawieniach): A.form = numer w forms(A.a) — zwykła → Mega… → Tera; rywal w tej samej formie, jeśli ją ma */
+const formA = () => forms(A.a)[A.form] || A.a, formB = () => formLike(A.b, formA());
+const FORM_LABEL = f => f.form === 'mega' ? `🧬 ${f.name.replace(/ \S+/, '')}` : f.form === 'tera' ? `💎 Tera ${TYPES[f.tera][1]}` : '⚪ Zwykły';
 function stopBattle() { A.timers.forEach(clearTimeout); A.timers = []; A.token++; window.Arena3D?.stop(); }
 const later = (ms, fn) => { const t = A.token; A.timers.push(setTimeout(() => t === A.token && fn(), ms)); };
 const roster = () => LIST.filter(s => isCaught(s.id));
@@ -329,14 +332,14 @@ function openArena(preId) {
   if (roster().length < 2) return openModal(`<div class="m-body"><h2>⚔️ Arena</h2>
     <p class="m-lat">Najpierw złap co najmniej dwa Pokémony.</p>
     <div class="m-actions"><button class="btn ghost" data-close="1">Rozumiem</button></div></div>`);
-  if (preId) { A.a = byId(preId); A.b = randomOther(preId); A.slot = 'b'; }
-  if (!A.a || !isCaught(A.a.id)) { A.a = roster()[0]; A.slot = 'a'; }
+  if (preId) { A.a = byId(preId); A.b = randomOther(preId); A.slot = 'b'; A.form = 0; }
+  if (!A.a || !isCaught(A.a.id)) { A.a = roster()[0]; A.slot = 'a'; A.form = 0; }
   if (!A.b || !isCaught(A.b.id) || A.b === A.a) A.b = randomOther(A.a.id);
   renderSetup();
 }
 function slotHTML(k) {
-  const sp = A[k];
-  return `<button class="ar-slot ${A.slot === k ? 'active' : ''} side-${k}" data-slot="${k}">
+  const sp = k === 'a' ? formA() : formB();
+  return `<button class="ar-slot ${A.slot === k ? 'active' : ''} side-${k} ${sp.form || ''}" data-slot="${k}">
     <span class="who">${k === 'a' ? '🙂 Ty' : '🎯 Rywal'}</span>
     <span class="art">${art(sp)}</span><span class="nm">${esc(sp.name)}</span>${statBars(statsOf(sp))}</button>`;
 }
@@ -349,6 +352,7 @@ function renderSetup() {
         <button class="${mode === 'auto' ? 'on' : ''}" data-mode="auto" title="Oglądam walkę">▶️<small>Oglądam</small></button>
         <button class="${mode === 'play' ? 'on' : ''}" data-mode="play" title="Sam wybieram ruchy">👆<small>Walczę</small></button>
       </div>
+      ${forms(A.a).length > 1 ? `<button class="btn ghost form" data-form="1" title="Zmień formę">${FORM_LABEL(formA())}</button>` : ''}
       <button class="btn ghost icon" data-random="1" title="Losuj rywala">🎲</button>
       <button class="btn amber big" data-fight="1">⚔️ Walka!</button>
     </div>
@@ -361,11 +365,12 @@ function onArenaClick(e) {
   const d = b.dataset;
   if (d.slot) { A.slot = d.slot; blip(500, .05); renderSetup(); }
   if (d.pick) {
-    const sp = byId(d.pick), other = A.slot === 'a' ? 'b' : 'a';
+    const sp = byId(d.pick), other = A.slot === 'a' ? 'b' : 'a', a0 = A.a;
     if (A[other] === sp) A[other] = A[A.slot];
-    A[A.slot] = sp; A.slot = other; cry(sp, 'attack'); renderSetup();
+    A[A.slot] = sp; A.slot = other; if (A.a !== a0) A.form = 0; cry(sp, 'attack'); renderSetup();
   }
   if (d.random) { A.b = randomOther(A.a.id); cry(A.b, 'attack'); renderSetup(); }
+  if (d.form) { A.form = (A.form + 1) % forms(A.a).length; blip(A.form ? 880 : 440, .1); renderSetup(); }
   if (d.mode) { DB.settings.mode = d.mode; save(); renderSetup(); }
   if (d.fight || d.rematch) startFight();
   if (d.newfoe) { A.b = randomOther(A.a.id); startFight(); }
@@ -375,14 +380,14 @@ function onArenaClick(e) {
 el.modalBody.addEventListener('click', onArenaClick);
 
 function fighterHTML(p, side) {
-  return `<div class="fighter side-${side}" id="f-${side}">
+  return `<div class="fighter side-${side} ${p.s.form || ''}" id="f-${side}">
     <div class="art">${art(p.s)}</div><div class="nm">${esc(p.name)}</div>
     <div class="hp"><i id="hp-${side}"></i></div><div class="hpn" id="hpn-${side}">${p.hp}/${p.hp0}</div><div class="stg" id="sg-${side}"></div>
     <span class="stb" id="st-${side}"></span><span class="dmg" id="dmg-${side}"></span></div>`;
 }
 function startFight() {
   stopBattle(); audio();
-  const B = A.B = newBattle(A.a, A.b), play = DB.settings.mode === 'play';
+  const B = A.B = newBattle(formA(), formB()), play = DB.settings.mode === 'play';
   openModal(`<div class="m-body arena">
     <div class="arena-banner">${B.arena.icon} ${esc(B.arena.name)}<small>${esc(B.arena.desc)}</small></div>
     <div class="fight-grid">${fighterHTML(B.a, 'a')}<div class="ar-vs">VS</div>${fighterHTML(B.b, 'b')}</div>

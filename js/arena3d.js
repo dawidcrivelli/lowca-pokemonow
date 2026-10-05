@@ -20,7 +20,7 @@ window.Arena3D = (() => {
   const ANIM_MS = 440, HIT_DELAY = 170, BIG_HIT = 60, SHAKE = 0.22, LUNGE = 0.9;
   const SHOT_MS = 380, BOLT_TOP = 7, BADGE = .55;   // lot pocisku; wysokość, z której spada piorun; wielkość ikony stanu
   const ORBIT = 0.32, ORBIT_MS = 9000, CAM_Y = 2.4, CAM_D = 6, LOOK_Y = 1.3;
-  const PIXEL_RATIO_MAX = 2, SHADOW_MAP = 1024;
+  const PIXEL_RATIO_MAX = 2, SHADOW_MAP = 1024, TERA = 0x7FE3FF;
   /* Każdy teren z battle.js ma kilka wyglądów (biomów), losowanych na walkę.
      props: element tła → ile sztuk; far: dalekie tło → szansa; rock: kolory skał; herd/fly: typy ciał dalekich rysunków;
      fog: [od, do]; light: jasność; tint: false = bez zachodu/chmur na niebie */
@@ -86,7 +86,7 @@ window.Arena3D = (() => {
       const c = cv.getContext('2d'); c.drawImage(img, 0, 0, CV_W, CV_H); tex.needsUpdate = true;
       if (depth) extrude(c.getImageData(0, 0, CV_W, CV_H).data, walls, W, H, d);
     };
-    img.crossOrigin = 'anonymous'; img.src = ART_URL(sp.id);   // CORS: bez tego getImageData() rzuca wyjątek
+    img.crossOrigin = 'anonymous'; img.src = ART_URL(sp.art || sp.id);   // CORS: bez tego getImageData() rzuca wyjątek
     return {};
   }
   /* ścianki boczne: siatka komórek maski alfa; tam, gdzie pełna komórka graniczy z pustą, stawiamy prostokąt w kolorze rysunku
@@ -117,7 +117,8 @@ window.Arena3D = (() => {
     shadow.rotation.x = -Math.PI / 2; shadow.position.set(-dir * GAP, .02, 0); S.scene.add(shadow, root);
     const mats = []; root.traverse(c => c.material && mats.push(c.material));
     const badge = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthTest: false })); badge.scale.setScalar(BADGE); badge.visible = false; S.scene.add(badge);
-    return { root, inner, shadow, badge, H, dir, lift, mats, x0: -dir * GAP, anim: null, ko: false, won: false, phase: Math.random() * 6, swim: water || fly };
+    const tint = new THREE.Color(0xFFFFFF).lerp(new THREE.Color(TERA), sp.form === 'tera' ? .5 : 0);   // Tera: kryształowy odcień
+    return { root, inner, shadow, badge, H, dir, lift, mats, tint, x0: -dir * GAP, anim: null, ko: false, won: false, phase: Math.random() * 6, swim: water || fly };
   }
 
   /* ---------- teren ---------- */
@@ -365,7 +366,7 @@ window.Arena3D = (() => {
     [f.inner.rotation.x, f.inner.rotation.z] = a?.k === 'ko' || f.ko ? [rz, 0] : [0, rz];
     f.inner.scale.y = sy; f.inner.rotation.y = ry;
     f.badge.position.set(f.x0 + dx, f.lift + dy + f.H + BADGE * (.7 + .08 * Math.sin(tm * 4)), dz);   // ikona stanu nad głową
-    for (const m of f.mats) m.emissive ? m.emissive.setRGB(flash * .8, glow * .35, 0) : m.color.setRGB(1, 1 - flash * .6, 1 - flash * .6);
+    for (const m of f.mats) m.emissive ? m.emissive.setRGB(flash * .8, glow * .35, 0) : m.color.setRGB(1, 1 - flash * .6, 1 - flash * .6).multiply(f.tint);
     if (a?.k === 'ko' || f.ko) {   // przewrócony obraca się wokół stóp → podnieś, żeby leżał NA ziemi, nie pod nią
       f.root.updateMatrixWorld(true);
       f.root.position.y -= Math.min(0, new THREE.Box3().setFromObject(f.inner).min.y - GROUND_EPS);
