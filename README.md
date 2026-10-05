@@ -16,7 +16,8 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **Arena** — jak w grach, na poziomie 50: 4 ruchy z gry (Scarlet/Violet, wybór: `tmp/moves.js`), wzór na obrażenia, premia za własny typ,
   tabela typów, stany (☠️ 🔥 ⚡ 💤 🧊 💫), zmiany statystyk, ładowanie i odpoczynek; życie ×2,5, żeby walka trwała ~5 rund.
   Teren daje premię swoim typom (Wyspa Cynamonowa: 🔥…). Tryby ▶️ oglądam / 👆 walczę (4 przyciski ruchów z PP), widok 2D albo 3D
-  (pociski w kolorze typu, pioruny, ikony stanów). Komputer wybiera ruch o największych oczekiwanych obrażeniach albo stan / wzmocnienie.
+  (pociski w kolorze typu, pioruny, ikony stanów). Komputer wybiera ruch o największych oczekiwanych obrażeniach albo stan / wzmocnienie
+  (każdą statystykę wzmacnia najwyżej raz i nigdy dwa takie ruchy z rzędu); zmienione statystyki widać pod paskiem życia (👊+1 💨+1).
 - **Karty** z zestawu „Pokémon 151” (Scarlet & Violet, 2023), dla Horyzontów z innych zestawów (`tmp/pick_cards.js`);
   niezłapane: rewers z sylwetką. U góry przełącznik 🎨 Pokémony / 🃏 Karty
   (siatka i karta Pokémona); dotknij karty lub obrazka → pełny ekran.

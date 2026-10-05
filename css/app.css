@@ -427,6 +427,14 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .move b{font:800 15px var(--font-b)}
 .move:disabled{filter:grayscale(1);opacity:.5}
 .stb{position:absolute;top:4px;right:6px;font-size:20px}
+/* zmienione statystyki pod paskiem życia; poświata przy wzmocnieniu (czerwona) / osłabieniu (niebieska) */
+.stg{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;min-height:17px;margin-top:2px}
+.stg i{font:800 11px/16px var(--font-b);font-style:normal;padding:0 5px;border-radius:99px;background:#FFE1D8;color:#B23A26;animation:pop .3s}
+.stg i.dn{background:#DCE7FF;color:#2D52B0}
+.fighter.buff{animation:buff .7s ease-out}
+.fighter.debuff{animation:debuff .7s ease-out}
+@keyframes buff{30%{box-shadow:0 0 0 6px rgba(255,106,90,.55),0 0 26px 8px rgba(255,170,60,.7);transform:scale(1.06) translateY(-4px)}}
+@keyframes debuff{30%{box-shadow:0 0 0 6px rgba(90,140,255,.5),0 0 22px 6px rgba(90,140,255,.6);transform:scale(.96) translateY(3px)}}
 .dmg.icon{font-size:40px}
 .move:active{transform:translateY(3px);box-shadow:none}
 .battle-log{margin-top:10px;background:var(--ink);color:#EAF4EF;border-radius:14px;padding:10px 12px;max-height:170px;overflow:auto;font-size:13px;line-height:1.45}

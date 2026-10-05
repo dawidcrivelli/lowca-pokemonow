@@ -328,6 +328,12 @@ window.Arena3D = (() => {
     o.position.copy(mid(f)); o.rotation.y = Math.PI / 2;
     flashObj(o, 500, t => { o.scale.setScalar(.4 + 1.8 * t); m.opacity = 1 - t; });
   }
+  // wzmocnienie / osłabienie: poziomy pierścień wokół zawodnika, wznosi się (w górę) albo opada (w dół)
+  function aura(f, color, up) {
+    const m = new THREE.MeshBasicMaterial({ color, transparent: true, side: THREE.DoubleSide, depthWrite: false }), o = new THREE.Mesh(new THREE.TorusGeometry(.55, .05, 6, 28), m);
+    const c = mid(f), h = c.y * 1.6; o.rotation.x = Math.PI / 2;
+    flashObj(o, 650, t => { o.position.set(c.x, up ? h * t : h * (1 - t), c.z); o.scale.setScalar(1 + .3 * Math.sin(t * Math.PI)); m.opacity = 1 - t * t; });
+  }
   // ikona stanu (emoji) jako tekstura sprite'a
   const EMOJI = {};
   function setBadge(f, icon) {
@@ -397,7 +403,11 @@ window.Arena3D = (() => {
     if (ev.tick) burst(a, 12, STATUS_COL[ev.tick], { g: -2, up: .3, life: .8 }), play(a, 'hit');
     else if (ev.charge) { play(a, 'cast', ANIM_MS * 2); burst(a, 16, col(t), { g: -3, up: .2, life: 1 }); }
     else if (ev.heal || ev.drain) burst(a, 14, 0x6EE07A, { g: -3, up: .3, life: .9 });
-    else if (ev.stat) burst(S.side[ev.on], 12, ev.n > 0 ? 0xFF6A5A : 0x5A8CFF, { g: ev.n > 0 ? -4 : 6, up: ev.n > 0 ? .2 : -.2, life: .8 });
+    else if (ev.stat) {
+      const f = S.side[ev.on], c = ev.n > 0 ? 0xFF6A5A : 0x5A8CFF;
+      burst(f, ev.n ? 22 : 6, c, { g: ev.n > 0 ? -4 : 6, up: ev.n > 0 ? .2 : -.2, life: .9 });
+      if (ev.n) { aura(f, c, ev.n > 0); soon(180, () => aura(f, ev.n > 0 ? 0xFFC14A : 0x9CC0FF, ev.n > 0)); if (ev.n > 0) play(f, 'cast'); }
+    }
     else if (ev.status) burst(S.side[ev.on], 16, STATUS_COL[ev.status], { g: -1, up: .4, life: 1 });
     else if (ev.skip) burst(a, 6, STATUS_COL[ev.skip] || 0xFFFFFF, { g: -1, up: .3 });
     else if (ev.selfHit) play(a, 'hit');

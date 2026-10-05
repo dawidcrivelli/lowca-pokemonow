@@ -26,6 +26,7 @@ const STATUS = {
   poison: ['☠️', 'zatruty', ['poison', 'steel']], burn: ['🔥', 'oparzony', ['fire']], paralysis: ['⚡', 'sparaliżowany', ['electric']],
   sleep: ['💤', 'śpi', []], freeze: ['🧊', 'zamrożony', ['ice']], confusion: ['💫', 'zdezorientowany', []],
 };
+const STAT_ICON = { atk: '👊', def: '🛡️', satk: '✨', sdef: '🔰', spd: '💨', acc: '🎯', eva: '🌀' };   // widok: znaczki zmienionych statystyk
 const STAT_PL = { atk: 'atak', def: 'obrona', satk: 'atak specjalny', sdef: 'obrona specjalna', spd: 'szybkość', acc: 'celność', eva: 'uniki' };
 // klucze jak THEMES w arena3d.js; types: ruchy tych typów dostają premię ×TUNE.arena
 const ARENAS = {
@@ -82,10 +83,11 @@ function damageOf(B, att, def, m, { crit = false, avg = false } = {}) {
 }
 const hits = (B, att, def, m) => !m.a && !m.ohko || B.rnd() * 100 < (m.ohko ? TUNE.ohkoAcc : m.a * stageMult(att.stage.acc - def.stage.eva, 3));
 
-/* ---------- zdarzenia: każde niesie stan obu stron po sobie (hp, stan) — widok animuje je po kolei ---------- */
+/* ---------- zdarzenia: każde niesie stan obu stron po sobie (hp, stan, zmienione statystyki sg) — widok animuje je po kolei ---------- */
 const side = (B, f) => f === B.a ? 'a' : 'b';
+const stages = f => Object.fromEntries(Object.entries(f.stage).filter(([, n]) => n));
 const emitter = (B, att, def, out) => o => (out.push({ round: B.round, as: side(B, att), ds: side(B, def), att: att.id, def: def.id, ...o,
-  hp: { a: B.a.hp, b: B.b.hp }, st: { a: B.a.status || (B.a.confused ? 'confusion' : null), b: B.b.status || (B.b.confused ? 'confusion' : null) } }), out);
+  hp: { a: B.a.hp, b: B.b.hp }, st: { a: B.a.status || (B.a.confused ? 'confusion' : null), b: B.b.status || (B.b.confused ? 'confusion' : null) }, sg: { a: stages(B.a), b: stages(B.b) } }), out);
 /* ---------- stany i statystyki; on = strona, której dotyczy ---------- */
 function inflict(B, f, ail, E) {
   if (ail === 'confusion') {
@@ -127,6 +129,7 @@ function useMove(B, att, def, slot) {
   }
   const mv = att.charging || (att.moves.every(x => !x.pp) ? { m: STRUGGLE } : att.moves[slot]), m = mv.m;
   if (!att.charging && mv.pp) mv.pp--;
+  att.lastX = m.c === 'x';   // ruch bez obrażeń: komputer w następnej turze atakuje (aiMove)
   const ev = { move: mv.k, m };
   if (m.chg && !att.charging) { att.charging = mv; return E({ ...ev, charge: true, text: `✨ ${att.name} ładuje: ${m.n}…` }); }
   att.charging = null;
@@ -171,21 +174,24 @@ function tick(B, f, out) {
   emitter(B, f, f, out)({ tick: f.status, damage: d, text: `${STATUS[f.status][0]} ${f.name} traci ${d} życia (${STATUS[f.status][1]}).` });
 }
 
-/* ---------- komputer: wartość ruchu ≈ oczekiwane obrażenia (dobicie = najpewniejszy cios), stan i wzmocnienia wg TUNE.ai ---------- */
+/* ---------- komputer: wartość ruchu ≈ oczekiwane obrażenia (dobicie = najpewniejszy cios), stan i wzmocnienia wg TUNE.ai
+   Wzmocnienie: liczy się najlepsza statystyka ruchu (Taniec Smoka ≠ 2× wartość), każda najwyżej raz, nigdy dwa ruchy bez obrażeń z rzędu –
+   inaczej walka to seria „atak rośnie!” bez ciosów. ---------- */
 function aiMove(B, me, foe) {
   const rnd = B.rnd, K = TUNE.ai, ok = me.moves.map((x, i) => [x, i]).filter(([x]) => x.pp);
   if (!ok.length) return 0;
-  if (rnd() < K.random) return ok[Math.floor(rnd() * ok.length)][1];
+  if (rnd() < K.random) { const r = ok.filter(([x]) => !me.lastX || x.m.c !== 'x'); if (r.length) return r[Math.floor(rnd() * r.length)][1]; }
   const score = ({ m }) => {
     const acc = m.a ? m.a / 100 : m.ohko ? TUNE.ohkoAcc / 100 : 1;
     if (m.c !== 'x') {
       const d = (m.ohko ? (typeMult(m.t, foe.s.types) ? foe.hp : 0) : damageOf(B, me, foe, m, { avg: true }) * (m.hits ? 3 : 1)) / (m.chg || m.rch ? 2 : 1);
       return d >= foe.hp ? foe.hp * (1 + acc) : d * acc;
     }
+    if (me.lastX) return 0;   // po ruchu bez obrażeń: cios
     let v = 0;
     if (m.heal && me.hp < me.hp0 * K.healBelow) v += me.hp0 * m.heal / 100;
     if (m.ail && !(m.ail === 'confusion' ? foe.confused : foe.status) && !STATUS[m.ail][2].some(t => foe.s.types.includes(t))) v += foe.hp0 * K.status * acc;
-    if (m.st) v += m.st.reduce((t, [k, n]) => t + ((m.self ? n > 0 && me.stage[k] < 2 : n < 0 && foe.stage[k] > -2) ? foe.hp0 * K.boost : 0), 0) * (me.hp > me.hp0 / 2);
+    if (m.st && me.hp > me.hp0 / 2 && m.st.some(([k, n]) => m.self ? n > 0 && me.stage[k] < 1 : n < 0 && foe.stage[k] > -1)) v += foe.hp0 * K.boost;
     return v;
   };
   return ok.reduce((b, c) => score(c[0]) > score(b[0]) ? c : b)[1];
@@ -221,4 +227,4 @@ function autoBattle(sa, sb, rnd) {
   return B;
 }
 
-if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TYPES, STATUS, ARENAS, statsOf, typeMult, newBattle, playRound, autoBattle, aiMove };
+if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, newBattle, playRound, autoBattle, aiMove };

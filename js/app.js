@@ -382,7 +382,7 @@ el.modalBody.addEventListener('click', onArenaClick);
 function fighterHTML(p, side) {
   return `<div class="fighter side-${side}" id="f-${side}">
     <div class="art">${art(p.s)}</div><div class="nm">${esc(p.name)}</div>
-    <div class="hp"><i id="hp-${side}"></i></div><div class="hpn" id="hpn-${side}">${p.hp}/${p.hp0}</div>
+    <div class="hp"><i id="hp-${side}"></i></div><div class="hpn" id="hpn-${side}">${p.hp}/${p.hp0}</div><div class="stg" id="sg-${side}"></div>
     <span class="stb" id="st-${side}"></span><span class="dmg" id="dmg-${side}"></span></div>`;
 }
 function startFight() {
@@ -431,7 +431,10 @@ function showEvents(evs, done) {
       else if (ev.recoil) floatText(as, `−${ev.recoil}`);
       else if (ev.miss) { floatText(as, 'pudło'); fx(wet ? 'bubble' : 'whoosh'); }
       else if (ev.status) floatText(on, STATUS[ev.status][0], 'icon');
-      else if (ev.stat) floatText(on, ev.n > 0 ? '⬆️' : ev.n < 0 ? '⬇️' : '·', 'icon');
+      else if (ev.stat) {   // wzmocnienie / osłabienie: znaczek statystyki ze strzałką i poświata wokół zawodnika
+        floatText(on, ev.n ? STAT_ICON[ev.stat] + (ev.n > 0 ? '⬆️' : '⬇️') : '·', 'icon');
+        if (ev.n) { const t = $(`#f-${on}`), c = ev.n > 0 ? 'buff' : 'debuff'; t.classList.remove('buff', 'debuff'); void t.offsetWidth; t.classList.add(c); blip(ev.n > 0 ? 660 : 330, .12); }
+      }
       else if (ev.skip) floatText(as, { sleep: '💤', freeze: '🧊', paralysis: '⚡', flinch: '😖', recharge: '😮‍💨' }[ev.skip], 'icon');
       else if (ev.charge) { floatText(as, '✨', 'icon'); blip(700, .06); }
       for (const k of ['a', 'b']) {
@@ -440,6 +443,7 @@ function showEvents(evs, done) {
         Object.assign($(`#hp-${k}`).style, { width: pct + '%', backgroundPosition: `${pct}% 0` });
         $(`#hpn-${k}`).textContent = `${hp}/${p.hp0}`;
         $(`#st-${k}`).textContent = ev.st[k] ? STATUS[ev.st[k]][0] : '';
+        $(`#sg-${k}`).innerHTML = Object.entries(ev.sg[k]).map(([s, n]) => `<i class="${n > 0 ? 'up' : 'dn'}">${STAT_ICON[s]}${n > 0 ? '+' : ''}${n}</i>`).join('');
       }
     }
     const log = $('#log');
