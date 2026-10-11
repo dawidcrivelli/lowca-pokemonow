@@ -455,6 +455,15 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .battle-log strong{color:#FFE08A}
 .battle-result{margin-top:10px;text-align:center;border-radius:16px;padding:12px;background:#FFF3D8;border:3px solid var(--amber);animation:pop .4s}
 .battle-result .winner{font:800 24px var(--font-h)}
+/* trening: znaczek ⭐+N (przyrost poziomu ponad 50), pasek EXP, świętowanie nowego poziomu */
+.lvb{display:inline-block;padding:0 6px;border-radius:99px;background:var(--amber);color:#3A2600;font:900 11px/17px var(--font-b);vertical-align:middle;letter-spacing:0}
+h2 .lvb{font-size:14px;line-height:22px;padding:0 9px}
+.xpbar i b{background:linear-gradient(90deg,#F5A524,#FFD45C)}
+.xpbar em{font-size:10px;letter-spacing:-.3px}
+.battle-result .xp-gain{margin-top:8px;font:800 14px var(--font-b);color:var(--ink-soft)}
+.battle-result .xpbar{max-width:260px;margin:4px auto 0}
+.lvup{margin:8px auto 0;padding:8px 12px;max-width:320px;border-radius:14px;background:#FFF1C7;border:2px solid var(--amber);font:800 15px var(--font-b);animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
+.lvup span{display:block;margin-top:3px;font-size:13px;color:var(--ink-soft)}
 .battle-result small{font-weight:800;color:var(--ink-soft)}
 .m-actions.center{justify-content:center}
 

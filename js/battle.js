@@ -1,5 +1,5 @@
 /* ================= ARENA – silnik walki (bez DOM) =================
-   Jak w grach, na poziomie LEVEL: statystyki z bazowych (js/species.js), 4 ruchy z gry (sp.mv → MOVES), wzór na obrażenia z gier,
+   Jak w grach, na poziomie LEVEL (trening: do TRAIN.max, s.lv): statystyki z bazowych (js/species.js), 4 ruchy z gry (sp.mv → MOVES), wzór na obrażenia z gier,
    premia za własny typ (STAB), formy Mega / Tera (forms), tabela typów (CHART), stany (trucizna, oparzenie, paraliż, sen, zamrożenie, dezorientacja), stopnie statystyk.
    Zdarzenie (ev) opisuje jedną rzecz na scenie: ruch, pudło, stan, ładowanie, obrażenia od trucizny… — widok 2D i 3D tylko je odtwarzają.
    Strojenie: node tools/sim.js */
@@ -12,6 +12,12 @@ const TUNE = {
   ai: { random: .15, status: .3, boost: .25, healBelow: .5 },   // komputer: czasem losowo, wartość ruchu ze stanem / wzmocnienia (× życia rywala)
 };
 const clampN = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+/* trening (tryb rodzica może wyłączyć): poziom od LEVEL do max, perLevel EXP na poziom.
+   EXP za wygraną = win × (siła rywala / własna)³, w granicach [minMult, maxMult]; przegrana: lose × tyle. Siła = suma statystyk z poziomem. */
+const TRAIN = { max: 60, perLevel: 50, win: 25, lose: .2, minMult: .05, maxMult: 2 };
+const levelOf = xp => Math.min(TRAIN.max, LEVEL + Math.floor((xp || 0) / TRAIN.perLevel));
+const power = f => Object.values(f.st).reduce((t, v) => t + v, 0) + f.hp0 / TUNE.hp;
+const xpGain = (me, foe, won) => Math.max(won ? 1 : 0, Math.round(TRAIN.win * clampN((power(foe) / power(me)) ** 3, TRAIN.minMult, TRAIN.maxMult) * (won ? 1 : TRAIN.lose)));
 
 // typ → [nazwa, ikona, kolor]
 const TYPES = {
@@ -43,10 +49,10 @@ const ARENAS = {
 for (const a of Object.values(ARENAS)) a.desc = `Premia dla: ${a.types.map(t => TYPES[t][1] + ' ' + TYPES[t][0]).join(', ')}.`;
 const STRUGGLE = { n: 'Szamotanina', t: 'normal', c: 'p', p: TUNE.struggle, pp: 1 };   // gdy skończą się PP
 
-/* ---------- statystyki na poziomie LEVEL (IV 31, bez EV) ---------- */
-const lvStat = b => Math.floor((2 * b + 31) * LEVEL / 100) + 5;
-const lvHP = b => Math.floor((Math.floor((2 * b + 31) * LEVEL / 100) + LEVEL + 10) * TUNE.hp);
-const statsOf = s => ({ hp: lvHP(s.hp), attack: lvStat(Math.max(s.atk, s.satk)), defense: lvStat((s.def + s.sdef) / 2), speed: lvStat(s.spd) });
+/* ---------- statystyki na poziomie L (domyślnie LEVEL, z treningu: s.lv; IV 31, bez EV) ---------- */
+const lvStat = (b, L = LEVEL) => Math.floor((2 * b + 31) * L / 100) + 5;
+const lvHP = (b, L = LEVEL) => Math.floor((Math.floor((2 * b + 31) * L / 100) + L + 10) * TUNE.hp);
+const statsOf = s => { const L = s.lv || LEVEL; return { hp: lvHP(s.hp, L), attack: lvStat(Math.max(s.atk, s.satk), L), defense: lvStat((s.def + s.sdef) / 2, L), speed: lvStat(s.spd, L) }; };
 // mnożnik typu t na obrońcę o typach def: Ognisty na Trawiasty/Robaczy = ×4, Normalny na Ducha = ×0
 const typeMult = (t, def) => def.reduce((m, d) => m * (CHART[t]?.[d] ?? 1), 1);   // CHART[t] brak: cios bez typu (dezorientacja)
 // stopień −6…+6 → mnożnik; celność i uniki mają łagodniejszą skalę
@@ -65,8 +71,8 @@ const formLike = (s, f) => forms(s).find(x => x.form && x.form === f.form) || s;
 
 /* ---------- zawodnik ---------- */
 function fighter(s) {
-  const st = { atk: lvStat(s.atk), def: lvStat(s.def), satk: lvStat(s.satk), sdef: lvStat(s.sdef), spd: lvStat(s.spd) }, hp = lvHP(s.hp);
-  return { s, id: s.id, name: s.name, st, hp, hp0: hp, moves: s.mv.map(k => ({ k, m: MOVES[k], pp: MOVES[k].pp })),
+  const L = s.lv || LEVEL, st = { atk: lvStat(s.atk, L), def: lvStat(s.def, L), satk: lvStat(s.satk, L), sdef: lvStat(s.sdef, L), spd: lvStat(s.spd, L) }, hp = lvHP(s.hp, L);
+  return { s, lv: L, id: s.id, name: s.name, st, hp, hp0: hp, moves: s.mv.map(k => ({ k, m: MOVES[k], pp: MOVES[k].pp })),
     stage: { atk: 0, def: 0, satk: 0, sdef: 0, spd: 0, acc: 0, eva: 0 }, status: null, sleep: 0, confused: 0, charging: null, recharge: false };
 }
 function newBattle(sa, sb, rnd = Math.random) {
@@ -78,10 +84,10 @@ const intRange = (rnd, [lo, hi]) => lo + Math.floor(rnd() * (hi - lo + 1));
 
 /* obrażenia jednego trafienia; opts.avg → średnia bez losowania (dla komputera) */
 function damageOf(B, att, def, m, { crit = false, avg = false } = {}) {
-  if (m.fix) return m.fix === 'level' ? LEVEL : m.fix === 'half' ? Math.max(1, Math.floor(def.hp / 2)) : m.fix;
+  if (m.fix) return m.fix === 'level' ? att.lv : m.fix === 'half' ? Math.max(1, Math.floor(def.hp / 2)) : m.fix;
   const phys = m.c === 'p', [ak, dk] = phys ? ['atk', 'def'] : ['satk', 'sdef'];
   const A = crit ? att.st[ak] * Math.max(1, stageMult(att.stage[ak])) : eff(att, ak), D = crit ? def.st[dk] * Math.min(1, stageMult(def.stage[dk])) : eff(def, dk);
-  let d = Math.floor(Math.floor(Math.floor(2 * LEVEL / 5 + 2) * m.p * A / D) / 50) + 2;
+  let d = Math.floor(Math.floor(Math.floor(2 * att.lv / 5 + 2) * m.p * A / D) / 50) + 2;
   d *= (att.s.tera === m.t ? TUNE.tera : (att.s.stab || att.s.types).includes(m.t) ? TUNE.stab : 1) * typeMult(m.t, def.s.types) * (B.arena.types.includes(m.t) ? TUNE.arena : 1);
   d *= (crit ? TUNE.critMult : 1) * (phys && att.status === 'burn' ? .5 : 1) * (avg ? TUNE.roll[0] + TUNE.roll[1] / 2 : TUNE.roll[0] + B.rnd() * TUNE.roll[1]);
   return typeMult(m.t, def.s.types) ? Math.max(1, Math.floor(d)) : 0;
@@ -232,4 +238,4 @@ function autoBattle(sa, sb, rnd) {
   return B;
 }
 
-if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove };
+if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TRAIN, levelOf, xpGain, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove };

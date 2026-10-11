@@ -4,9 +4,9 @@
 'use strict';
 
 /* ---------------- zapis ----------------
-   caught: id → {t}   rec: id → {w, l} */
+   caught: id → {t}   rec: id → {w, l}   xp: id → EXP z treningu (js/battle.js: TRAIN)   settings.train: false = trening wyłączony */
 const KEY = 'pokeTracker.v1';
-const blank = () => ({ caught: {}, rec: {}, settings: { sound: true, mode: 'auto' } });
+const blank = () => ({ caught: {}, rec: {}, xp: {}, settings: { sound: true, mode: 'auto' } });
 const load = j => { const db = blank(); for (const k of Object.keys(db)) if (j?.[k]) db[k] = k === 'settings' ? { ...db[k], ...j[k] } : j[k]; return db; };
 let DB = (() => { try { return load(JSON.parse(localStorage.getItem(KEY))); } catch (e) { return blank(); } })();
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
@@ -249,18 +249,28 @@ const openCard = sp => openModal(isCaught(sp.id) ? caughtCard(sp) : hintCard(sp)
 
 /* paski statystyk z ikonami – czytelne bez umiejętności czytania */
 const STAT_ICONS = [['hp', '❤️', 'Życie', 700], ['attack', '👊', 'Atak', 200], ['defense', '🛡️', 'Obrona', 200], ['speed', '💨', 'Szybkość', 200]];   // statystyki na poziomie 50 (js/battle.js)
-const statBars = st => `<div class="sbars">${STAT_ICONS.map(([k, ico, lbl, max]) =>
-  `<div class="sbar" title="${lbl}"><span>${ico}</span><i><b style="width:${Math.round(100 * st[k] / max)}%"></b></i><em>${st[k]}</em></div>`).join('')}</div>`;
+const statBars = (st, extra = '') => `<div class="sbars">${STAT_ICONS.map(([k, ico, lbl, max]) =>
+  `<div class="sbar" title="${lbl}"><span>${ico}</span><i><b style="width:${Math.round(100 * st[k] / max)}%"></b></i><em>${st[k]}</em></div>`).join('')}${extra}</div>`;
 const record = id => DB.rec[id] || { w: 0, l: 0 };
+/* trening: poziom z EXP (wyłączony w trybie rodzica → wszyscy na LEVEL); znaczek ⭐+N tylko u wytrenowanych */
+const training = () => DB.settings.train !== false;
+const lvOf = id => training() ? levelOf(DB.xp[id]) : LEVEL;
+const withLv = sp => ({ ...sp, lv: lvOf(sp.id) });
+const lvBadge = id => (d => d > 0 ? ` <span class="lvb" title="Trening: poziom ${LEVEL + d}">⭐+${d}</span>` : '')(lvOf(id) - LEVEL);
+function xpBar(id) {
+  if (!training()) return '';
+  const xp = DB.xp[id] || 0, max = lvOf(id) >= TRAIN.max, part = xp % TRAIN.perLevel;
+  return `<div class="sbar xpbar" title="Trening: EXP do następnego poziomu"><span>⭐</span><i><b style="width:${max ? 100 : Math.round(100 * part / TRAIN.perLevel)}%"></b></i><em>${max ? 'MAX' : `${part}/${TRAIN.perLevel}`}</em></div>`;
+}
 
 function caughtCard(sp) {
-  const st = statsOf(sp), r = record(sp.id), pre = byId(sp.from), next = evolutions(sp);
+  const st = statsOf(withLv(sp)), r = record(sp.id), pre = byId(sp.from), next = evolutions(sp);
   const evo = [pre && `z ${esc(pre.name)}`, next.length && `w ${next.map(s => isCaught(s.id) ? esc(s.name) : '???').join(' / ')}`].filter(Boolean).join(' → ');
   return `
   <div class="m-hero ${binder() ? 'card' : ''}"><button class="btn ghost icon flip" data-flip="1" title="Karta / obrazek">${binder() ? '🎨' : '🃏'}</button>
     <div class="art" data-zoom="${ART_URL(sp.id)}">${art(sp)}</div><img class="tcg" src="${CARD_URL(sp, 'big')}" data-zoom="${CARD_URL(sp, 'big')}" alt="Karta ${esc(sp.name)}"></div>
   <div class="m-body">
-    <h2>${esc(sp.name)}</h2><p class="m-lat">${dexNo(sp)} · ${esc(sp.kind || '')}</p>
+    <h2>${esc(sp.name)}${lvBadge(sp.id)}</h2><p class="m-lat">${dexNo(sp)} · ${esc(sp.kind || '')}</p>
     <div class="m-tags">
       ${sp.types.map(typeTag).join('')}
       ${sp.legend ? '<span class="tag light">⭐ Legendarny</span>' : ''}
@@ -273,7 +283,7 @@ function caughtCard(sp) {
       ${evo ? `<div class="stat wide"><span>EWOLUCJA</span><b class="small">${evo}</b></div>` : ''}
     </div>
     ${sp.vars ? `<div class="m-vars"><b>✨ KARTY SPECJALNE · Mega i V</b><div>${sp.vars.map(u => (big => `<img src="${u}" data-zoom="${big}" alt="" loading="lazy">`)(CARD_URL({ card: { img: u } }, 'big'))).join('')}</div></div>` : ''}
-    ${statBars(st)}
+    ${statBars(st, xpBar(sp.id))}
     <p class="traits"><span class="record">⚔️ ${r.w} wygranych · ${r.l} przegranych</span></p>
     <div class="m-actions">
       <button class="btn amber big" data-arena="${sp.id}">⚔️ Do areny</button>
@@ -341,7 +351,7 @@ function slotHTML(k) {
   const sp = k === 'a' ? formA() : formB();
   return `<button class="ar-slot ${A.slot === k ? 'active' : ''} side-${k} ${sp.form || ''}" data-slot="${k}">
     <span class="who">${k === 'a' ? '🙂 Ty' : '🎯 Rywal'}</span>
-    <span class="art" style="--m:url(${ART_URL(sp.art || sp.id)})">${art(sp)}</span><span class="nm">${esc(sp.name)}</span>${statBars(statsOf(sp))}</button>`;
+    <span class="art" style="--m:url(${ART_URL(sp.art || sp.id)})">${art(sp)}</span><span class="nm">${esc(sp.name)}${lvBadge(sp.id)}</span>${statBars(statsOf(withLv(sp)))}</button>`;
 }
 function renderSetup() {
   const mode = DB.settings.mode;
@@ -381,13 +391,13 @@ el.modalBody.addEventListener('click', onArenaClick);
 
 function fighterHTML(p, side) {
   return `<div class="fighter side-${side} ${p.s.form || ''}" id="f-${side}">
-    <div class="art" style="--m:url(${ART_URL(p.s.art || p.s.id)})">${art(p.s)}</div><div class="nm">${esc(p.name)}</div>
+    <div class="art" style="--m:url(${ART_URL(p.s.art || p.s.id)})">${art(p.s)}</div><div class="nm">${esc(p.name)}${lvBadge(p.id)}</div>
     <div class="hp"><i id="hp-${side}"></i></div><div class="hpn" id="hpn-${side}">${p.hp}/${p.hp0}</div><div class="stg" id="sg-${side}"></div>
     <span class="stb" id="st-${side}"></span><span class="dmg" id="dmg-${side}"></span></div>`;
 }
 function startFight() {
   stopBattle(); audio();
-  const B = A.B = newBattle(formA(), formB()), play = DB.settings.mode === 'play';
+  const B = A.B = newBattle(withLv(formA()), withLv(formB())), play = DB.settings.mode === 'play';
   openModal(`<div class="m-body arena">
     <div class="arena-banner">${B.arena.icon} ${esc(B.arena.name)}<small>${esc(B.arena.desc)}</small></div>
     <div class="fight-grid">${fighterHTML(B.a, 'a')}<div class="ar-vs">VS</div>${fighterHTML(B.b, 'b')}</div>
@@ -458,6 +468,7 @@ function finish() {
   const r = $('#result');
   r.innerHTML = `<div class="winner">🏆 ${esc(w.name)}!</div>
     <small>${w === a ? '🙂 Wygrywasz!' : '🎯 Wygrywa rywal'} · zostało ${w.hp}/${w.hp0} ❤️ · bilans ${DB.rec[w.id].w}–${DB.rec[w.id].l}</small>
+    ${train(a, b, w === a)}
     <div class="m-actions center">
       <button class="btn amber big" data-rematch="1">🔁 Rewanż</button>
       <button class="btn" data-newfoe="1">🎲 Nowy rywal</button>
@@ -545,6 +556,21 @@ function cpuPlays() {
   evs.forEach((ev, i) => later(CPU_MS * (i + 1), () => duelEvent(ev, 'cpu')));
   later(CPU_MS * (evs.length + 1), () => { if (!K.D.winner) K.log.push('Twoja tura!'); renderDuel(); finishDuel(); });
 }
+/* trening: EXP dla Twojego Pokémona (strona a) — za wygraną zależnie od siły rywala, za przegraną trochę; nowy poziom = świętowanie z przyrostem statystyk */
+function train(a, b, won) {
+  if (!training()) return '';
+  const before = lvOf(a.id);
+  if (before >= TRAIN.max) return `<div class="xp-gain">🏅 ${esc(a.name)}: w pełni wytrenowany (⭐+${TRAIN.max - LEVEL})</div>`;
+  const gain = xpGain(a, b, won), after = levelOf((DB.xp[a.id] || 0) + gain);
+  DB.xp[a.id] = Math.min((TRAIN.max - LEVEL) * TRAIN.perLevel, (DB.xp[a.id] || 0) + gain); save();
+  let up = '';
+  if (after > before) {
+    const s0 = statsOf({ ...a.s, lv: before }), s1 = statsOf({ ...a.s, lv: after });
+    up = `<div class="lvup">🎉 ${esc(a.name)}: nowy poziom ⭐+${after - LEVEL}!<span>${STAT_ICONS.map(([k, ico]) => `${ico}+${s1[k] - s0[k]}`).join(' ')}</span></div>`;
+    later(300, () => { blip(660, .1); later(120, () => blip(880, .1)); later(240, () => blip(1100, .16)); });
+  }
+  return `<div class="xp-gain">⭐ ${esc(a.name)}: +${gain} EXP${won ? '' : ' za walkę'}</div>${xpBar(a.id)}${up}`;
+}
 function finishDuel() {
   if (!K.D.winner) return;
   if (K.D.winner === 'me') navigator.vibrate?.([35, 45, 70]);
@@ -608,6 +634,8 @@ function toggleEdit() {
       <button class="btn ghost" data-eb="export">Zapisz do pliku</button>
       <button class="btn ghost" data-eb="import">Wczytaj z pliku</button>
       <button class="btn ghost" data-eb="sound">Dźwięk: ${DB.settings.sound ? 'wł.' : 'wył.'}</button>
+      <button class="btn ghost" data-eb="train">Trening: ${training() ? 'wł.' : 'wył.'}</button>
+      <button class="btn ghost" data-eb="untrain">Wyzeruj trening</button>
       <button class="btn ghost" data-eb="all">Złap wszystkie (test)</button>
       <button class="btn danger" data-eb="reset">Wyzeruj postęp</button>
     </div>`;
@@ -630,6 +658,8 @@ function editBarClick(e) {
       inp.click();
     },
     sound() { DB.settings.sound = !DB.settings.sound; save(); b.textContent = `Dźwięk: ${DB.settings.sound ? 'wł.' : 'wył.'}`; },
+    train() { DB.settings.train = !training(); save(); renderAll(); b.textContent = `Trening: ${training() ? 'wł.' : 'wył.'}`; },
+    untrain() { if (confirm('Wyzerować trening wszystkich Pokémonów (poziomy ⭐ wrócą do zera)?')) { DB.xp = {}; save(); renderAll(); } },
     all() { LIST.forEach(s => { DB.caught[s.id] = DB.caught[s.id] || { t: Date.now() }; }); save(); renderAll(); },
     reset() { if (confirm('Na pewno wyzerować cały postęp (złapane, walki)?')) { DB = blank(); save(); renderAll(); } },
   })[b.dataset.eb]();

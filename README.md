@@ -26,7 +26,10 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **Walka kartami** (🃏 w nagłówku) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
   energia, ewolucja (tylko w złapane!), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
   Efekty z opisu ataku: stany (☠️ 🔥 💤 ⚡ 💫, jak w grze), leczenie, obrażenia na ławce i w siebie, zrzut energii.
-- **Tryb rodzica** — przytrzymaj ⚙️ przez sekundę: dotknięcie kafelka łapie albo wypuszcza Pokémona, zapis/odczyt pliku, reset.
+- **Trening** — Twój Pokémon (🙂 Ty) zdobywa EXP po każdej walce na arenie: za wygraną zależnie od siły rywala (równy ~25, słabeusz ~1–3,
+  silniejszy do 50), za przegraną trochę. 50 EXP = poziom wyżej (statystyki jak w grach), limit poziom 60 (⭐+10). Wytrenowane mają znaczek ⭐+N,
+  w karcie pasek EXP; strojenie: `TRAIN` w `js/battle.js`. Walka kartami bez zmian.
+- **Tryb rodzica** — przytrzymaj ⚙️ przez sekundę: dotknięcie kafelka łapie albo wypuszcza Pokémona, trening wł./wył. (wyłączony: wszyscy na poziomie 50, EXP zostaje), zerowanie treningu, zapis/odczyt pliku, reset.
 
 ## Uruchomienie
 
