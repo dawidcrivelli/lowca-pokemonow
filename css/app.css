@@ -457,6 +457,7 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .battle-result .winner{font:800 24px var(--font-h)}
 /* trening: znaczek ⭐+N (przyrost poziomu ponad 50), pasek EXP, świętowanie nowego poziomu */
 .lvb{display:inline-block;padding:0 6px;border-radius:99px;background:var(--amber);color:#3A2600;font:900 11px/17px var(--font-b);vertical-align:middle;letter-spacing:0}
+.tile .lvb{position:absolute;z-index:1;top:20px;left:5px;font-size:10px;line-height:15px;padding:0 5px}
 h2 .lvb{font-size:14px;line-height:22px;padding:0 9px}
 .xpbar i b{background:linear-gradient(90deg,#F5A524,#FFD45C)}
 .xpbar em{font-size:10px;letter-spacing:-.3px}

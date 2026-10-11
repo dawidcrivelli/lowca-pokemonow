@@ -112,7 +112,7 @@ function tileHTML(sp) {
     <span class="rar">${'<i></i>'.repeat(sp.rarity)}</span>
     ${binder() ? `<span class="art tcgs">${got ? `<img src="${CARD_URL(sp)}" alt="" loading="lazy">` : cardBack(sp)}</span>`
       : `<span class="art">${art(sp, got ? 'color' : 'ghost', 'small')}</span>`}
-    <span class="nm">${got ? esc(sp.name) : '???'}</span>
+    <span class="nm">${got ? esc(sp.name) : '???'}</span>${got ? lvBadge(sp.id) : ''}
     <span class="grp" style="background:${TYPES[sp.types[0]][2]}"></span></button>`;
 }
 function renderGrid(freshId) {
@@ -562,7 +562,7 @@ function train(a, b, won) {
   const before = lvOf(a.id);
   if (before >= TRAIN.max) return `<div class="xp-gain">🏅 ${esc(a.name)}: w pełni wytrenowany (⭐${TRAIN.max - LEVEL})</div>`;
   const gain = xpGain(a, b, won), after = levelOf((DB.xp[a.id] || 0) + gain);
-  DB.xp[a.id] = Math.min((TRAIN.max - LEVEL) * TRAIN.perLevel, (DB.xp[a.id] || 0) + gain); save();
+  DB.xp[a.id] = Math.min((TRAIN.max - LEVEL) * TRAIN.perLevel, (DB.xp[a.id] || 0) + gain); save(); renderGrid();   // znaczek ⭐N na kafelku
   let up = '';
   if (after > before) {
     const s0 = statsOf({ ...a.s, lv: before }), s1 = statsOf({ ...a.s, lv: after });
