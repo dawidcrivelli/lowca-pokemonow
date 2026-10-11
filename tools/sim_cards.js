@@ -14,3 +14,12 @@ turns.sort((a, b) => a - b);
 console.log('tury: mediana', turns[N / 2], 'p90', turns[Math.floor(N * .9)], 'max', turns[N - 1], '· ewolucji na grę', (evo[0] / N).toFixed(1), '· na grę: stany', (fx.cond / N).toFixed(2), 'między turami', (fx.checkup / N).toFixed(2), 'dezorientacja w siebie', (fx.self / N).toFixed(2));
 const D = C.newDuel([SPECIES[24]], [SPECIES[6]]);   // Pikachu vs Squirtle
 while (!D.winner) for (const e of C.cpuTurn(D)) console.log(D.n, e.text);
+// uczciwość: gracz (me) zaczyna; „bez ewolucji” = gracz nie złapał ewolucji — komputer wtedy też nie ewoluuje (have w cpuTurn)
+const fair = (evoMe, evoCpu) => { let w = 0; for (let i = 0; i < N; i++) { const D = C.newDuel(pick(C.TEAM), pick(C.TEAM));
+  while (!D.winner && D.n < 200) { if (!(D.who === 'me' ? evoMe : evoCpu)) D[D.who].did.evolve = true; C.cpuTurn(D); } w += D.winner === 'me'; } return (100 * w / N).toFixed(0) + '%'; };
+console.log('gracz wygrywa — obaj ewoluują:', fair(true, true), '· obaj bez ewolucji:', fair(false, false), '· tylko komputer ewoluuje (stare zasady):', fair(false, true));
+// puste tury: po energii brak ataku, ewolucji i odwrotu → widok kończy turę sam
+let mine = 0, empty = 0;
+for (let i = 0; i < N; i++) { const D = C.newDuel(pick(C.TEAM), pick(C.TEAM)); C.attachEnergy(D);
+  while (!D.winner && D.n < 200) { if (D.who === 'me') { mine++; empty += !C.canDoMore(D); } C.cpuTurn(D); } }
+console.log(`tury gracza, które kończą się same (nic do zrobienia): ${(100 * empty / mine).toFixed(0)}%`);

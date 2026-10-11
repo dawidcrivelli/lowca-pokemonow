@@ -1,7 +1,7 @@
 /* ================= KARTY – uproszczona gra karciana (bez DOM) =================
    Zasady jak w Battle Academy, bez talii do dociągania:
    - drużyna: do 3 Pokémonów Podstawowych (Basic); pierwszy walczy (aktywny), reszta czeka na ławce
-   - w swojej turze: 1× dołącz energię do aktywnego, 1× ewoluuj go (nie w turze, w której wszedł), 1× odwrót (zapłać energią),
+   - w swojej turze: energia do aktywnego dochodzi sama na start tury (1×, jedyny sensowny wybór bez ręki kart), 1× ewoluuj go (nie w turze, w której wszedł), 1× odwrót (zapłać energią),
      na koniec atak (koszt = liczba energii) — atak kończy turę
    - słabość ×2, odporność −30; „×” = obrażenia za każdego orła z 2 rzutów, „+” = orzeł dokłada drugie tyle
    - efekty z opisu ataku (fx, tools/build_species.js): stany, leczenie, obrażenia na ławce i w siebie, zrzut energii
@@ -105,12 +105,19 @@ function checkup(D, rnd) {
 function endTurn(D, rnd = Math.random) {
   if (D.winner) return [];
   const evs = checkup(D, rnd);
-  if (!D.winner) { D.who = other(D.who); D[D.who].did = {}; D.n++; }
+  if (!D.winner) { D.who = other(D.who); D[D.who].did = {}; D.n++; evs.push(attachEnergy(D)); }   // nowa tura: energia sama
   return evs;
 }
-/* tura komputera: ewolucja, energia, najlepszy atak, na który go stać (obrażenia + premia za stan / leczenie) → lista zdarzeń */
-function cpuTurn(D, rnd = Math.random) {
-  const evs = [], push = e => e && evs.push(e), evo = evolutionsOf(D);
+// czy w tej turze da się jeszcze coś zrobić (energia, ewolucja, odwrót, atak)? nie → widok kończy turę sam
+function canDoMore(D, have = () => true) {
+  const s = D[D.who], m = s.team[0];
+  return !s.did.energy || evolutionsOf(D, have).length > 0 || (!s.did.retreat && s.team.length > 1 && m.en >= m.sp.card.ret && canAct(m))
+    || (canAct(m) && m.sp.card.atk.some(a => canPay(m, a[1])));
+}
+/* tura komputera: ewolucja, energia, najlepszy atak, na który go stać (obrażenia + premia za stan / leczenie) → lista zdarzeń
+   have: w co komputer może ewoluować — w grze to samo co gracz (złapane), żeby było uczciwie */
+function cpuTurn(D, rnd = Math.random, have = () => true) {
+  const evs = [], push = e => e && evs.push(e), evo = evolutionsOf(D, have);
   if (evo.length) push(evolve(D, evo[Math.floor(rnd() * evo.length)]));
   push(attachEnergy(D));
   const m = active(D), t = foe(D).team[0];
@@ -121,4 +128,4 @@ function cpuTurn(D, rnd = Math.random) {
   return evs;
 }
 
-if (typeof module !== 'undefined') module.exports = { PRIZES, TEAM, ENERGY_ICON, COND_ICON, newDuel, active, foe, canPay, canAct, conds, evolutionsOf, attachEnergy, evolve, retreat, cardAttack, endTurn, cpuTurn };
+if (typeof module !== 'undefined') module.exports = { PRIZES, TEAM, ENERGY_ICON, COND_ICON, newDuel, active, foe, canPay, canAct, conds, evolutionsOf, attachEnergy, evolve, retreat, cardAttack, endTurn, canDoMore, cpuTurn };

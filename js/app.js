@@ -504,8 +504,9 @@ function openDuel(preId) {
   </div>`, 'wide');
 }
 function startDuel() {
-  K.team = K.pick.slice(); K.D = newDuel(K.team, cpuTeam(K.team.length)); K.log = ['Twoja tura! Dołącz energię ⚡ i atakuj.'];
-  audio(); renderDuel();
+  K.team = K.pick.slice(); K.D = newDuel(K.team, cpuTeam(K.team.length)); K.log = ['Twoja tura! Energia dochodzi sama — atakuj, gdy jej wystarczy.'];
+  K.log.push(attachEnergy(K.D).text);
+  audio(); renderDuel(); autoEnd();
 }
 const cardImg = m => `<img src="${CARD_URL(m.sp)}" alt="${esc(m.sp.name)}">`;
 function sideHTML(who) {
@@ -526,9 +527,8 @@ function actsHTML() {
   if (D.winner) return `<div class="battle-result"><div class="winner">${D.winner === 'me' ? '🏆 Wygrywasz!' : '🤖 Wygrywa komputer'}</div>
     <div class="m-actions center"><button class="btn amber big" data-drematch="1">🔁 Rewanż</button><button class="btn ghost" data-dnew="1">🔄 Zmień drużynę</button></div></div>`;
   if (D.who !== 'me') return '<p class="m-lat">🤖 Komputer myśli…</p>';
-  const evo = evolutionsOf(D, s => isCaught(s.id)), missing = SPECIES.filter(s => s.from === m.sp.id && !isCaught(s.id));
-  return `<button class="btn" data-denergy="1" ${S.did.energy ? 'disabled' : ''}>${ENERGY_ICON[m.sp.card.t]} Energia</button>
-    ${evo.map(s => `<button class="btn" data-devolve="${s.id}">🧬 ${esc(s.name)}</button>`).join('')}
+  const evo = evolutionsOf(D, mine), missing = SPECIES.filter(s => s.from === m.sp.id && !isCaught(s.id));
+  return `${evo.map(s => `<button class="btn" data-devolve="${s.id}">🧬 ${esc(s.name)}</button>`).join('')}
     ${m.sp.card.atk.map(([n, c, dmg, kind, fx = {}], k) => `<button class="btn amber" data-dattack="${k}" ${canPay(m, c) && canAct(m) ? '' : 'disabled'}>${esc(n)} ${dmg || ''}${kind} ${fxIcons(fx)}<small>${cost(c)}</small></button>`).join('')}
     ${canAct(m) ? '' : `<p class="m-lat">${COND_ICON[m.cond]} ${esc(m.sp.name)} nie może atakować ani uciekać.</p>`}
     <button class="btn ghost" data-dend="1">⏭️ Koniec tury</button>
@@ -551,10 +551,24 @@ function duelEvent(ev, who) {
   if (ev.dmg || ev.self) { later(150, () => fx('hit')); $(`#da-${ev.self ? who : ev.on}`)?.classList.add('hit'); navigator.vibrate?.(18); }
   return true;
 }
+const mine = s => isCaught(s.id);   // ewolucje: gracz i komputer tylko w złapane Pokémony
 function cpuPlays() {
-  const evs = cpuTurn(K.D);
+  const evs = cpuTurn(K.D, Math.random, mine);
   evs.forEach((ev, i) => later(CPU_MS * (i + 1), () => duelEvent(ev, 'cpu')));
-  later(CPU_MS * (evs.length + 1), () => { if (!K.D.winner) K.log.push('Twoja tura!'); renderDuel(); finishDuel(); });
+  later(CPU_MS * (evs.length + 1), () => { if (!K.D.winner) K.log.push('Twoja tura!'); renderDuel(); finishDuel(); autoEnd(); });
+}
+/* nic więcej się nie da (brak ataku, ewolucji i odwrotu) → tura kończy się sama, bez klikania „Koniec tury” */
+function autoEnd() {
+  const D = K.D; if (!D || D.winner || D.who !== 'me' || canDoMore(D, mine)) return;
+  later(700, () => { if (D.who !== 'me' || D.winner) return; K.log.push('⏭️ Nic więcej nie zrobisz — tura komputera.'); renderDuel(); later(900, endMyTurn); });
+}
+function endMyTurn() {
+  const D = K.D; if (!D || D.who !== 'me' || D.winner) return;   // np. „Koniec tury” w trakcie samoczynnego końca
+  const evs = endTurn(D);   // między turami: trucizna, oparzenie, sen…; potem energia komputera
+  evs.forEach((ev, i) => later(CPU_MS * (i + 1), () => duelEvent(ev, ev.on || 'cpu')));
+  const t = CPU_MS * evs.length + 700;
+  if (D.winner) return later(t, () => { renderDuel(); finishDuel(); });
+  later(t, () => { renderDuel(); cpuPlays(); });
 }
 /* trening: EXP dla Twojego Pokémona (strona a) — za wygraną zależnie od siły rywala, za przegraną trochę; nowy poziom = świętowanie z przyrostem statystyk */
 function train(a, b, won) {
@@ -577,16 +591,9 @@ function finishDuel() {
 }
 function playerDuel(d) {
   const D = K.D; if (!D || D.who !== 'me' || D.winner) return;
-  if (d.denergy) duelEvent(attachEnergy(D), 'me');
-  if (d.devolve) duelEvent(evolve(D, byId(d.devolve)), 'me');
-  if (d.dretreat) duelEvent(retreat(D, +d.dretreat), 'me');
-  if (d.dattack && duelEvent(cardAttack(D, +d.dattack), 'me') || d.dend) {
-    const evs = endTurn(D);   // między turami: trucizna, oparzenie, sen…
-    evs.forEach((ev, i) => later(CPU_MS * (i + 1), () => duelEvent(ev, ev.on)));
-    const t = CPU_MS * evs.length + 700;
-    if (D.winner) return later(t, () => { renderDuel(); finishDuel(); });
-    later(t, () => { renderDuel(); cpuPlays(); });
-  }
+  if (d.devolve && duelEvent(evolve(D, byId(d.devolve)), 'me')) autoEnd();
+  if (d.dretreat && duelEvent(retreat(D, +d.dretreat), 'me')) autoEnd();
+  if (d.dattack && duelEvent(cardAttack(D, +d.dattack), 'me') || d.dend) endMyTurn();
 }
 el.modalBody.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || !el.modalBody.querySelector('.duel')) return;

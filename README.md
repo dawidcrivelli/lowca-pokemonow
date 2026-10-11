@@ -24,7 +24,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
   (siatka i karta Pokémona); dotknij karty lub obrazka → pełny ekran.
   W oknie złapanego Pokémona ✨ karty specjalne do obejrzenia: Mega (XY, Mega Evolution) i V / VMAX / VSTAR (`variants` w `tools/pick_cards.js`).
 - **Walka kartami** (🃏 w nagłówku) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
-  energia, ewolucja (tylko w złapane!), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
+  energia (dochodzi sama; gdy nie ma nic do zrobienia, tura kończy się sama), ewolucja (tylko w złapane — komputer też, żeby było uczciwie), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
   Efekty z opisu ataku: stany (☠️ 🔥 💤 ⚡ 💫, jak w grze), leczenie, obrażenia na ławce i w siebie, zrzut energii.
 - **Trening** — Twój Pokémon (🙂 Ty) zdobywa EXP po każdej walce na arenie: za wygraną zależnie od siły rywala (równy ~25, słabeusz ~1–3,
   silniejszy do 50), za przegraną trochę. 50 EXP = poziom wyżej (statystyki jak w grach), limit poziom 60 (⭐10). Wytrenowane mają znaczek ⭐N (też na kafelkach w Pokédexie),
