@@ -252,11 +252,11 @@ const STAT_ICONS = [['hp', '❤️', 'Życie', 700], ['attack', '👊', 'Atak', 
 const statBars = (st, extra = '') => `<div class="sbars">${STAT_ICONS.map(([k, ico, lbl, max]) =>
   `<div class="sbar" title="${lbl}"><span>${ico}</span><i><b style="width:${Math.round(100 * st[k] / max)}%"></b></i><em>${st[k]}</em></div>`).join('')}${extra}</div>`;
 const record = id => DB.rec[id] || { w: 0, l: 0 };
-/* trening: poziom z EXP (wyłączony w trybie rodzica → wszyscy na LEVEL); znaczek ⭐+N tylko u wytrenowanych */
+/* trening: poziom z EXP (wyłączony w trybie rodzica → wszyscy na LEVEL); znaczek ⭐N tylko u wytrenowanych */
 const training = () => DB.settings.train !== false;
 const lvOf = id => training() ? levelOf(DB.xp[id]) : LEVEL;
 const withLv = sp => ({ ...sp, lv: lvOf(sp.id) });
-const lvBadge = id => (d => d > 0 ? ` <span class="lvb" title="Trening: poziom ${LEVEL + d}">⭐+${d}</span>` : '')(lvOf(id) - LEVEL);
+const lvBadge = id => (d => d > 0 ? ` <span class="lvb" title="Trening: poziom ${LEVEL + d}">⭐${d}</span>` : '')(lvOf(id) - LEVEL);
 function xpBar(id) {
   if (!training()) return '';
   const xp = DB.xp[id] || 0, max = lvOf(id) >= TRAIN.max, part = xp % TRAIN.perLevel;
@@ -560,13 +560,13 @@ function cpuPlays() {
 function train(a, b, won) {
   if (!training()) return '';
   const before = lvOf(a.id);
-  if (before >= TRAIN.max) return `<div class="xp-gain">🏅 ${esc(a.name)}: w pełni wytrenowany (⭐+${TRAIN.max - LEVEL})</div>`;
+  if (before >= TRAIN.max) return `<div class="xp-gain">🏅 ${esc(a.name)}: w pełni wytrenowany (⭐${TRAIN.max - LEVEL})</div>`;
   const gain = xpGain(a, b, won), after = levelOf((DB.xp[a.id] || 0) + gain);
   DB.xp[a.id] = Math.min((TRAIN.max - LEVEL) * TRAIN.perLevel, (DB.xp[a.id] || 0) + gain); save();
   let up = '';
   if (after > before) {
     const s0 = statsOf({ ...a.s, lv: before }), s1 = statsOf({ ...a.s, lv: after });
-    up = `<div class="lvup">🎉 ${esc(a.name)}: nowy poziom ⭐+${after - LEVEL}!<span>${STAT_ICONS.map(([k, ico]) => `${ico}+${s1[k] - s0[k]}`).join(' ')}</span></div>`;
+    up = `<div class="lvup">🎉 ${esc(a.name)}: nowy poziom ⭐${after - LEVEL}!<span>${STAT_ICONS.map(([k, ico]) => `${ico}+${s1[k] - s0[k]}`).join(' ')}</span></div>`;
     later(300, () => { blip(660, .1); later(120, () => blip(880, .1)); later(240, () => blip(1100, .16)); });
   }
   return `<div class="xp-gain">⭐ ${esc(a.name)}: +${gain} EXP${won ? '' : ' za walkę'}</div>${xpBar(a.id)}${up}`;
