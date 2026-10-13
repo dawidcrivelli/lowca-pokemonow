@@ -522,8 +522,12 @@ img.ghost{filter:brightness(0) opacity(.7)}   /* sylwetka niezłapanego */
 .d-log div{opacity:.6}.d-log div:last-child{opacity:1;font-weight:800}
 .d-acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .d-acts .btn small{display:block;font-size:11px;opacity:.8}
-.d-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
-.d-pick button{padding:0;border:3px solid transparent;border-radius:10px;background:none}
-.d-pick button.on{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,203,5,.4)}
-.d-pick img{width:100%;display:block;border-radius:7px}
+.d-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.d-pick button{position:relative;padding:4px 4px 6px;border:3px solid var(--line);border-radius:12px;background:#fff;text-align:center;min-width:0}
+.d-pick button.on{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,203,5,.4);background:#FFF8E1}
+.d-pick .art{display:block;width:100%;aspect-ratio:1}
+.d-pick .nm{display:block;font:800 12px var(--font-b);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-pick .nm i{font-style:normal;color:#B23A26}
+.d-pick .st{display:block;font:800 11px var(--font-b);color:var(--ink-soft);white-space:nowrap}
+.d-pick .no{position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:var(--amber);color:#3A2600;font:900 13px/22px var(--font-b)}
 .btn:disabled{opacity:.35;cursor:default;filter:grayscale(.6)}

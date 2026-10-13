@@ -498,10 +498,17 @@ function openDuel(preId) {
     <div class="m-actions"><button class="btn ghost" data-close="1">Rozumiem</button></div></div>`);
   openModal(`<div class="m-body duel">
     <h2>🃏 Walka kartami</h2>
-    <p class="m-lat">Wybierz do ${TEAM} Pokémonów Podstawowych. W walce ewoluują w Pokémony, które już złapałeś!</p>
-    <div class="d-pick">${list.map(s => `<button data-dpick="${s.id}" class="${K.pick.includes(s) ? 'on' : ''}"><img src="${CARD_URL(s)}" alt="${esc(s.name)}" loading="lazy"></button>`).join('')}</div>
+    <p class="m-lat">Wybierz do ${TEAM} Pokémonów Podstawowych — pierwszy (1) zaczyna walkę. 🧬 = ewoluuje w złapanego Pokémona.</p>
+    <div class="d-pick">${list.map(pickTile).join('')}</div>
     <div class="m-actions center"><button class="btn amber big" data-dstart="1" ${K.pick.length ? '' : 'disabled'}>🃏 Walka! (${K.pick.length}/${TEAM})</button></div>
   </div>`, 'wide');
+}
+/* kafelek wyboru: obrazek zamiast małej karty (na telefonie nieczytelna) — HP, energia i najmocniejszy atak z karty, numer w drużynie (1 = walczy pierwszy) */
+function pickTile(s) {
+  const i = K.pick.indexOf(s), top = Math.max(...s.card.atk.map(a => a[2])), evo = SPECIES.some(e => e.from === s.id && isCaught(e.id));
+  return `<button data-dpick="${s.id}" class="${i >= 0 ? 'on' : ''}">${i >= 0 ? `<b class="no">${i + 1}</b>` : ''}
+    <span class="art">${art(s, 'color', 'small')}</span><span class="nm">${esc(s.name)}${s.card.ex ? ' <i>ex</i>' : ''}</span>
+    <span class="st">❤️${s.card.hp} ${ENERGY_ICON[s.card.t]}${top || '—'}${evo ? ' 🧬' : ''}</span></button>`;
 }
 function startDuel() {
   K.team = K.pick.slice(); K.D = newDuel(K.team, cpuTeam(K.team.length)); K.log = ['Twoja tura! Energia dochodzi sama — atakuj, gdy jej wystarczy.'];
