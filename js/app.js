@@ -511,6 +511,7 @@ function startDuel() {
 const cardImg = m => `<img src="${CARD_URL(m.sp)}" alt="${esc(m.sp.name)}">`;
 function sideHTML(who) {
   const S = K.D[who], m = S.team[0], mine = who === 'me', myTurn = mine && K.D.who === 'me' && !K.D.winner;
+  if (!m) return `<div class="d-active d-empty">💨</div><div class="d-side"><div class="d-prizes">${mine ? '🙂 Ty' : '🤖 Komputer'} · 🎴 ${S.prizes}/${PRIZES}</div><small>Wszystkie Pokémony pokonane.</small></div>`;   // ostatni pokonany: koniec gry
   const canRetreat = myTurn && !S.did.retreat && m.en >= m.sp.card.ret && canAct(m);
   const left = Math.max(0, m.sp.card.hp - m.dmg), pct = 100 * left / m.sp.card.hp;
   return `<div class="d-active" id="da-${who}">${cardImg(m)}
@@ -546,7 +547,6 @@ function renderDuel() {
 function duelEvent(ev, who) {
   if (!ev) return false;
   K.log.push(ev.text); renderDuel();
-  const att = K.D[who].team[0];
   if (ev.attack) $(`#da-${who}`)?.classList.add('go');
   if (ev.dmg || ev.self) { later(150, () => fx('hit')); $(`#da-${ev.self ? who : ev.on}`)?.classList.add('hit'); navigator.vibrate?.(18); }
   return true;

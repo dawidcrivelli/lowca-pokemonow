@@ -503,6 +503,7 @@ img.ghost{filter:brightness(0) opacity(.7)}   /* sylwetka niezłapanego */
 .dz.cpu{flex-direction:row-reverse}
 .d-active{position:relative;width:46%;flex:0 0 auto;transition:.2s}
 .d-active img{width:100%;display:block;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.d-empty{display:grid;place-items:center;aspect-ratio:245/342;border:3px dashed var(--line);border-radius:12px;font-size:40px;opacity:.6}
 .d-active.hit{animation:shake .4s}
 .d-active.go{translate:0 -10px}
 .dz.cpu .d-active.go{translate:0 10px}
