@@ -5,12 +5,13 @@
 const fs = require('fs'), path = require('path');
 const API = 'https://pokeapi.co/api/v2/', MIRROR = 'https://raw.githubusercontent.com/PokeAPI/api-data/master/data/api/v2/', DIR = path.join(__dirname, '..', 'tmp', 'pokeapi'), LAST = 151, TYPES = 18;
 const TCG = 'https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/';   // api.pokemontcg.io bywa niedostępne
-const { SERIES, VAR_SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json');
-const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family].filter((v, i, a) => a.indexOf(v) === i);
+const { SERIES, VAR_SERIES } = require('./pick_cards.js'), { learnset } = require('./moves.js'), HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json'), BA = require('./academy.json');
+const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family, ...BA.pikachu, ...BA.eevee, ...BA.cinderace, ...BA.family].filter((v, i, a) => a.indexOf(v) === i);
 const MEGA = /^(?!.*female).*-mega(-[xyz])?$/;   // meowstic-female-mega pomijamy: ta sama Mega co samca
 const load = p => JSON.parse(fs.readFileSync(path.join(DIR, p.replace(/\//g, '_') + '.json')));
-// mirror: katalogi po numerze, nie po nazwie (ruchy: numer z adresu w danych Pokémona)
-const MOVE_NO = {}, mirror = p => MIRROR + p.replace(/^move\/([a-z0-9-]+)$/, (_, n) => 'move/' + MOVE_NO[n]) + '/index.json';
+// mirror: katalogi po numerze, nie po nazwie (ruchy: numer z adresu w danych Pokémona, formy Mega: z odmian gatunku)
+const MOVE_NO = {}, FORM_NO = {}, mirror = p => MIRROR + p.replace(/^move\/([a-z0-9-]+)$/, (_, n) => 'move/' + MOVE_NO[n])
+  .replace(/^pokemon\/([a-z][a-z0-9-]*)$/, (_, n) => 'pokemon/' + FORM_NO[n]) + '/index.json';
 async function get(p, url) {
   const f = path.join(DIR, p.replace(/\//g, '_') + '.json');
   if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f));
@@ -22,7 +23,7 @@ async function get(p, url) {
   fs.mkdirSync(DIR, { recursive: true });
   for (const i of IDS) {
     const p = await get(`pokemon/${i}`), sp = await get(`pokemon-species/${i}`);
-    for (const v of sp.varieties.filter(v => MEGA.test(v.pokemon.name))) await get(`pokemon/${v.pokemon.name}`);   // formy Mega do areny
+    for (const v of sp.varieties.filter(v => MEGA.test(v.pokemon.name))) { FORM_NO[v.pokemon.name] = +v.pokemon.url.match(/(\d+)\/$/)[1]; await get(`pokemon/${v.pokemon.name}`); }   // formy Mega do areny
     for (const m of p.moves) MOVE_NO[m.move.name] = +m.move.url.match(/(\d+)\/$/)[1];
   }
   MOVE_NO.tackle ||= 33;

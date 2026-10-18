@@ -2683,5 +2683,50 @@
   "kind": "Pokémon Grzybek Pływak",
   "hint": "Wysoki, ciemny grzyb-meduza z długimi mackami, który biega po lesie.",
   "fact": "Bardzo szybko biega na swoich mackach i ciągnie za sobą chwasty z ziemi."
+ },
+ "491": {
+  "kind": "Pokémon Czarnej Dziury",
+  "hint": "Czarny cień z białą grzywą jak dym, czerwonym kołnierzem i jednym niebieskim okiem.",
+  "fact": "Wysyła ludziom koszmary, ale robi to, żeby chronić swój dom. W talii Eevee V z Battle Academy."
+ },
+ "494": {
+  "kind": "Pokémon Zwycięstwa",
+  "hint": "Malutki, kremowo-pomarańczowy stworek z wielkimi uszami w kształcie litery V.",
+  "fact": "Daje nieskończoną energię temu, kogo polubi. Kto go spotka, wygrywa każdą zabawę!"
+ },
+ "522": {
+  "kind": "Pokémon Elektryczny",
+  "hint": "Czarny źrebaczek w białe pasy jak zebra, z grzywą w kształcie błyskawicy.",
+  "fact": "Gdy jego grzywa zaczyna świecić, wie, że nadchodzi burza. Ładuje się prądem z piorunów."
+ },
+ "523": {
+  "kind": "Pokémon Grom",
+  "hint": "Czarna zebra w białe paski z białą grzywą jak błyskawica.",
+  "fact": "Biega szybko jak błyskawica, a gdy pędzi, słychać grzmoty. W talii Pikachu V z Battle Academy."
+ },
+ "636": {
+  "kind": "Pokémon Pochodnia",
+  "hint": "Puchata, biała gąsienica z pięcioma czerwonymi rożkami na głowie.",
+  "fact": "Z rożków bucha ogień, którym odstrasza wrogów. Mieszka u stóp wulkanów."
+ },
+ "637": {
+  "kind": "Pokémon Słońce",
+  "hint": "Wielka ćma z sześcioma pomarańczowymi skrzydłami i białym, puchatym futerkiem.",
+  "fact": "Gdy ziemia była zimna i ciemna, jego płonące skrzydła grzały ją jak drugie słońce."
+ },
+ "776": {
+  "kind": "Pokémon Bomba Skorupy",
+  "hint": "Czerwony żółw-smok z kolczastą skorupą przypominającą wulkan.",
+  "fact": "Jego skorupa wybucha, gdy ktoś ją uderzy — dlatego lepiej go nie zaczepiać od tyłu!"
+ },
+ "807": {
+  "kind": "Pokémon Błysk",
+  "hint": "Kot-wojownik w żółto-czarne paski, z wielkimi łapami pełnymi prądu.",
+  "fact": "Biega szybko jak piorun i strzela prądem z pazurów. W talii Pikachu V z Battle Academy."
+ },
+ "862": {
+  "kind": "Pokémon Blokada",
+  "hint": "Czarno-biały zwierz jak borsuk-punk, z długim językiem i grzywą na głowie.",
+  "fact": "Krzyżuje ręce i staje jak mur, żeby zablokować każdy atak. W talii Eevee V z Battle Academy."
  }
 }
