@@ -7,13 +7,15 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 
 ## Co jest w środku
 
-- **543 Pokémony**: 151 z Kanto (Red/Blue, seria Indigo), **wszystkie z 1. sezonu Horyzontów** (HZ001–HZ045, także te w tle; lista:
-  `tools/horizons.json`), z 2. sezonu na razie Teddiursa i Ursaring, z filmu **„Arceus i Klejnot Życia”** (2009; `tools/movies.json`), z talii **Battle Academy 2022** (Pikachu V, Eevee V, Cinderace V; `tools/academy.json`) oraz **10 najsłynniejszych z nowszych gier** (Lucario, Greninja, Mimikyu,
+- **514 Pokémonów**: 151 z Kanto (Red/Blue, seria Indigo), z **2. sezonu Horyzontów** („The Search for Laqua”, HZ046–HZ089) te aktywne w odcinkach
+  (wymienione w fabule), z 1. sezonu te, które pojawiają się też w 2. (lista: `tools/horizons.json`), z filmu **„Arceus i Klejnot Życia”** (2009; `tools/movies.json`), z talii **Battle Academy 2022** (Pikachu V, Eevee V, Cinderace V; `tools/academy.json`) oraz **10 najsłynniejszych z nowszych gier** (Lucario, Greninja, Mimikyu,
   Sylveon, Garchomp, Dragapult, Decidueye, Zoroark, Cinderace, Incineroar; `tools/famous.json`) — wszystkie z ewolucjami potrzebnymi kartom.
   Dwa filtry naraz: seria / serial (⭐ 🗺️ Kanto, 📺 Horyzonty 1 / 2, 🎬 Arceus (film), 🃏 Battle Academy, 🌟 Sławne) × typ. Niezłapane to czarne sylwetki: „Kto to za Pokémon?”; przytrzymaj sylwetkę, a pokaże kolor i imię (z dźwiękiem: czyta je na głos).
 - **Polskie podpowiedzi i ciekawostki** z Pokédexu; filtr po typach; wyszukiwarka odporna na literówki.
 - **Poké Ball wg rzadkości**: Poké / Great / Ultra / Master Ball (legendarne).
-- **Arena** — jak w grach, na poziomie 50: 4 ruchy z gry (Scarlet/Violet, wybór: `tools/moves.js`), wzór na obrażenia, premia za własny typ,
+- **📺 Odcinki** (w nagłówku) — Horyzonty 2 jak na Netflixie (1–44): Pokémony z odcinka w kolorze, imię po przytrzymaniu („jak się nazywał ten dzisiaj?”);
+  pamięta ostatni odcinek, ◀ ▶ następny, lista wszystkich z miniaturkami.
+- **Arena** (⚔️ w oknie Pokémona) — jak w grach, na poziomie 50: 4 ruchy z gry (Scarlet/Violet, wybór: `tools/moves.js`), wzór na obrażenia, premia za własny typ,
   tabela typów, stany (☠️ 🔥 ⚡ 💤 🧊 💫), zmiany statystyk, ładowanie i odpoczynek; życie ×2,5, żeby walka trwała ~5 rund.
   Teren daje premię swoim typom (Wyspa Cynamonowa: 🔥…). Tryby ▶️ oglądam / 👆 walczę (4 przyciski ruchów z PP), widok 3D
   (pociski w kolorze typu, pioruny, ikony stanów). Forma (jeden przycisk): ⚪ zwykła → 🧬 Mega (50 form, statystyki z gier) →
@@ -23,7 +25,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
   niezłapane: rewers z sylwetką. U góry przełącznik 🎨 Pokémony / 🃏 Karty
   (siatka i karta Pokémona); dotknij karty lub obrazka → pełny ekran.
   W oknie złapanego Pokémona ✨ karty specjalne do obejrzenia: Mega (XY, Mega Evolution) i V / VMAX / VSTAR (`variants` w `tools/pick_cards.js`).
-- **Walka kartami** (🃏 w nagłówku) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
+- **Walka kartami** (🃏 w oknie Pokémona) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
   energia (dochodzi sama; gdy nie ma nic do zrobienia, tura kończy się sama), ewolucja (tylko w złapane — komputer też, żeby było uczciwie), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
   Efekty z opisu ataku: stany (☠️ 🔥 💤 ⚡ 💫, jak w grze), leczenie, obrażenia na ławce i w siebie, zrzut energii.
 - **Trening** — Twój Pokémon (🙂 Ty) zdobywa EXP po każdej walce na arenie: za wygraną zależnie od siły rywala (równy ~25, słabeusz ~1–3,

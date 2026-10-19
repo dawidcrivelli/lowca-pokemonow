@@ -204,6 +204,14 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .tile.peek{border-color:var(--amber);border-style:solid}
 .tile.peek img.ghost,.tile.peek .cardback .win img{filter:none}
 .tile.peek .nm{color:var(--ink);letter-spacing:0}
+.ep-nav{display:flex;align-items:center;gap:8px;margin:0 38px 12px 0}   /* miejsce na ✕ */
+.m-body.ep img.ghost{filter:none}   /* odcinek rozpoznaje się po kolorach; imię dalej ??? do przytrzymania */
+.ep-nav h2{flex:1;text-align:center}
+.ep-nav small{display:block;font:700 12px var(--font-b);color:var(--ink-soft);margin-top:2px}
+.ep-list{display:grid;gap:6px;margin-top:12px}
+.ep-row{display:flex;align-items:center;gap:4px;padding:4px 10px;background:#fff;border:2px solid var(--line);border-radius:12px}
+.ep-row b{width:30px;font:800 18px var(--font-h);color:var(--ink)}
+.ep-row img{width:52px;height:52px;image-rendering:pixelated}
 .tile.fresh{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pop{0%{transform:scale(.3) rotate(-14deg);opacity:0}100%{transform:none;opacity:1}}
 

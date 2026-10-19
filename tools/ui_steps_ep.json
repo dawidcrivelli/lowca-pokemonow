@@ -1,0 +1,11 @@
+[
+  { "name": "some", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:{907:{t:1},51:{t:1},25:{t:1}},settings:{sound:false,ep:11}}));location.reload()", "wait": 3000 },
+  { "name": "header", "shot": "ep0_header.png", "h": 500 },
+  { "name": "ep", "js": "document.querySelector('#btnEp').click()", "wait": 2000, "shot": "ep1_episode.png", "h": 900 },
+  { "name": "hold", "js": "document.querySelector('.m-body.ep .tile.ghost').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))", "wait": 900, "shot": "ep2_peek.png", "h": 900 },
+  { "name": "release", "js": "(t=>{t.dispatchEvent(new PointerEvent('pointerup',{bubbles:true}));t.click();return 'still ep: '+!!document.querySelector('.m-body.ep')})(document.querySelector('.m-body.ep .tile.peek'))", "wait": 300 },
+  { "name": "list", "js": "document.querySelector('[data-eplist]').click()", "wait": 2500, "shot": "ep3_list.png", "h": 900 },
+  { "name": "pick", "js": "document.querySelector('.ep-row[data-ep=\"30\"]').click()", "wait": 2000, "shot": "ep4_ep30.png", "h": 900 },
+  { "name": "tile", "js": "document.querySelector('.m-body.ep .tile.ghost').click()", "wait": 1500, "shot": "ep5_hint.png", "h": 900 },
+  { "name": "filter", "js": "document.querySelector('#modalClose').click();document.querySelector('[data-series=\"hz2\"]').click();document.querySelector('.grid').scrollIntoView()", "wait": 1500, "shot": "ep6_filter.png", "h": 900 }
+]

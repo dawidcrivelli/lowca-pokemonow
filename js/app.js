@@ -94,7 +94,7 @@ function crack() {
 const $ = s => document.querySelector(s);
 const el = Object.fromEntries(['q', 'huntForm', 'sugg', 'huntMsg', 'grid', 'emptyMsg', 'series', 'chips', 'onlyMissing', 'pcCount', 'pcRank', 'pcBall',
   'rockFill', 'rockMarks', 'brandBall', 'scene', 'sceneTarget', 'sceneBall', 'sceneFlash', 'sceneName', 'confetti', 'modal', 'modalBody',
-  'huntBox', 'modalClose', 'btnArena', 'btnCards', 'btnEdit', 'modeSeg', 'zoom'].map(id => [id, document.getElementById(id)]));
+  'huntBox', 'modalClose', 'btnEp', 'btnEdit', 'modeSeg', 'zoom'].map(id => [id, document.getElementById(id)]));
 el.pill = $('.search-pill'); el.main = $('main.wrap');
 let series = 'all', type = 'all', editing = false;   // filtry: seria/serial × typ
 
@@ -124,7 +124,7 @@ function renderGrid(freshId) {
 }
 // seria: Kanto (Red/Blue, seria Indigo), sezony Horyzontów, film „Arceus i Klejnot Życia”, sławne z nowszych gier; licznik na chipie uwzględnia drugi filtr
 const SERIES = [['all', '⭐', 'Wszystkie'], ['kanto', '🗺️', 'Kanto (151)'], ['hz1', '📺', 'Horyzonty 1'], ['hz2', '📺', 'Horyzonty 2'], ['m12', '🎬', 'Arceus (film)'], ['ba', '🃏', 'Battle Academy'], ['fam', '🌟', 'Sławne']];
-const inSeries = (s, k) => k === 'all' || (k === 'kanto' ? s.id <= 151 : k === 'hz1' ? s.hz === 1 : k === 'hz2' ? s.hz === 2 : k === 'm12' ? s.m12 : k === 'ba' ? s.ba : s.fam);
+const inSeries = (s, k) => k === 'all' || (k === 'kanto' ? s.id <= 151 : k === 'hz1' ? s.hz1 : k === 'hz2' ? s.hz2 : k === 'm12' ? s.m12 : k === 'ba' ? s.ba : s.fam);
 const inType = (s, k) => k === 'all' || s.types.includes(k);
 function renderChips() {
   const count = (f, got) => LIST.filter(s => f(s) && (!got || isCaught(s.id))).length;
@@ -147,7 +147,7 @@ function renderAll(freshId) { renderChips(); renderProgress(); renderGrid(freshI
 /* przytrzymanie sylwetki: chwilowo kolor i imię (też na głos) – dziecko zna obrazek, nie zna imienia; po puszczeniu znów ??? */
 const PEEK_MS = 450;
 let peekT, peeked, peekEnd = 0;
-el.grid.addEventListener('pointerdown', e => {
+document.addEventListener('pointerdown', e => {   // siatka i okno odcinka
   const t = e.target.closest('.tile.ghost'); if (!t || editing) return;
   peekT = setTimeout(() => {
     const { name } = byId(t.dataset.id);
@@ -155,11 +155,11 @@ el.grid.addEventListener('pointerdown', e => {
     if (DB.settings.sound) speechSynthesis?.speak(Object.assign(new SpeechSynthesisUtterance(name), { lang: 'en-US' }));   // imiona angielskie, wymowa jak w bajce
   }, PEEK_MS);
 });
-['pointerup', 'pointercancel'].forEach(ev => el.grid.addEventListener(ev, () => {
+['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, () => {
   clearTimeout(peekT); if (!peeked) return;
   peeked.classList.remove('peek'); peeked.querySelector('.nm').textContent = '???'; peeked = null; peekEnd = Date.now();
 }));
-el.grid.addEventListener('contextmenu', e => e.preventDefault());   // długie przytrzymanie bez menu telefonu
+document.addEventListener('contextmenu', e => { if (e.target.closest('.tile')) e.preventDefault(); });   // długie przytrzymanie bez menu telefonu
 el.grid.addEventListener('click', e => {
   const sp = byId(e.target.closest('.tile')?.dataset.id); if (!sp || Date.now() - peekEnd < 400) return;   // puszczenie po podglądzie ≠ dotknięcie
   if (editing) return setCaught(sp, !isCaught(sp.id));   // tryb rodzica: dotknięcie łapie / wypuszcza
@@ -495,7 +495,6 @@ function finish() {
   r.hidden = false; r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   navigator.vibrate?.([35, 45, 70]);
 }
-el.btnArena.addEventListener('click', () => openArena());
 
 /* ================= KARTY: walka kartami (zasady: js/cards.js) =================
    Drużyna z Pokémonów Podstawowych; ewoluować można tylko w złapane — zachęta do łapania całych linii. */
@@ -629,7 +628,27 @@ el.modalBody.addEventListener('click', e => {
   if (d.dnew) openDuel();
   playerDuel(d);
 });
-el.btnCards.addEventListener('click', () => openDuel());
+
+/* ================= ODCINKI =================
+   Horyzonty 2 jak na Netflixie (1–44): „jak się nazywał ten dzisiaj?” – Pokémony z odcinka, przytrzymanie sylwetki pokazuje imię.
+   Najpierw te z jednego odcinka, potem stali bohaterowie (Floragato, Fuecoco…): po nich odcinka nie rozpoznać. */
+const epCount = id => EPISODES.filter(([, ids]) => ids.includes(id)).length;
+const epMons = n => EPISODES[n - 1][1].map(byId).filter(Boolean).sort((a, b) => epCount(a.id) - epCount(b.id));
+function openEpisode(n = DB.settings.ep || 1) {
+  DB.settings.ep = n; save();
+  const nav = (to, ico) => `<button class="btn ghost icon" data-ep="${to}" ${EPISODES[to - 1] ? '' : 'disabled'}>${ico}</button>`;
+  openModal(`<div class="m-body ep">
+    <div class="ep-nav">${nav(n - 1, '◀')}<h2>📺 Odcinek ${n}<small>${esc(EPISODES[n - 1][0])}</small></h2>${nav(n + 1, '▶')}</div>
+    <div class="grid">${epMons(n).map(tileHTML).join('')}</div>
+    <div class="m-actions"><button class="btn ghost" data-eplist="1">📋 Wszystkie odcinki</button><button class="btn ghost" data-close="1">Zamknij</button></div></div>`);
+}
+const openEpisodeList = () => openModal(`<div class="m-body ep"><h2>📺 Horyzonty 2</h2><div class="ep-list">${EPISODES.map((_, i) =>
+  `<button class="ep-row" data-ep="${i + 1}"><b>${i + 1}</b>${epMons(i + 1).slice(0, 5).map(sp => art(sp, 'color', 'small')).join('')}</button>`).join('')}</div></div>`);
+el.btnEp.addEventListener('click', () => openEpisode());
+el.modalBody.addEventListener('click', e => {
+  const b = e.target.closest('[data-ep],[data-eplist]'); if (b) return b.dataset.ep ? openEpisode(+b.dataset.ep) : openEpisodeList();
+  const t = e.target.closest('.tile'); if (t && Date.now() - peekEnd > 400) openCard(byId(t.dataset.id));
+});
 
 /* ================= TRYB RODZICA =================
    Otwiera się przytrzymaniem przycisku przez 1 s – dzieci nie wejdą tam przypadkiem. */

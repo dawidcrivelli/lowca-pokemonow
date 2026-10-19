@@ -2728,5 +2728,340 @@
   "kind": "Pokémon Blokada",
   "hint": "Czarno-biały zwierz jak borsuk-punk, z długim językiem i grzywą na głowie.",
   "fact": "Krzyżuje ręce i staje jak mur, żeby zablokować każdy atak. W talii Eevee V z Battle Academy."
+ },
+ "203": {
+  "kind": "Pokémon Długa Szyja",
+  "hint": "Żółto-czarna żyrafa z ogonem, który wygląda jak druga głowa z zębami.",
+  "fact": "Jego ogon ma własny mały mózg. Gdy ktoś podejdzie za blisko, ogon może go ugryźć!"
+ },
+ "204": {
+  "kind": "Pokémon Szyszka",
+  "hint": "Okrągła, szarozielona szyszka z małymi oczkami.",
+  "fact": "Dokleja do skorupki kawałki kory, żeby była grubsza. Ciężar wcale mu nie przeszkadza."
+ },
+ "219": {
+  "kind": "Pokémon Lawa",
+  "hint": "Ślimak z gorącej lawy z dymiącą, skalną skorupą na plecach.",
+  "fact": "Jego skorupa to zastygła skóra. Jest tak krucha, że pęka od lekkiego dotyku."
+ },
+ "228": {
+  "kind": "Pokémon Mrok",
+  "hint": "Czarny piesek z białymi, kościanymi opaskami na łapach i grzbiecie.",
+  "fact": "Ma różne szczeknięcia i wycia: jedne do rozmowy z kolegami, inne do polowania."
+ },
+ "229": {
+  "kind": "Pokémon Mrok",
+  "hint": "Duży czarny pies z zakręconymi rogami i ogonem zakończonym strzałką.",
+  "fact": "Zieje z pyska bardzo gorącymi płomieniami. Lepiej się do niego nie zbliżać!"
+ },
+ "243": {
+  "kind": "Pokémon Grzmot",
+  "hint": "Żółty, pręgowany kot jak tygrys, z fioletową chmurą na plecach.",
+  "fact": "Nosi ze sobą deszczowe chmury i strzela z nich piorunami, kiedy tylko chce."
+ },
+ "245": {
+  "kind": "Pokémon Zorza",
+  "hint": "Niebieski, smukły kot w białe romby, z długą fioletową grzywą jak wstążki.",
+  "fact": "Potrafi w jednej chwili zmienić brudną, mętną wodę w czystą."
+ },
+ "246": {
+  "kind": "Pokémon Skalna Skóra",
+  "hint": "Mały zielony stworek z rogiem na głowie i dziurką na brzuchu.",
+  "fact": "Je ziemię! Gdy zje całą wielką górę, zasypia, żeby urosnąć."
+ },
+ "247": {
+  "kind": "Pokémon Twarda Skorupa",
+  "hint": "Szary, twardy kokon bez rąk i nóg, z małymi oczkami.",
+  "fact": "Jego skorupa jest twarda jak skała. Gdy się miota, może przewrócić górę."
+ },
+ "248": {
+  "kind": "Pokémon Pancerz",
+  "hint": "Wielki zielony potwór jak dinozaur, z kolcami na plecach.",
+  "fact": "Żaden atak nie może zranić jego ciała, więc chętnie wyzywa innych do walki."
+ },
+ "273": {
+  "kind": "Pokémon Żołądź",
+  "hint": "Mały brązowy żołądź z czapeczką i dwoma oczkami.",
+  "fact": "Wisi głową na gałęzi i pije wodę z drzewa. Im więcej pije, tym bardziej błyszczy."
+ },
+ "274": {
+  "kind": "Pokémon Spryciarz",
+  "hint": "Brązowy stworek z długim nosem i listkiem na czubku głowy.",
+  "fact": "Czasem wychodzi z gęstego lasu, żeby straszyć ludzi. Nie lubi, gdy ktoś szczypie go w nos."
+ },
+ "275": {
+  "kind": "Pokémon Złośliwiec",
+  "hint": "Wysoki stworek z długim nosem, białą grzywą i wielkimi liśćmi jak wachlarze zamiast rąk.",
+  "fact": "Mieszka na bardzo starych drzewach. Machając liściastymi wachlarzami, robi wielkie wichury."
+ },
+ "296": {
+  "kind": "Pokémon Odwaga",
+  "hint": "Żółty, krępy stworek jak mały zapaśnik sumo, z wielkimi pięściami.",
+  "fact": "Gdy upadnie, zawsze wstaje i walczy dalej. Za każdym razem zbiera więcej siły."
+ },
+ "297": {
+  "kind": "Pokémon Pchnięcie",
+  "hint": "Wielki, gruby zapaśnik sumo z ogromnymi dłońmi.",
+  "fact": "Ćwiczy uderzenia otwartą dłonią. Jednym ciosem może złamać słup telefoniczny!"
+ },
+ "349": {
+  "kind": "Pokémon Ryba",
+  "hint": "Brązowa, niepozorna rybka z poszarpanymi płetwami.",
+  "fact": "Od urodzenia ma podarte płetwy, więc nikt na nią nie zwraca uwagi. Może żyć w morzu i w rzece."
+ },
+ "350": {
+  "kind": "Pokémon Łagodność",
+  "hint": "Długi, piękny wodny wąż w kremowe łuski, z kolorowym ogonem jak wachlarz.",
+  "fact": "Mówią, że to najpiękniejszy Pokémon. Potrafi uspokoić złość i pogodzić kłócących się."
+ },
+ "360": {
+  "kind": "Pokémon Wesołek",
+  "hint": "Mały niebieski stworek z wielkim uśmiechem i czarnym ogonkiem.",
+  "fact": "Prawie zawsze się uśmiecha. Gdy się złości, uderza ogonem w ziemię."
+ },
+ "380": {
+  "kind": "Pokémon Wieczność",
+  "hint": "Czerwono-biały smok jak odrzutowiec, z niebieskim trójkątem na piersi.",
+  "fact": "Czuje uczucia ludzi. Gdy wyczuje złość, stroszy pióra i głośno piszczy."
+ },
+ "381": {
+  "kind": "Pokémon Wieczność",
+  "hint": "Niebiesko-biały smok jak odrzutowiec, z czerwonym trójkątem na piersi.",
+  "fact": "Jest bardzo mądry i rozumie ludzką mowę. Potrafi pokazać innym obrazki ze swojej głowy."
+ },
+ "407": {
+  "kind": "Pokémon Bukiet",
+  "hint": "Zielony stworek z białą grzywką i bukietami czerwonych i niebieskich róż zamiast rąk.",
+  "fact": "Zwabia słodkim zapachem, a w kwiatowych rękach chowa kolczaste bicze."
+ },
+ "462": {
+  "kind": "Pokémon Pole Magnetyczne",
+  "hint": "Szary, metalowy stworek jak latający spodek, z jednym okiem i magnesami po bokach.",
+  "fact": "Powstał w specjalnym polu magnetycznym. Trzy jego części wytwarzają magnetyzm."
+ },
+ "470": {
+  "kind": "Pokémon Zieleń",
+  "hint": "Kremowy lisek z uszami i ogonem jak zielone liście.",
+  "fact": "Tak jak roślina, żywi się światłem słońca. Wokół niego zawsze jest czyste powietrze."
+ },
+ "502": {
+  "kind": "Pokémon Dyscyplina",
+  "hint": "Niebieska wydra na dwóch łapach z dwiema muszlami przy biodrach.",
+  "fact": "Ciężko trenuje walkę dwiema muszlami jak mieczami."
+ },
+ "505": {
+  "kind": "Pokémon Obserwator",
+  "hint": "Brązowy, wysoki stworek jak suseł, z pasiastym brzuchem i świecącymi oczami.",
+  "fact": "Gdy zobaczy wroga, podnosi ogon i pluje pestkami jagód, które trzyma w policzkach."
+ },
+ "573": {
+  "kind": "Pokémon Szal",
+  "hint": "Szara szynszyla z białym, puszystym futrem jak szalik.",
+  "fact": "Jej białe futro pokrywa specjalny olejek, po którym ześlizgują się ataki."
+ },
+ "595": {
+  "kind": "Pokémon Przylepiec",
+  "hint": "Malutki żółty pajączek z czterema łapkami i wielkimi niebieskimi oczami.",
+  "fact": "Te, które mieszkają w miastach, nauczyły się pić prąd z gniazdek w domach."
+ },
+ "613": {
+  "kind": "Pokémon Chłód",
+  "hint": "Biały niedźwiadek z niebieskim glutkiem zwisającym z noska.",
+  "fact": "Gdy źle się czuje, ma wodnisty katar, a jego lodowe ataki słabną."
+ },
+ "614": {
+  "kind": "Pokémon Mróz",
+  "hint": "Wielki biały niedźwiedź polarny z lodową brodą.",
+  "fact": "Potrafi zamrozić swój oddech. Świetnie pływa w zimnych morzach i łowi tam jedzenie."
+ },
+ "639": {
+  "kind": "Pokémon Pieczara",
+  "hint": "Szary, silny stwór jak byk, z dwoma wielkimi rogami.",
+  "fact": "Bronił Pokémonów, które straciły swoje domy."
+ },
+ "708": {
+  "kind": "Pokémon Pieniek",
+  "hint": "Mały duszek z kawałka drewna, z listkami na głowie i świecącym okiem.",
+  "fact": "Powstaje, gdy duch zamieszka w starym pniu drzewa. Lubi opuszczone lasy."
+ },
+ "709": {
+  "kind": "Pokémon Stare Drzewo",
+  "hint": "Ciemne drzewo-duch z jednym czerwonym okiem i korzeniami zamiast nóg.",
+  "fact": "Rządzi drzewami. Pilnuje lasu i nie wypuszcza ludzi, którzy go niszczą."
+ },
+ "714": {
+  "kind": "Pokémon Fala Dźwiękowa",
+  "hint": "Fioletowy nietoperzyk z ogromnymi uszami.",
+  "fact": "Mieszka w ciemnych jaskiniach. Wielkimi uszami wydaje dźwięki tak wysokie, że ludzie ich nie słyszą."
+ },
+ "741": {
+  "kind": "Pokémon Taniec",
+  "hint": "Czerwony ptaszek w puszystej spódniczce z piór, jakby tańczył.",
+  "fact": "Uderza skrzydłami, żeby zrobić ogień. Pięknie tańczy i otacza rywali płomieniami."
+ },
+ "879": {
+  "kind": "Pokémon Miedziana Skóra",
+  "hint": "Ogromny słoń w kolorze miedzi, z zielonymi uszami i długą trąbą.",
+  "fact": "Dawno temu przybył z daleka i pracował razem z ludźmi. Jego zielona skóra nie boi się wody."
+ },
+ "919": {
+  "kind": "Pokémon Konik Polny",
+  "hint": "Mały szary konik polny z czerwonymi oczami i złożonymi nóżkami.",
+  "fact": "Gdy jest w tarapatach, skacze dalej niż na 9 metrów!"
+ },
+ "920": {
+  "kind": "Pokémon Konik Polny",
+  "hint": "Szary konik polny stojący na dwóch nogach, z groźną miną.",
+  "fact": "Gdy walczy na serio, staje na złożonych nogach i szybko pokonuje rywali."
+ },
+ "951": {
+  "kind": "Pokémon Ostra Papryczka",
+  "hint": "Mała zielona papryczka na dwóch nóżkach, z listkami na głowie.",
+  "fact": "Im więcej słońca złapie, tym ostrzejsze robią się jego ataki."
+ },
+ "955": {
+  "kind": "Pokémon Falbanka",
+  "hint": "Mały żółty ptaszek z falbanką na brzuszku, unoszący się nad ziemią.",
+  "fact": "Psychiczna moc z falbanki na brzuchu sprawia, że jego palce nie dotykają ziemi."
+ },
+ "956": {
+  "kind": "Pokémon Struś",
+  "hint": "Wysoki struś z kolorowym kołnierzem z piór i ogromnymi oczami.",
+  "fact": "Unieruchamia rywali mocą z wielkich oczu. Wygląda ładnie, ale bywa bardzo złośliwy."
+ },
+ "958": {
+  "kind": "Pokémon Młot",
+  "hint": "Różowy stworek jak mała dziewczynka, z dużym metalowym młotem w rękach.",
+  "fact": "Zbiera kawałki metalu od innych Pokémonów, żeby zrobić sobie duży, mocny młot."
+ },
+ "959": {
+  "kind": "Pokémon Młot",
+  "hint": "Mały różowy stworek z ogromnym młotem, dużo większym od siebie.",
+  "fact": "Jest bardzo odważny. Wybija młotem kamienie wysoko w niebo, celując w latające ptaki."
+ },
+ "962": {
+  "kind": "Pokémon Zrzucanie",
+  "hint": "Biały ptak z czarnym fartuszkiem z piór i długim dziobem.",
+  "fact": "W fartuszku z piór nosi różne rzeczy i dla zabawy zrzuca je z wysoka."
+ },
+ "965": {
+  "kind": "Pokémon Jeden Cylinder",
+  "hint": "Szary silnik na kółkach, z rurami wydechowymi i groźnymi oczami.",
+  "fact": "Mówią, że powstał, gdy trujący Pokémon wszedł do starego silnika na złomowisku."
+ },
+ "969": {
+  "kind": "Pokémon Ruda",
+  "hint": "Mały niebieski kryształek z różowymi płatkami jak kwiatek.",
+  "fact": "Je minerały ze ścian jaskini. Jego płatki to kryształy trucizny."
+ },
+ "970": {
+  "kind": "Pokémon Ruda",
+  "hint": "Duży kryształowy kwiat z różowymi płatkami, podobny do dzwonka.",
+  "fact": "Gdy wyczuje niebezpieczeństwo, otwiera kryształowe płatki i strzela promieniami."
+ },
+ "971": {
+  "kind": "Pokémon Duch Psa",
+  "hint": "Mały biały piesek-duszek z płomykiem świeczki na głowie.",
+  "fact": "Mówią, że to duch pieska, który nigdy nie miał swojego człowieka."
+ },
+ "972": {
+  "kind": "Pokémon Duch Psa",
+  "hint": "Duży biały pies-duszek ze świecącym płomykiem na głowie.",
+  "fact": "Prawie cały czas śpi. Ze wszystkich psich Pokémonów jest najbardziej wierny swojemu panu."
+ },
+ "973": {
+  "kind": "Pokémon Zgranie",
+  "hint": "Różowy flaming z długą szyją zawiązaną w supeł.",
+  "fact": "Wiąże szyję w supeł, żeby siła z brzucha nie uciekła mu przez dziób."
+ },
+ "974": {
+  "kind": "Pokémon Lądowy Wieloryb",
+  "hint": "Biały, pulchny wielorybek na czterech nóżkach.",
+  "fact": "Jego przodkowie dawno temu wyszli z oceanu i zamieszkali na lądzie."
+ },
+ "975": {
+  "kind": "Pokémon Lądowy Wieloryb",
+  "hint": "Ogromny biały wieloryb na czterech nogach, z lodowym rogiem na nosie.",
+  "fact": "Wędruje po śniegu i lodzie. Chroni go gruba warstwa tłuszczu i silne mięśnie."
+ },
+ "978": {
+  "kind": "Pokémon Naśladowca",
+  "hint": "Malutki smoczek zwinięty w kółko, wygląda jak kawałek sushi.",
+  "fact": "To malutki smok. Chowa się w pysku dużej ryby, żeby nikt go nie zaatakował."
+ },
+ "979": {
+  "kind": "Pokémon Wściekła Małpa",
+  "hint": "Szara, futrzana małpa z wściekłą miną i ciemnymi pasami na rękach.",
+  "fact": "Był tak bardzo zły, że dostał moc większą niż jego własne ciało."
+ },
+ "980": {
+  "kind": "Pokémon Kolczasta Ryba",
+  "hint": "Wielki brązowy stworek jak pękata ryba, bez rąk, z kolcami na plecach.",
+  "fact": "Gdy ktoś go zaatakuje, wystawia z ciała grube kolce."
+ },
+ "981": {
+  "kind": "Pokémon Długa Szyja",
+  "hint": "Wysoka żyrafa z wielkim ogonem, który wygląda jak druga głowa.",
+  "fact": "Jego głowa i ogon myślą razem, więc ma 10 razy większą moc psychiczną."
+ },
+ "982": {
+  "kind": "Pokémon Lądowy Wąż",
+  "hint": "Długi, żółto-niebieski wąż w paski, z małymi skrzydełkami.",
+  "fact": "Twardym ogonem kopie norę głęboko pod ziemią. Jego nora może mieć prawie 10 kilometrów!"
+ },
+ "983": {
+  "kind": "Pokémon Wielkie Ostrze",
+  "hint": "Czerwono-czarny rycerz z wielką złotą koroną jak ostrze na głowie.",
+  "fact": "Jest królem wielkiej armii. Tylko najsilniejszy wojownik może się w niego zmienić."
+ },
+ "984": {
+  "kind": "Pokémon Paradoks",
+  "hint": "Wielki, włochaty stwór jak dawny mamut, z ogromnymi kłami.",
+  "fact": "Ludzie widzą go dopiero od niedawna. Wygląda jak potwór z pewnej starej książki."
+ },
+ "985": {
+  "kind": "Pokémon Paradoks",
+  "hint": "Różowy, puchaty stworek z długimi włosami i bardzo długim ogonem.",
+  "fact": "Widziano go tylko raz! Wygląda jak tajemniczy stwór z dziennika dawnej wyprawy."
+ },
+ "989": {
+  "kind": "Pokémon Paradoks",
+  "hint": "Brązowy stwór z żelaznego piasku, ze sterczącymi kolcami jak włosy.",
+  "fact": "Nikt go jeszcze nie złapał. Wygląda jak stwór z dziennika dawnej wyprawy."
+ },
+ "996": {
+  "kind": "Pokémon Lodowa Płetwa",
+  "hint": "Mały szary smoczek z płetwą na grzbiecie, trochę jak rekinek.",
+  "fact": "Płetwą na grzbiecie wchłania ciepło i zmienia je w lodową energię."
+ },
+ "997": {
+  "kind": "Pokémon Lodowa Płetwa",
+  "hint": "Szary smok z lodową maską na twarzy i lodowym ostrzem na grzbiecie.",
+  "fact": "Zamraża powietrze wokół siebie i robi z niego lodową maskę."
+ },
+ "998": {
+  "kind": "Pokémon Lodowy Smok",
+  "hint": "Wielki szary smok z lodowym ostrzem na plecach, jak miecz.",
+  "fact": "Wieje z pyska lodowatym powietrzem, które zamraża nawet gorącą lawę."
+ },
+ "999": {
+  "kind": "Pokémon Skrzynia Monet",
+  "hint": "Mała skrzynia ze skarbem, z której wygląda malutki stworek.",
+  "fact": "Urodził się w skrzyni ze skarbem 1500 lat temu. Pilnuje skarbu przed złodziejami."
+ },
+ "1012": {
+  "kind": "Pokémon Matcha",
+  "hint": "Zielony duszek ukryty w małym słoiczku na herbatę.",
+  "fact": "Mówią, że powstał z zielonej herbaty, której mistrz parzenia nie zdążył dokończyć."
+ },
+ "1013": {
+  "kind": "Pokémon Matcha",
+  "hint": "Zielony duszek w dużej miseczce do herbaty.",
+  "fact": "Udaje herbatę, żeby ktoś ją wypił. Prawie nigdy mu się to nie udaje!"
+ },
+ "1020": {
+  "kind": "Pokémon Paradoks",
+  "hint": "Wielki ognisty stwór jak dawny mamut, z płonącą grzywą i długimi kłami.",
+  "fact": "Widziano go bardzo rzadko. Na jednym filmie biega i zieje słupami ognia."
  }
 }

@@ -8,8 +8,8 @@ const rank = s => SERIES.indexOf(s.series) * 2 + (s.id.endsWith('p'));   // prom
 let all;   // leniwie: fetch.js wczytuje SERIES, zanim pobierze karty
 const cards = () => all ||= load('tcg_sets').filter(s => SERIES.includes(s.series)).sort((a, b) => rank(a) - rank(b) || a.releaseDate.localeCompare(b.releaseDate))
   .flatMap(s => load('tcg_' + s.id).map(c => ({ ...c, set: s.id, old: s.series === 'Sun & Moon' })));
-// gdy nie ma zwykłej karty: „Galarian …” (Perrserker, Runerigus), „Ethan's …” (Pichu), „… V” (Arceus) – w tej kolejności
-const alt = (c, name) => c.name === 'Galarian ' + name ? 4 : c.name.endsWith("'s " + name) ? 6 : c.name === name + ' V' ? 8 : c.name === name ? 0 : -1;
+// gdy nie ma zwykłej karty: „Galarian / Paldean …” (Perrserker, Runerigus, Clodsire), „Ethan's …” (Pichu), „… V” (Arceus) – w tej kolejności
+const alt = (c, name) => ['Galarian ', 'Paldean '].some(r => c.name === r + name) ? 4 : c.name.endsWith("'s " + name) ? 6 : c.name === name + ' V' ? 8 : c.name === name ? 0 : -1;
 const score = c => (c.subtypes.includes('ex') || c.subtypes.includes('V') ? 2 : 0) + (PLAIN.includes(c.rarity) ? 0 : 1) + c.alt + (c.old ? 20 : 0);   // Sun & Moon tylko w ostateczności
 /* karty specjalne do obejrzenia w oknie Pokémona: Mega (XY „M …-EX”, Mega Evolution „Mega … ex”) i V / VMAX / VSTAR;
    po jednej na nazwę (i typ: M Charizard-EX X i Y nazywają się tak samo), zwykła grafika zamiast ilustracji i tęczowych, od najstarszej */
@@ -29,8 +29,7 @@ const variants = id => {
 module.exports = Object.assign((id, name) => cards().map(c => ({ ...c, alt: alt(c, name) })).filter(c => c.supertype === 'Pokémon' && c.nationalPokedexNumbers?.includes(id) && c.alt >= 0)
   .reduce((best, c) => !best || score(c) < score(best) ? c : best, null), { SERIES, VAR_SERIES, variants });
 if (require.main === module) {
-  const HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json'), BA = require('./academy.json');
-  for (const id of [...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family, ...BA.pikachu, ...BA.eevee, ...BA.cinderace, ...BA.family].filter(i => i > 151)) {
+  for (const id of require('./ids.js').IDS.filter(i => i > 151)) {
     const sp = load('pokemon-species_' + id), name = sp.names.find(n => n.language.name === 'en').name, c = module.exports(id, name);
     console.log(id, name, c ? `${c.set}/${c.number} ${c.rarity} ${c.subtypes} hp${c.hp} ${c.evolvesFrom || ''}` : '— BRAK');
   }

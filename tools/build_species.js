@@ -2,10 +2,10 @@
 /* tmp/pokeapi/ (node tools/fetch.js) + tools/horizons.json (Pokémony z Horyzontów) + tools/famous.json (sławne z gen. 4–9) + tools/movies.json (filmy) + tools/academy.json (Battle Academy 2022) + tools/pl.json (polskie podpowiedzi i ciekawostki) + tools/attacks_pl.json → js/species.js
    tmp/en.json: angielskie opisy z Pokédexu, źródło tłumaczeń do tools/pl.json. */
 const fs = require('fs'), path = require('path');
-const DIR = path.join(__dirname, '..', 'tmp', 'pokeapi'), LAST = 151, TYPES = 18;
+const DIR = path.join(__dirname, '..', 'tmp', 'pokeapi'), TYPES = 18;
 const HZ = require('./horizons.json'), FAM = require('./famous.json'), MOV = require('./movies.json'), BA = require('./academy.json'), pick = require('./pick_cards.js'), MV = require('./moves.js');
 const MOVES_PL = (f => fs.existsSync(f) ? JSON.parse(fs.readFileSync(f)) : {})(path.join(__dirname, 'moves_pl.json'));
-const IDS = [...Array.from({ length: LAST }, (_, i) => i + 1), ...HZ.hz, ...HZ.s2, ...HZ.family, ...FAM.fam, ...FAM.family, ...MOV.m12, ...MOV.family, ...BA.pikachu, ...BA.eevee, ...BA.cinderace, ...BA.family].filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
+const { IDS, HZ1, HZ2, LAST } = require('./ids.js');
 const load = p => JSON.parse(fs.readFileSync(path.join(DIR, p.replace(/\//g, '_') + '.json')));
 const en = arr => arr.filter(x => x.language.name === 'en');
 const clean = s => s.replace(/[\f\n­]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -70,7 +70,7 @@ for (const i of IDS) {
   const bst = Object.values(st).reduce((a, b) => a + b, 0);
   const flav = en(sp.flavor_text_entries), red = flav.find(f => f.version.name === 'red') || flav[0];
   mons.push({
-    id: i, name: en(sp.names)[0].name, hz: HZ.hz.includes(i) ? 1 : HZ.s2.includes(i) ? 2 : undefined, fam: [...FAM.fam, ...FAM.family].includes(i) || undefined, m12: MOV.m12.includes(i) || undefined, ba: [...BA.pikachu, ...BA.eevee, ...BA.cinderace].includes(i) || undefined, types: p.types.map(t => t.type.name),
+    id: i, name: en(sp.names)[0].name, hz1: HZ1.includes(i) || undefined, hz2: HZ2.includes(i) || undefined, fam: [...FAM.fam, ...FAM.family].includes(i) || undefined, m12: MOV.m12.includes(i) || undefined, ba: [...BA.pikachu, ...BA.eevee, ...BA.cinderace].includes(i) || undefined, types: p.types.map(t => t.type.name),
     hp: st.hp, atk: st.attack, def: st.defense, satk: st['special-attack'], sdef: st['special-defense'], spd: st.speed,
     m: p.height / 10, kg: p.weight / 10, rarity: rarity(sp, bst),
     from: (n => IDS.includes(n) ? n : null)(+sp.evolves_from_species?.url.match(/(\d+)\/$/)[1]),   // Pichu & co. spoza listy pomijamy
@@ -90,7 +90,7 @@ fs.writeFileSync(path.join(__dirname, '..', 'tmp', 'en.json'), JSON.stringify(mo
   ({ id, name, types, genus, flavor, from: from && mons.find(m => m.id === from).name })), null, 1));
 const plFile = path.join(__dirname, 'pl.json'), PL = fs.existsSync(plFile) ? JSON.parse(fs.readFileSync(plFile)) : {};
 const rows = mons.map(({ genus, flavor, ...m }) => JSON.stringify({ ...m, ...PL[m.id] }));
-fs.writeFileSync(path.join(__dirname, '..', 'js', 'species.js'), `/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz: sezon, w którym widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) + z filmu „Arceus i Klejnot Życia” (m12) + z talii Battle Academy 2022 (ba) =================
+fs.writeFileSync(path.join(__dirname, '..', 'js', 'species.js'), `/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz1 / hz2: sezon, w którym widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) + z filmu „Arceus i Klejnot Życia” (m12) + z talii Battle Academy 2022 (ba) =================
    Wygenerowane: node tools/build_species.js  (dane: PokeAPI, teksty: tools/pl.json)
    hp/atk/def/satk/sdef/spd = statystyki bazowe z gier · m = wzrost, kg = waga · from = z kogo ewoluuje
    mv: 4 ruchy do areny (klucze MOVES, opis pól w tools/build_species.js) · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1
@@ -108,6 +108,8 @@ const MOVES = {
 const SPECIES = [
   ${rows.join(',\n  ')},
 ];
-if (typeof module !== 'undefined') module.exports = { CHART, MOVES, SPECIES, ART_URL, SPRITE_URL, CARD_URL };
+// Horyzonty sezon 2 („The Search for Laqua”), odcinki jak na Netflixie: [tytuł, aktywne Pokémony]
+const EPISODES = ${JSON.stringify(HZ.titles.map((t, i) => [t, HZ.ep[i + 1]]))};
+if (typeof module !== 'undefined') module.exports = { CHART, MOVES, SPECIES, EPISODES, ART_URL, SPRITE_URL, CARD_URL };
 `);
 console.log('-> js/species.js', mons.length);
