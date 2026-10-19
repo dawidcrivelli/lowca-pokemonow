@@ -9,7 +9,7 @@ const TUNE = {
   stab: 1.5, tera: 2, crit: [1 / 24, 1 / 8, 1 / 2], critMult: 1.5, roll: [.85, .15],   // krytyk wg premii ruchu (0, 1, 2+); losowo ×[.85, 1]
   arena: 1.2, sleep: [1, 3], confuse: [2, 5], selfHit: 1 / 3, selfHitPower: 40, para: .25, thaw: .2,
   poison: 1 / 8, burn: 1 / 16, struggle: 50, struggleRecoil: 1 / 4, ohkoAcc: 30,
-  ai: { random: .15, status: .3, healBelow: .5, horizon: 3, tempo: .5 },   // komputer: czasem losowo, wartość stanu (× życia rywala); wzmocnienie: ile tur liczy się zysk, ile ciosu warte uderzanie pierwszym
+  ai: { random: .15, status: .3, horizon: 3, tempo: .5 },   // komputer: czasem losowo, wartość stanu (× życia rywala); wzmocnienie: ile tur liczy się zysk, ile ciosu warte uderzanie pierwszym
 };
 const clampN = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 /* trening (tryb rodzica może wyłączyć): poziom od LEVEL do max, perLevel EXP na poziom.
@@ -185,17 +185,23 @@ function tick(B, f, out) {
   emitter(B, f, f, out)({ tick: f.status, damage: d, text: `${STATUS[f.status][0]} ${f.name} traci ${d} życia (${STATUS[f.status][1]}).` });
 }
 
-/* ---------- komputer: wartość ruchu ≈ oczekiwane obrażenia (dobicie = najpewniejszy cios), stan wg TUNE.ai, wzmocnienie wg boostGain.
+/* ---------- komputer: wartość ruchu ≈ oczekiwane obrażenia (dobicie = najpewniejszy cios), stan wg TUNE.ai, wzmocnienie wg boostGain, leczenie wg healGain.
    Każda statystyka najwyżej raz, nigdy dwa ruchy bez obrażeń z rzędu – inaczej walka to seria „atak rośnie!” bez ciosów. ---------- */
 /* wzmocnienie / osłabienie warte tyle, ile zmienia walkę: przyrost moich najlepszych obrażeń i spadek jego, razy tury, które mi zostały,
    plus część ciosu, gdy zaczynam uderzać pierwszy. Np. Groźna Mina szybszego Charizarda = 0, atak +1 bez ruchów fizycznych = 0 */
+const best = (B, x, y) => Math.max(0, ...x.moves.filter(v => v.m.c !== 'x' && !v.m.ohko).map(v => damageOf(B, x, y, v.m, { avg: true }) * (v.m.a || 100) / 100));
 function boostGain(B, me, foe, m) {
-  const best = (x, y) => Math.max(0, ...x.moves.filter(v => v.m.c !== 'x' && !v.m.ohko).map(v => damageOf(B, x, y, v.m, { avg: true }) * (v.m.a || 100) / 100));
-  const faster = () => eff(me, 'spd') > eff(foe, 'spd'), f = m.self ? me : foe, was = f.stage, a0 = best(me, foe), d0 = best(foe, me), s0 = faster();
+  const faster = () => eff(me, 'spd') > eff(foe, 'spd'), f = m.self ? me : foe, was = f.stage, a0 = best(B, me, foe), d0 = best(B, foe, me), s0 = faster();
   f.stage = { ...was }; for (const [k, n] of m.st) f.stage[k] = clampN(f.stage[k] + n, -6, 6);
-  const a1 = best(me, foe), d1 = best(foe, me), s1 = faster(); f.stage = was;
+  const a1 = best(B, me, foe), d1 = best(B, foe, me), s1 = faster(); f.stage = was;
   const turns = clampN(Math.ceil(me.hp / Math.max(1, d0)) - 1, 0, TUNE.ai.horizon);
   return (a1 - a0 + d0 - d1) * turns + (s1 && !s0 ? a1 * TUNE.ai.tempo : 0);
+}
+/* leczenie: tura bez ciosu za h życia, czyli h / d tur rywala (d: jego najlepszy cios), w których dalej biję po a.
+   Opłaca się, gdy oddaje więcej, niż rywal zabiera na turę; prawie pełne życie → małe h → cios. */
+function healGain(B, me, foe, m) {
+  const h = Math.min(me.hp0 - me.hp, Math.floor(me.hp0 * m.heal / 100));
+  return best(B, me, foe) * h / Math.max(1, best(B, foe, me));
 }
 function aiMove(B, me, foe) {
   const rnd = B.rnd, K = TUNE.ai, ok = me.moves.map((x, i) => [x, i]).filter(([x]) => x.pp);
@@ -209,7 +215,7 @@ function aiMove(B, me, foe) {
     }
     if (me.lastX) return 0;   // po ruchu bez obrażeń: cios
     let v = 0;
-    if (m.heal && me.hp < me.hp0 * K.healBelow) v += me.hp0 * m.heal / 100;
+    if (m.heal) v += healGain(B, me, foe, m);
     if (m.ail && !(m.ail === 'confusion' ? foe.confused : foe.status) && !STATUS[m.ail][2].some(t => foe.s.types.includes(t))) v += foe.hp0 * K.status * acc;
     if (m.st && me.hp > me.hp0 / 2 && m.st.some(([k, n]) => m.self ? n > 0 && me.stage[k] < 1 : n < 0 && foe.stage[k] > -1)) v += boostGain(B, me, foe, m);
     return v;

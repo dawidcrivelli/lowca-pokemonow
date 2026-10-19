@@ -3,7 +3,7 @@
    użycie: node tools/sim_duel.js Charizard Gyarados [N] */
 const { CHART, MOVES, SPECIES } = require('../js/species.js');
 Object.assign(global, { CHART, MOVES });
-const { autoBattle } = require('../js/battle.js');
+const { autoBattle } = require(process.env.ENGINE || '../js/battle.js');
 const [an, bn, N = 1000] = process.argv.slice(2), by = n => SPECIES.find(s => s.name === n), [a, b] = [by(an), by(bn)];
 let wins = 0, rounds = 0; const used = { a: {}, b: {} };
 for (let i = 0; i < N; i++) {
