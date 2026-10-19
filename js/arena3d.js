@@ -63,7 +63,7 @@ window.Arena3D = (() => {
   const CDN = 'https://cdn.jsdelivr.net/', P3D = '429de1288cea0d43f5b4f56305d2276e94239d65';
   const MODEL_URL = id => `${CDN}gh/Pokemon-3D-api/assets@${P3D}/models/opt/regular/${id}.glb`, DRACO = `${CDN}npm/three@0.128.0/examples/js/libs/draco/`;
   const LOADERS = ['GLTFLoader', 'DRACOLoader'].map(n => `${CDN}npm/three@0.128.0/examples/js/loaders/${n}.js`);
-  const MODEL_YAW = .5, ARM = /^(l|r|left_|right_)arm(_01)?(_\d+)?$/i, T_POSE = .35, ARM_DROP = 1.1, OWN_TRACKS = .9;   // obrót 3/4 do kamery; ramię; |pion| ręki w pozie T; opuszczenie [rad]; ile ścieżek klipu musi trafić w kości
+  const MODEL_YAW = .5, ARM = /^(l|r|left_|right_)arm(_01)?(_\d+)?$/i, T_POSE = .35, ARM_DROP = 1.1, OWN_TRACKS = .9, LEN_K = .6;   // obrót 3/4 do kamery; ramię; |pion| ręki w pozie T; opuszczenie [rad]; ile ścieżek klipu musi trafić w kości; ile długości liczy się jak wysokość
   let loading = null, S = null, gltf = null;
   const js = src => new Promise((res, rej) => document.head.append(Object.assign(document.createElement('script'), { src, onload: res, onerror: rej })));
   const load = () => loading = loading || (window.THREE ? Promise.resolve() : js(THREE_SRC)).then(() => Promise.all(LOADERS.map(js)).catch(() => {}));
@@ -163,13 +163,23 @@ window.Arena3D = (() => {
       const clips = own.length && { mixer: new THREE.AnimationMixer(m), wait: clip(/battlewait01_loop$/) || clip(/defaultwait01_loop$/), lunge: clip(/_attack01$/), cast: clip(/rangeattack01$|_attack02$/), hit: clip(/damage01$/), ko: clip(/down01_start$/) };
       m.updateMatrixWorld(true);
       if (!clips?.wait) armsDown(m);
-      const box = new THREE.Box3().setFromObject(m), c = box.getCenter(V(0, 0)), g = new THREE.Group();
+      const box = bounds(m), c = box.getCenter(V(0, 0)), g = new THREE.Group();
       m.position.set(-c.x, -box.min.y, -c.z); g.add(m); g.rotation.y = Math.PI / 2 - f.dir * MODEL_YAW;
-      g.scale.setScalar(f.H / Math.max(...box.getSize(V(0, 0)).toArray()));   // jak obrazek: najdłuższy wymiar = H
+      const z = box.getSize(V(0, 0)); g.scale.setScalar(f.H / Math.max(z.y, Math.max(z.x, z.z) * LEN_K));   // wysokość = H; długie (Onix, Gyarados) tylko do LEN_K długości
       for (const o of [...f.body.children]) if (o !== f.jewel) { f.body.remove(o); o.geometry?.dispose(); }
       f.body.add(g); f.mats = mats;
       if (clips) { f.clips = clips; clips.mixer.addEventListener('finished', () => f.ko || act(f, 'wait')); act(f, 'wait'); }
     }, undefined, e => console.warn('model', sp.id, e));
+  }
+  // granice tego, co widać: wierzchołki na kościach (węzeł siatki ze skórą ma często własną skalę / obrót, których rysowanie nie używa, np. 25: ×4,5)
+  function bounds(m) {
+    const box = new THREE.Box3(), v = V(0, 0);
+    m.traverse(o => {
+      if (!o.isMesh) return; o.skeleton?.update();
+      const p = o.geometry.attributes.position;
+      for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); if (o.isSkinnedMesh) o.boneTransform(i, v); box.expandByPoint(v.applyMatrix4(o.matrixWorld)); }
+    });
+    return box;
   }
   // poza T (ręka poziomo) → ręka w dół: obrót w świecie wokół osi ręka × pion, więc bez względu na osie kości danego modelu
   function armsDown(m) {
