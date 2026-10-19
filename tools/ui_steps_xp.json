@@ -1,0 +1,9 @@
+[
+  { "name": "dark phone", "cdp": ["Emulation.setEmulatedMedia", { "features": [{ "name": "prefers-color-scheme", "value": "dark" }] }] },
+  { "name": "xp", "cdp": ["Emulation.setAutoDarkModeOverride", { "enabled": true }], "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(Array.from({length:12},(_,i)=>[i+1,{t:1}])),xp:{1:30,4:75,6:260,7:12,25:0},settings:{sound:false}}));location.reload()", "wait": 3000 },
+  { "name": "grid", "js": "document.querySelector('.grid').scrollIntoView()", "wait": 800, "shot": "xp1_grid_autodark.png", "h": 900 },
+  { "name": "top", "js": "scrollTo(0,0)", "wait": 500, "shot": "xp2_top.png", "h": 900 },
+  { "name": "check", "js": "document.querySelector('#onlyMissing').click()", "wait": 500, "shot": "xp4_checked.png", "h": 700 },
+  { "name": "uncheck", "js": "document.querySelector('#onlyMissing').click()", "wait": 500 },
+  { "name": "modal", "js": "document.querySelector('.tile[data-id=\"6\"]').click()", "wait": 2000, "shot": "xp3_modal.png", "h": 900 }
+]

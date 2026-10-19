@@ -41,6 +41,7 @@ function get(p) {
   await sleep(2200);
 
   for (const s of steps) {
+    if (s.cdp) await ws.send(...s.cdp);   // np. ["Emulation.setAutoDarkModeOverride", {"enabled": true}]
     if (s.js) { const r = await ws.send('Runtime.evaluate', { expression: s.js, awaitPromise: true }); if (r.exceptionDetails) console.log('JS ERR', s.name, JSON.stringify(r.exceptionDetails.exception && r.exceptionDetails.exception.description || r.exceptionDetails)); }
     if (s.print) console.log(s.name, (await ws.send('Runtime.evaluate', { expression: s.js, awaitPromise: true })).result.value);
     if (s.wait) await sleep(s.wait);
