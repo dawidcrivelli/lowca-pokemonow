@@ -164,6 +164,8 @@ window.Arena3D = (() => {
       if (S?.scene !== scene) return;   // walka już się skończyła
       const names = new Set(), mats = [];
       m.traverse(o => { names.add(o.name); if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mats.push(...[].concat(o.material).filter(x => x.emissive)); } });
+      // bez env mapy metal wychodzi czarny (glTF domyślnie metallic 1, np. Weezing); tekstury liniowo jak reszta sceny, inaczej ciemniejsze
+      for (const x of mats) { x.metalness = 0; if (x.map) x.map.encoding = THREE.LinearEncoding; }
       const own = animations.filter(a => a && a.tracks.filter(t => names.has(THREE.PropertyBinding.parseTrackName(t.name).nodeName)).length >= OWN_TRACKS * a.tracks.length);
       const clip = re => own.find(a => re.test(a.name));
       // nazwy z gier: Scarlet/Violet (battlewait01, attack01…), Sword/Shield (waitA01, buturi = fizyczny, tokusyu = specjalny), Let's Go (aidle, fight_b…);

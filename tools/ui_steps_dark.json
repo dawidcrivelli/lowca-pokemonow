@@ -1,0 +1,7 @@
+[
+{"name": "all", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(SPECIES.map(s=>[s.id,{t:1}])),settings:{mode:'play',sound:false}}));location.reload()", "wait": 2500},
+{"name": "reload", "js": "location.reload()", "wait": 2500},
+{"name": "modal", "js": "document.querySelector('.tile[data-id=\"110\"]').click()", "wait": 800},
+{"name": "110 vs 91", "js": "document.querySelector('[data-arena]').click();document.querySelector('[data-slot=\"b\"]').click();document.querySelector('[data-pick=\"91\"]').click();document.querySelector('[data-fight]').click()", "wait": 12000, "shot": "dark.png", "h": 900},
+{"name": "ciemne materiały [metal>0, sRGB przy liniowym wyjściu] na model; oczekiwane 0", "js": "JSON.stringify(Object.values(Arena3D.S.byId).map(f=>[f.mats.filter(m=>m.metalness>0).length,f.mats.filter(m=>m.map&&m.map.encoding!==Arena3D.S.renderer.outputEncoding).length]))", "print": 1}
+]
