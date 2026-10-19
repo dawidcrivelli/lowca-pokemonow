@@ -63,7 +63,7 @@ window.Arena3D = (() => {
   const CDN = 'https://cdn.jsdelivr.net/', P3D = '429de1288cea0d43f5b4f56305d2276e94239d65';
   const MODEL_URL = id => `${CDN}gh/Pokemon-3D-api/assets@${P3D}/models/opt/regular/${id}.glb`, DRACO = `${CDN}npm/three@0.128.0/examples/js/libs/draco/`;
   const LOADERS = ['GLTFLoader', 'DRACOLoader'].map(n => `${CDN}npm/three@0.128.0/examples/js/loaders/${n}.js`);
-  const MODEL_YAW = .5, ARM = /^(l|r|left_|right_)arm(_01)?(_\d+)?$/i, T_POSE = .35, ARM_DROP = 1.1, OWN_TRACKS = .9, LEN_K = .6;   // obrót 3/4 do kamery; ramię; |pion| ręki w pozie T; opuszczenie [rad]; ile ścieżek klipu musi trafić w kości; ile długości liczy się jak wysokość
+  const MODEL_YAW = .5, ARM = /^(l|r|left_|right_)arm(_01)?(_\d+)?$/i, T_POSE = .35, ARM_DROP = 1.1, OWN_TRACKS = .9, LEN_K = .6, FLOAT = 5126;   // obrót 3/4 do kamery; ramię; |pion| ręki w pozie T; opuszczenie [rad]; ile ścieżek klipu musi trafić w kości; ile długości liczy się jak wysokość; glTF: typ float
   let loading = null, S = null, gltf = null;
   const js = src => new Promise((res, rej) => document.head.append(Object.assign(document.createElement('script'), { src, onload: res, onerror: rej })));
   const load = () => loading = loading || (window.THREE ? Promise.resolve() : js(THREE_SRC)).then(() => Promise.all(LOADERS.map(js)).catch(() => {}));
@@ -152,15 +152,28 @@ window.Arena3D = (() => {
   function model(f, sp) {
     if (sp.art || !THREE.GLTFLoader) return;
     const scene = S.scene;
-    gltf ||= new THREE.GLTFLoader().setDRACOLoader(new THREE.DRACOLoader().setDecoderPath(DRACO))   // klip, którego r128 nie umie (np. 6: pusty accessor), pomijamy zamiast całego modelu
-      .register(p => { const la = p.loadAnimation.bind(p); p.loadAnimation = i => la(i).catch(() => null); return { name: 'skip_bad_clips' }; });
+    /* łatki r128: accessor bez bufora to wg glTF same zera (r128 daje null i klip pada: Pikachu, Bulbasaur, Charizard);
+       klip, który i tak się nie wczyta, pomijamy zamiast całego modelu */
+    gltf ||= new THREE.GLTFLoader().setDRACOLoader(new THREE.DRACOLoader().setDecoderPath(DRACO)).register(p => {
+      const la = p.loadAnimation.bind(p), lc = p.loadAccessor.bind(p), N = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4 };
+      p.loadAccessor = i => (a => a.bufferView === undefined && !a.sparse && a.componentType === FLOAT && N[a.type]
+        ? Promise.resolve(new THREE.BufferAttribute(new Float32Array(a.count * N[a.type]), N[a.type])) : lc(i))(p.json.accessors[i]);
+      p.loadAnimation = i => la(i).catch(() => null); return { name: 'r128_fixes' };
+    });
     gltf.load(MODEL_URL(sp.id), ({ scene: m, animations }) => {
       if (S?.scene !== scene) return;   // walka już się skończyła
       const names = new Set(), mats = [];
       m.traverse(o => { names.add(o.name); if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mats.push(...[].concat(o.material).filter(x => x.emissive)); } });
       const own = animations.filter(a => a && a.tracks.filter(t => names.has(THREE.PropertyBinding.parseTrackName(t.name).nodeName)).length >= OWN_TRACKS * a.tracks.length);
       const clip = re => own.find(a => re.test(a.name));
-      const clips = own.length && { mixer: new THREE.AnimationMixer(m), wait: clip(/battlewait01_loop$/) || clip(/defaultwait01_loop$/), lunge: clip(/_attack01$/), cast: clip(/rangeattack01$|_attack02$/), hit: clip(/damage01$/), ko: clip(/down01_start$/) };
+      // nazwy z gier: Scarlet/Violet (battlewait01, attack01…), Sword/Shield (waitA01, buturi = fizyczny, tokusyu = specjalny), Let's Go (aidle, fight_b…);
+      // Pikachu: Impactrueno (Piorun) = specjalny; jedyny inny klip bez znanej nazwy (Eevee) jako czekanie
+      const clips = own.length && { mixer: new THREE.AnimationMixer(m), wait: clip(/battlewait01_loop$/) || clip(/defaultwait01_loop$|waitA01|aidle$/),
+        lunge: clip(/_attack01$|buturi01|fight_b$/), cast: clip(/rangeattack01$|_attack02$|tokusyu01|fight_d$|Impactrueno/), hit: clip(/damage01$/), ko: clip(/down01_start$|\dko$/) };
+      if (clips) clips.wait ||= own.length === 1 && own[0] !== clips.cast && own[0];
+      // poza: pierwsza klatka czekania albo ataku (bez czekania: zatrzymana) — zamiast spoczynkowej (Pikachu leży w niej na brzuchu); w niej też wymiary
+      const pose = clips && (clips.wait || clips.cast || clips.lunge || own[0]);
+      if (pose) { const x = clips.mixer.clipAction(pose).play(); clips.mixer.update(0); x.paused = pose !== clips.wait; clips.cur = x; }
       m.updateMatrixWorld(true);
       if (!clips?.wait) armsDown(m);
       const box = bounds(m), c = box.getCenter(V(0, 0)), g = new THREE.Group();
