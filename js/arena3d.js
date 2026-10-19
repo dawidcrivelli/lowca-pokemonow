@@ -59,9 +59,14 @@ window.Arena3D = (() => {
   const SKY_TINTS = [0, 0, 0xF6B183, 0xDDE3EA], TINT_MIX = .45;   // zwykły dzień ×2, zachód słońca, pochmurno
   const HERD = ['normal', 'grass', 'ground'], FLYERS = ['flying'], SWIMMERS = ['water'];   // typy Pokémonów w dalekim tle
   const RAINBOW = [0xE84A4A, 0xF29B38, 0xF5D547, 0x5DBB63, 0x4A8FE0, 0x8A5AC8];
-  let loading = null, S = null;
-  const load = () => loading = loading || new Promise((res, rej) => window.THREE ? res()
-    : document.head.append(Object.assign(document.createElement('script'), { src: THREE_SRC, onload: res, onerror: rej })));
+  /* Modele 3D z gier (github.com/Pokemon-3D-api/assets, przypięty commit) i loadery three r128 z CDN; brak sieci / modelu → wytłoczony obrazek */
+  const CDN = 'https://cdn.jsdelivr.net/', P3D = '429de1288cea0d43f5b4f56305d2276e94239d65';
+  const MODEL_URL = id => `${CDN}gh/Pokemon-3D-api/assets@${P3D}/models/opt/regular/${id}.glb`, DRACO = `${CDN}npm/three@0.128.0/examples/js/libs/draco/`;
+  const LOADERS = ['GLTFLoader', 'DRACOLoader'].map(n => `${CDN}npm/three@0.128.0/examples/js/loaders/${n}.js`);
+  const MODEL_YAW = .5, ARM = /^(l|r|left_|right_)arm(_01)?(_\d+)?$/i, T_POSE = .35, ARM_DROP = 1.1, OWN_TRACKS = .9;   // obrót 3/4 do kamery; ramię; |pion| ręki w pozie T; opuszczenie [rad]; ile ścieżek klipu musi trafić w kości
+  let loading = null, S = null, gltf = null;
+  const js = src => new Promise((res, rej) => document.head.append(Object.assign(document.createElement('script'), { src, onload: res, onerror: rej })));
+  const load = () => loading = loading || (window.THREE ? Promise.resolve() : js(THREE_SRC)).then(() => Promise.all(LOADERS.map(js)).catch(() => {}));
 
   /* ---------- klocki ---------- */
   const V = (x, y, z = 0) => new THREE.Vector3(x, y, z);
@@ -138,7 +143,51 @@ window.Arena3D = (() => {
     const mats = []; root.traverse(c => c.material && mats.push(c.material));
     const badge = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthTest: false })); badge.scale.setScalar(BADGE); badge.visible = false; S.scene.add(badge);
     const tera = sp.form === 'tera', tint = new THREE.Color(0xFFFFFF).lerp(new THREE.Color(TERA), tera ? .2 : 0);   // Tera: lekko błękitny
-    return { root, inner, shadow, badge, H, dir, lift, mats, tint, jewel: tera && crown(body, H), x0: -dir * GAP, anim: null, ko: false, won: false, phase: Math.random() * 6, swim: water || fly };
+    const f = { root, inner, body, shadow, badge, H, dir, lift, mats, tint, jewel: tera && crown(body, H), x0: -dir * GAP, anim: null, ko: false, won: false, phase: Math.random() * 6, swim: water || fly };
+    model(f, sp); return f;
+  }
+  /* Model 3D zamiast obrazka, gdy się wczyta: wysokość H, stopy na ziemi, przodem do rywala.
+     Klipy z gry (czekanie, atak, cios, upadek) tylko gdy ruszają kości tego modelu (część plików ma cudze animacje); bez czekania ręce z pozy T w dół.
+     Formy z własną grafiką (Mega) zostają obrazkiem. */
+  function model(f, sp) {
+    if (sp.art || !THREE.GLTFLoader) return;
+    const scene = S.scene;
+    gltf ||= new THREE.GLTFLoader().setDRACOLoader(new THREE.DRACOLoader().setDecoderPath(DRACO))   // klip, którego r128 nie umie (np. 6: pusty accessor), pomijamy zamiast całego modelu
+      .register(p => { const la = p.loadAnimation.bind(p); p.loadAnimation = i => la(i).catch(() => null); return { name: 'skip_bad_clips' }; });
+    gltf.load(MODEL_URL(sp.id), ({ scene: m, animations }) => {
+      if (S?.scene !== scene) return;   // walka już się skończyła
+      const names = new Set(), mats = [];
+      m.traverse(o => { names.add(o.name); if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mats.push(...[].concat(o.material).filter(x => x.emissive)); } });
+      const own = animations.filter(a => a && a.tracks.filter(t => names.has(THREE.PropertyBinding.parseTrackName(t.name).nodeName)).length >= OWN_TRACKS * a.tracks.length);
+      const clip = re => own.find(a => re.test(a.name));
+      const clips = own.length && { mixer: new THREE.AnimationMixer(m), wait: clip(/battlewait01_loop$/) || clip(/defaultwait01_loop$/), lunge: clip(/_attack01$/), cast: clip(/rangeattack01$|_attack02$/), hit: clip(/damage01$/), ko: clip(/down01_start$/) };
+      m.updateMatrixWorld(true);
+      if (!clips?.wait) armsDown(m);
+      const box = new THREE.Box3().setFromObject(m), c = box.getCenter(V(0, 0)), g = new THREE.Group();
+      m.position.set(-c.x, -box.min.y, -c.z); g.add(m); g.rotation.y = Math.PI / 2 - f.dir * MODEL_YAW;
+      g.scale.setScalar(f.H / Math.max(...box.getSize(V(0, 0)).toArray()));   // jak obrazek: najdłuższy wymiar = H
+      for (const o of [...f.body.children]) if (o !== f.jewel) { f.body.remove(o); o.geometry?.dispose(); }
+      f.body.add(g); f.mats = mats;
+      if (clips) { f.clips = clips; clips.mixer.addEventListener('finished', () => f.ko || act(f, 'wait')); act(f, 'wait'); }
+    }, undefined, e => console.warn('model', sp.id, e));
+  }
+  // poza T (ręka poziomo) → ręka w dół: obrót w świecie wokół osi ręka × pion, więc bez względu na osie kości danego modelu
+  function armsDown(m) {
+    m.traverse(b => {
+      if (!b.isBone || !ARM.test(b.name) || !b.children[0]) return;
+      const p = b.getWorldPosition(V(0, 0)), d = b.children[0].getWorldPosition(V(0, 0)).sub(p).normalize();
+      if (Math.abs(d.y) > T_POSE) return;
+      const q = new THREE.Quaternion().setFromAxisAngle(d.clone().cross(V(0, -1)).normalize(), ARM_DROP), pw = b.parent.getWorldQuaternion(new THREE.Quaternion());
+      b.quaternion.premultiply(pw.clone().invert().multiply(q).multiply(pw)); b.updateMatrixWorld(true);
+    });
+  }
+  // klip z gry: jednorazowy (atak, cios, upadek zostaje na końcu), potem z powrotem czekanie
+  function act(f, k) {
+    const c = f.clips, clip = c?.[k]; if (!clip) return;
+    const next = c.mixer.clipAction(clip).reset(); next.clampWhenFinished = true;
+    next.setLoop(clip === c.wait ? THREE.LoopRepeat : THREE.LoopOnce, Infinity).play();
+    if (c.cur && c.cur !== next) next.crossFadeFrom(c.cur, .15, false);
+    c.cur = next;
   }
 
   /* ---------- teren ---------- */
@@ -309,7 +358,7 @@ window.Arena3D = (() => {
   }
 
   /* ---------- animacje ---------- */
-  const play = (f, k, ms = ANIM_MS) => { if (!f.ko) f.anim = { k, t0: performance.now(), ms }; };
+  const play = (f, k, ms = ANIM_MS) => { if (!f.ko) f.anim = { k, t0: performance.now(), ms }, act(f, k); };
   const soon = (ms, fn) => S.todo.push([performance.now() + ms, fn]);
   const rn = (k = 1) => (Math.random() - .5) * k;
   const mid = f => V(f.root.position.x, f.lift + f.H * .45, 0);   // środek ciała
@@ -373,11 +422,12 @@ window.Arena3D = (() => {
       hit: () => { dx = -f.dir * .35 * s; flash = 1 - t; },
       dodge: () => { dx = -f.dir * DODGE.back * s; dy = DODGE.up * s; ry = 2 * Math.PI * t; },
       cast: () => { sy = 1 - .16 * s; glow = s; },
-      ko: () => { rz = Math.PI / 2 * t; dy = -f.lift * t; flash = 1 - t; },
+      ko: () => { rz = f.clips?.ko ? 0 : Math.PI / 2 * t; dy = -f.lift * t; flash = 1 - t; },   // model z klipem upadku pada sam
     })[a.k]();
     if (a && t >= 1 && a.k !== 'ko') f.anim = null;
     f.ko = f.ko || (a && a.k === 'ko' && t >= 1);
-    if (f.ko) { rz = Math.PI / 2; dy = -f.lift; }
+    if (f.ko) { rz = f.clips?.ko ? 0 : Math.PI / 2; dy = -f.lift; }
+    f.clips?.mixer.update(dt);
     const tm = now / 1000 + f.phase;
     if (!f.ko) sy *= 1 + .025 * Math.sin(tm * 3);
     if (f.swim && !f.ko) dy += .12 * Math.sin(tm * 2);

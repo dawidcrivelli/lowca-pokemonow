@@ -45,7 +45,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 | `js/battle.js` | typy, stany, tereny, silnik walki i komputer, bez DOM; strojenie: `TUNE`, potem `node tools/sim.js` |
 | `js/cards.js` | zasady walki kartami, bez DOM; `node tools/sim_cards.js` — długość gier komputer vs komputer |
 | `js/app.js` | interfejs: łowy, Pokédex, karty, arena, walka kartami, tryb rodzica |
-| `js/arena3d.js`, `vendor/three.min.js` | widok walki 3D: wytłoczone grafiki Pokémonów na terenie low-poly |
+| `js/arena3d.js`, `vendor/three.min.js` | widok walki 3D na terenie low-poly: modele z gier ([Pokemon-3D-api](https://github.com/Pokemon-3D-api/assets), z CDN, z animacjami, jeśli są), bez nich wytłoczone grafiki |
 | `js/sfx.js`, `sounds/` | odgłosy walki (CC0) |
 
 Zrzuty ekranu: `node tools/ui_shot.js [ui_steps_3d.json | ui_steps_cards.json]` → `tmp/`.

@@ -1,0 +1,67 @@
+[
+{
+"name": "all",
+"js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:Object.fromEntries(SPECIES.map(s=>[s.id,{t:1}])),settings:{mode:'play',sound:false}}));location.reload()",
+"wait": 2500
+},
+{
+"name": "modal",
+"js": "document.querySelector('.tile[data-id=\"6\"]').click()",
+"wait": 800
+},
+{
+"name": "6 vs 448",
+"js": "document.querySelector('[data-arena]').click();document.querySelector('[data-slot=\"b\"]').click();document.querySelector('[data-pick=\"448\"]').click();document.querySelector('[data-fight]').click()",
+"wait": 9000,
+"shot": "m1_static.png",
+"h": 900
+},
+{
+"name": "atak",
+"js": "document.querySelector('[data-move]').click()",
+"wait": 350,
+"shot": "m1_attack.png",
+"h": 900
+},
+{
+"name": "modele",
+"js": "JSON.stringify(Object.values(Arena3D.S.byId).map(f=>[!!f.body.children.find(o=>o.isGroup), f.clips && Object.entries(f.clips).filter(([k,v])=>v&&v.name).map(([k,v])=>k)]))",
+"print": 1
+},
+{
+"name": "reload",
+"js": "location.reload()",
+"wait": 2500
+},
+{
+"name": "modal",
+"js": "document.querySelector('.tile[data-id=\"150\"]').click()",
+"wait": 800
+},
+{
+"name": "150 vs 149",
+"js": "document.querySelector('[data-arena]').click();document.querySelector('[data-slot=\"b\"]').click();document.querySelector('[data-pick=\"149\"]').click();document.querySelector('[data-fight]').click()",
+"wait": 20000,
+"shot": "m2_clips.png",
+"h": 900
+},
+{
+"name": "modele",
+"js": "JSON.stringify(Object.values(Arena3D.S.byId).map(f=>[!!f.body.children.find(o=>o.isGroup), f.clips && Object.entries(f.clips).filter(([k,v])=>v&&v.name).map(([k,v])=>k)]))",
+"print": 1
+},
+{
+"name": "atak",
+"js": "document.querySelector('[data-move]').click()",
+"wait": 350,
+"shot": "m3_attack.png",
+"h": 900
+},
+{
+"name": "KO",
+"js": "(async()=>{for(let i=0;i<30&&!document.querySelector('.won');i++){document.querySelector('[data-move]:not([disabled])')?.click();await new Promise(r=>setTimeout(r,2500))}})()",
+"wait": 4000,
+"shot": "m4_ko.png",
+"h": 900
+}
+]
