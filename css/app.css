@@ -199,6 +199,11 @@ var(--paper-2);
 body.editing .tile{cursor:pointer}
 body.editing .tile.ghost:hover{border-color:var(--amber);border-style:solid}
 body.editing .tile:not(.ghost):hover{border-color:#C4523C}
+.tile{-webkit-touch-callout:none;user-select:none}
+/* przytrzymana sylwetka: chwilowo kolor i imię */
+.tile.peek{border-color:var(--amber);border-style:solid}
+.tile.peek img.ghost,.tile.peek .cardback .win img{filter:none}
+.tile.peek .nm{color:var(--ink);letter-spacing:0}
 .tile.fresh{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pop{0%{transform:scale(.3) rotate(-14deg);opacity:0}100%{transform:none;opacity:1}}
 

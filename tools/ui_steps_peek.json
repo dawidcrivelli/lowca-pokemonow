@@ -1,0 +1,6 @@
+[
+  { "name": "some", "js": "localStorage.setItem('pokeTracker.v1',JSON.stringify({caught:{1:{t:1},2:{t:1}},settings:{sound:false}}));location.reload()", "wait": 3000 },
+  { "name": "hold", "js": "document.querySelector('.grid').scrollIntoView();document.querySelector('.tile[data-id=\"4\"]').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))", "wait": 900, "shot": "peek1_tile.png", "h": 700 },
+  { "name": "release", "js": "document.querySelector('.tile[data-id=\"4\"]').dispatchEvent(new PointerEvent('pointerup',{bubbles:true}));document.querySelector('.tile[data-id=\"4\"]').click();'modal: '+!!document.querySelector('.m-hint')", "print": 1, "wait": 400, "shot": "peek2_released.png", "h": 700 },
+  { "name": "cards", "js": "document.querySelector('[data-face=\"card\"]')?.click();document.querySelector('.tile[data-id=\"4\"]').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))", "wait": 1500, "shot": "peek3_card.png", "h": 700 }
+]

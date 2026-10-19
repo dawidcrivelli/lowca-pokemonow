@@ -144,8 +144,24 @@ function renderProgress() {
 }
 function renderAll(freshId) { renderChips(); renderProgress(); renderGrid(freshId); }
 
+/* przytrzymanie sylwetki: chwilowo kolor i imię (też na głos) – dziecko zna obrazek, nie zna imienia; po puszczeniu znów ??? */
+const PEEK_MS = 450;
+let peekT, peeked, peekEnd = 0;
+el.grid.addEventListener('pointerdown', e => {
+  const t = e.target.closest('.tile.ghost'); if (!t || editing) return;
+  peekT = setTimeout(() => {
+    const { name } = byId(t.dataset.id);
+    peeked = t; t.classList.add('peek'); t.querySelector('.nm').textContent = name;
+    if (DB.settings.sound) speechSynthesis?.speak(Object.assign(new SpeechSynthesisUtterance(name), { lang: 'en-US' }));   // imiona angielskie, wymowa jak w bajce
+  }, PEEK_MS);
+});
+['pointerup', 'pointercancel'].forEach(ev => el.grid.addEventListener(ev, () => {
+  clearTimeout(peekT); if (!peeked) return;
+  peeked.classList.remove('peek'); peeked.querySelector('.nm').textContent = '???'; peeked = null; peekEnd = Date.now();
+}));
+el.grid.addEventListener('contextmenu', e => e.preventDefault());   // długie przytrzymanie bez menu telefonu
 el.grid.addEventListener('click', e => {
-  const sp = byId(e.target.closest('.tile')?.dataset.id); if (!sp) return;
+  const sp = byId(e.target.closest('.tile')?.dataset.id); if (!sp || Date.now() - peekEnd < 400) return;   // puszczenie po podglądzie ≠ dotknięcie
   if (editing) return setCaught(sp, !isCaught(sp.id));   // tryb rodzica: dotknięcie łapie / wypuszcza
   blip(isCaught(sp.id) ? 620 : 380, .07);
   openCard(sp);

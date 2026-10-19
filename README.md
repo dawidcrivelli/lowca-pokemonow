@@ -10,7 +10,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **543 Pokémony**: 151 z Kanto (Red/Blue, seria Indigo), **wszystkie z 1. sezonu Horyzontów** (HZ001–HZ045, także te w tle; lista:
   `tools/horizons.json`), z 2. sezonu na razie Teddiursa i Ursaring, z filmu **„Arceus i Klejnot Życia”** (2009; `tools/movies.json`), z talii **Battle Academy 2022** (Pikachu V, Eevee V, Cinderace V; `tools/academy.json`) oraz **10 najsłynniejszych z nowszych gier** (Lucario, Greninja, Mimikyu,
   Sylveon, Garchomp, Dragapult, Decidueye, Zoroark, Cinderace, Incineroar; `tools/famous.json`) — wszystkie z ewolucjami potrzebnymi kartom.
-  Dwa filtry naraz: seria / serial (⭐ 🗺️ Kanto, 📺 Horyzonty 1 / 2, 🎬 Arceus (film), 🃏 Battle Academy, 🌟 Sławne) × typ. Niezłapane to czarne sylwetki: „Kto to za Pokémon?”.
+  Dwa filtry naraz: seria / serial (⭐ 🗺️ Kanto, 📺 Horyzonty 1 / 2, 🎬 Arceus (film), 🃏 Battle Academy, 🌟 Sławne) × typ. Niezłapane to czarne sylwetki: „Kto to za Pokémon?”; przytrzymaj sylwetkę, a pokaże kolor i imię (z dźwiękiem: czyta je na głos).
 - **Polskie podpowiedzi i ciekawostki** z Pokédexu; filtr po typach; wyszukiwarka odporna na literówki.
 - **Poké Ball wg rzadkości**: Poké / Great / Ultra / Master Ball (legendarne).
 - **Arena** — jak w grach, na poziomie 50: 4 ruchy z gry (Scarlet/Violet, wybór: `tools/moves.js`), wzór na obrażenia, premia za własny typ,
