@@ -112,7 +112,7 @@ function tileHTML(sp) {
     <span class="rar">${'<i></i>'.repeat(sp.rarity)}</span>
     ${binder() ? `<span class="art tcgs">${got ? `<img src="${CARD_URL(sp)}" alt="" loading="lazy">` : cardBack(sp)}</span>`
       : `<span class="art">${art(sp, got ? 'color' : 'ghost', 'small')}</span>`}
-    <span class="nm">${got ? esc(sp.name) : '???'}</span>${got ? lvBadge(sp.id) : ''}
+    <span class="nm">${got ? esc(sp.name) : '???'}</span>${got ? xpLine(sp.id) : ''}
     <span class="grp" style="background:${TYPES[sp.types[0]][2]}"></span></button>`;
 }
 function renderGrid(freshId) {
@@ -257,6 +257,8 @@ const training = () => DB.settings.train !== false;
 const lvOf = id => training() ? levelOf(DB.xp[id]) : LEVEL;
 const withLv = sp => ({ ...sp, lv: lvOf(sp.id) });
 const lvBadge = id => (d => d > 0 ? ` <span class="lvb" title="Trening: poziom ${LEVEL + d}">⭐${d}</span>` : '')(lvOf(id) - LEVEL);
+// kafelek: jedna linijka „⭐poziom · EXP”, tylko gdy był trening (np. ⭐5 · 10/50)
+const xpLine = id => training() && DB.xp[id] ? `<span class="txp">⭐${lvOf(id) - LEVEL} · ${lvOf(id) >= TRAIN.max ? 'MAX' : `${DB.xp[id] % TRAIN.perLevel}/${TRAIN.perLevel}`}</span>` : '';
 function xpBar(id) {
   if (!training()) return '';
   const xp = DB.xp[id] || 0, max = lvOf(id) >= TRAIN.max, part = xp % TRAIN.perLevel;
