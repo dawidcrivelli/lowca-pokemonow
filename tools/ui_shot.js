@@ -13,6 +13,9 @@ const chrome = spawn(CHROME, [
   `--remote-debugging-port=${PORT}`, `--user-data-dir=${root}/tmp/chrome-prof`,
   '--window-size=430,2400', 'about:blank'
 ], { stdio: 'ignore' });
+// Chrome nie może przeżyć skryptu: osierocony renderuje arenę 3D na CPU (SwiftShader) bez końca, np. po `| head` (EPIPE)
+process.on('exit', () => chrome.kill());
+process.stdout.on('error', () => process.exit());
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 function get(p) {
