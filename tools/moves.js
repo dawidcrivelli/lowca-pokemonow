@@ -1,5 +1,5 @@
 /* Ruchy do areny: learnset z gry (pierwsza wersja z VERSIONS, w której Pokémon jest), poziom ≤ LEVEL.
-   Wybór 4 ruchów: najmocniejszy ruch każdego własnego typu, najmocniejszy innego typu, jeden z efektem (stan / statystyki / leczenie), reszta najmocniejsze.
+   Wybór 4 ruchów (moc × atak albo atak specjalny Pokémona, np. Gyarados: Wodospad zamiast Hydropompy): najmocniejszy ruch każdego własnego typu, najmocniejszy innego typu, jeden z efektem (stan / statystyki / leczenie), reszta najmocniejsze.
    Pomijamy ruchy, których silnik (js/battle.js) nie obsługuje: SKIP_CATEGORIES, SKIP. */
 const VERSIONS = ['scarlet-violet', 'lets-go-pikachu-lets-go-eevee', 'sword-shield', 'ultra-sun-ultra-moon', 'red-blue'];
 const LEVEL = 50, SLOTS = 4;
@@ -38,13 +38,13 @@ function learnset(p) {
 const usable = m => m && !SKIP.includes(m.name) && !SKIP_CATEGORIES.includes(m.meta?.category?.name) && m.meta;
 const damaging = m => m.power || FIXED[m.name] || m.meta.category.name === 'ohko';
 const effect = m => !damaging(m) && ['ailment', 'net-good-stats', 'heal'].includes(m.meta.category.name);
-const strength = m => (FIXED[m.name] ? 60 : m.power || 0) * (m.accuracy || 100) / 100 * (CHARGE.includes(m.name) || RECHARGE.includes(m.name) ? .5 : 1) * (m.meta.min_hits ? 3 : 1);
+const strength = (m, st) => (FIXED[m.name] ? 60 : (m.power || 0) * st[m.damage_class.name] / Math.max(st.physical, st.special)) * (m.accuracy || 100) / 100 * (CHARGE.includes(m.name) || RECHARGE.includes(m.name) ? .5 : 1) * (m.meta.min_hits ? 3 : 1);
 
-// types: typy Pokémona; get(name) → dane ruchu z PokeAPI
-function pickMoves(types, list, get) {
+// types: typy Pokémona; get(name) → dane ruchu z PokeAPI; st: { physical: atak, special: atak specjalny } (bazowe)
+function pickMoves(types, list, get, st) {
   const all = [...new Map(list.map(l => [l.name, get(l.name)])).values()].filter(usable), pick = [];
   const add = m => m && !pick.includes(m) && pick.length < SLOTS && pick.push(m);
-  const best = f => all.filter(m => damaging(m) && f(m)).sort((a, b) => strength(b) - strength(a))[0];
+  const best = f => all.filter(m => damaging(m) && f(m)).sort((a, b) => strength(b, st) - strength(a, st))[0];
   types.forEach(t => add(best(m => m.type.name === t)));
   add(best(m => !types.includes(m.type.name) && m.type.name !== 'normal') || best(m => !types.includes(m.type.name)));
   add(all.filter(effect).sort((a, b) => list.find(l => l.name === b.name).level - list.find(l => l.name === a.name).level)[0]);   // najpóźniej poznany

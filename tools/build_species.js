@@ -56,7 +56,7 @@ function move(name) {
     chg: MV.CHARGE.includes(name) ? 1 : undefined, rch: MV.RECHARGE.includes(name) ? 1 : undefined, fix: MV.FIXED[name], ohko: cat === 'ohko' ? 1 : undefined };
   return name;
 }
-const moveset = (p, types) => MV.pickMoves(types, MV.learnset(p).moves, n => load(`move/${n}`)).map(m => move(m.name));
+const moveset = (p, types) => (st => MV.pickMoves(types, MV.learnset(p).moves, n => load(`move/${n}`), { physical: st.atk, special: st.satk }))(baseStats(p)).map(m => move(m.name));
 
 // formy Mega (arena): n nazwa · art numer grafiki w PokeAPI · typy i statystyki bazowe jak wyżej; ruchy te same co zwykłej formy
 const MEGA = /^(?!.*female).*-mega(-[xyz])?$/;   // samica Meowstic: ta sama Mega co samiec
