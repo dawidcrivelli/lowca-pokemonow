@@ -48,7 +48,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 | `js/arena3d.js`, `vendor/three.min.js` | widok walki 3D na terenie low-poly: modele z gier ([Pokemon-3D-api](https://github.com/Pokemon-3D-api/assets), z CDN, z animacjami, jeśli są), bez nich wytłoczone grafiki |
 | `js/sfx.js`, `sounds/` | odgłosy walki (CC0) |
 
-Zrzuty ekranu: `node tools/ui_shot.js [ui_steps_3d.json | ui_steps_cards.json]` → `tmp/`.
+Zrzuty ekranu: `node tools/ui_shot.js [ui_steps_3d.json | ui_steps_cards.json]` → `tmp/`. Walka kartami na telefonie bez przewijania: `node tools/duel_fit.js 393 740`.
 
 `tools/` — skrypty i dane źródłowe (w repo); `tmp/` — cache i wyniki (`tmp/pokeapi/`, `tmp/en.json`, zrzuty), poza repo.
 

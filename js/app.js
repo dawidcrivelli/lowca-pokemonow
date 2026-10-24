@@ -560,12 +560,12 @@ function actsHTML() {
     ${missing.length && !evo.length && !S.did.evolve ? `<p class="m-lat">🧬 Złap ${missing.map(s => s.name).join(' / ')}, żeby ewoluować!</p>` : ''}`;
 }
 function renderDuel() {
-  openModal(`<div class="m-body duel">
+  openModal(`<div class="m-body duel d-play">
     <div class="dz cpu">${sideHTML('cpu')}</div>
     <div class="d-log">${K.log.slice(-3).map(l => `<div>${esc(l)}</div>`).join('')}</div>
     <div class="dz me">${sideHTML('me')}</div>
     <div class="d-acts">${actsHTML()}</div>
-  </div>`, 'wide');
+  </div>`, 'wide duelm');
 }
 /* zdarzenie: dziennik, dźwięk, animacja (wypad atakującego, wstrząs trafionego) */
 function duelEvent(ev, who) {

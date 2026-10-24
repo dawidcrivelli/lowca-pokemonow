@@ -20,6 +20,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none !important}
 html,body{margin:0;padding:0}
+html{touch-action:manipulation}   /* bez powiększania podwójnym stuknięciem */
 :root{color-scheme:light dark}   /* „mam ciemny motyw”: telefon nie przyciemnia na siłę (auto-dark); kolory i tak jasne */
 body{
   font-family:var(--font-b);
@@ -537,6 +538,22 @@ img.ghost{filter:brightness(0) opacity(.7)}   /* sylwetka niezłapanego */
 .d-log div{opacity:.6}.d-log div:last-child{opacity:1;font-weight:800}
 .d-acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .d-acts .btn small{display:block;font-size:11px;opacity:.8}
+/* stół mieści się na ekranie telefonu bez przewijania (np. 393×680 w Chrome): karty liczone od wysokości ekranu, dziennik 2 linijki */
+.d-play .d-active{width:min(46%,calc((100dvh - 360px) * .36))}
+@media(max-width:640px){
+  .modal.duelm{padding:6px}
+  .modal.duelm .modal-card{max-height:calc(100dvh - 12px)}
+  .duelm .m-body{padding:8px 10px 10px}
+  .d-play{gap:6px}
+  .d-play .dz{padding:6px 8px;gap:8px;border-radius:14px}
+  .d-play .d-log{min-height:0;padding:6px 10px;font-size:12px;line-height:1.35;border-radius:10px}
+  .d-play .d-log div:nth-last-child(n+3){display:none}
+  .d-play .d-info{font-size:11px}.d-play .d-hp{height:7px;margin-top:4px}
+  .d-play .d-side small{font-size:11px;line-height:1.25}
+  .d-play .d-acts{gap:6px}
+  .d-play .d-acts .btn{padding:8px 12px;font-size:14px}
+  .d-play .d-acts .m-lat{margin:0;font-size:12px}
+}
 .d-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 .d-pick button{position:relative;padding:4px 4px 6px;border:3px solid var(--line);border-radius:12px;background:#fff;text-align:center;min-width:0}
 .d-pick button.on{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,203,5,.4);background:#FFF8E1}
