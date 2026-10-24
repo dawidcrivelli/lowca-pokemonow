@@ -14,8 +14,11 @@ const TUNE = {
 const clampN = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 /* trening (tryb rodzica może wyłączyć): poziom od LEVEL do max, perLevel EXP na poziom.
    EXP za wygraną = win × (siła rywala / własna)³, w granicach [minMult, maxMult]; przegrana: lose × tyle. Siła = suma statystyk z poziomem. */
-const TRAIN = { max: 60, perLevel: 50, win: 25, lose: .2, minMult: .05, maxMult: 2 };
+const TRAIN = { max: 60, perLevel: 50, win: 25, lose: .2, minMult: .05, maxMult: 2, moveStep: 5 };
 const levelOf = xp => Math.min(TRAIN.max, LEVEL + Math.floor((xp || 0) / TRAIN.perLevel));
+/* ruchy: statystyki rosną tylko do TRAIN.max, ale każda ⭐ otwiera ruchy o moveStep poziomów dalej (⭐2 → do 60, ⭐10 → do 100);
+   s.mvx (tools/build_species.js): [[poziom ruchów, 4 ruchy], …] */
+const movesAt = (s, lv = LEVEL) => (s.mvx || []).reduce((mv, [L, m]) => L <= LEVEL + TRAIN.moveStep * (lv - LEVEL) ? m : mv, s.mv);
 const power = f => Object.values(f.st).reduce((t, v) => t + v, 0) + f.hp0 / TUNE.hp;
 const xpGain = (me, foe, won) => Math.max(won ? 1 : 0, Math.round(TRAIN.win * clampN((power(foe) / power(me)) ** 3, TRAIN.minMult, TRAIN.maxMult) * (won ? 1 : TRAIN.lose)));
 
@@ -253,4 +256,4 @@ function autoBattle(sa, sb, rnd) {
   return B;
 }
 
-if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TRAIN, levelOf, xpGain, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove };
+if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TRAIN, levelOf, xpGain, movesAt, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove };

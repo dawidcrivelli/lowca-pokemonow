@@ -271,7 +271,7 @@ const record = id => DB.rec[id] || { w: 0, l: 0 };
 /* trening: poziom z EXP (wyłączony w trybie rodzica → wszyscy na LEVEL); znaczek ⭐N tylko u wytrenowanych */
 const training = () => DB.settings.train !== false;
 const lvOf = id => training() ? levelOf(DB.xp[id]) : LEVEL;
-const withLv = sp => ({ ...sp, lv: lvOf(sp.id) });
+const withLv = sp => (lv => ({ ...sp, lv, mv: movesAt(sp, lv) }))(lvOf(sp.id));   // poziom z treningu i odblokowane nim ruchy
 const lvBadge = id => (d => d > 0 ? ` <span class="lvb" title="Trening: poziom ${LEVEL + d}">⭐${d}</span>` : '')(lvOf(id) - LEVEL);
 // kafelek: jedna linijka „⭐poziom · EXP”, tylko gdy był trening (np. ⭐5 · 10/50)
 const xpLine = id => training() && DB.xp[id] ? `<span class="txp">⭐${lvOf(id) - LEVEL} · ${lvOf(id) >= TRAIN.max ? 'MAX' : `${DB.xp[id] % TRAIN.perLevel}/${TRAIN.perLevel}`}</span>` : '';
@@ -609,7 +609,8 @@ function train(a, b, won) {
   let up = '';
   if (after > before) {
     const s0 = statsOf({ ...a.s, lv: before }), s1 = statsOf({ ...a.s, lv: after });
-    up = `<div class="lvup">🎉 ${esc(a.name)}: nowy poziom ⭐${after - LEVEL}!<span>${STAT_ICONS.map(([k, ico]) => `${ico}+${s1[k] - s0[k]}`).join(' ')}</span></div>`;
+    const fresh = movesAt(a.s, after).filter(k => !movesAt(a.s, before).includes(k)).map(k => MOVES[k].n);   // ruchy odblokowane tym poziomem
+    up = `<div class="lvup">🎉 ${esc(a.name)}: nowy poziom ⭐${after - LEVEL}!<span>${STAT_ICONS.map(([k, ico]) => `${ico}+${s1[k] - s0[k]}`).join(' ')}</span>${fresh.length ? `<span class="newmove">✨ nowy ruch: ${fresh.map(esc).join(', ')}!</span>` : ''}</div>`;
     later(300, () => { blip(660, .1); later(120, () => blip(880, .1)); later(240, () => blip(1100, .16)); });
   }
   return `<div class="xp-gain">⭐ ${esc(a.name)}: +${gain} EXP${won ? '' : ' za walkę'}</div>${xpBar(a.id)}${up}`;

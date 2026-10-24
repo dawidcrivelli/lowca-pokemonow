@@ -86,7 +86,13 @@ function move(name) {
     chg: MV.CHARGE.includes(name) ? 1 : undefined, rch: MV.RECHARGE.includes(name) ? 1 : undefined, fix: MV.FIXED[name], ohko: cat === 'ohko' ? 1 : undefined };
   return name;
 }
-const moveset = (p, types) => (st => MV.pickMoves(types, MV.learnset(p).moves, n => load(`move/${n}`), { physical: st.atk, special: st.satk }))(baseStats(p)).map(m => move(m.name));
+const moveset = (p, types, level) => (st => MV.pickMoves(types, MV.learnset(p, level).moves, n => load(`move/${n}`), { physical: st.atk, special: st.satk }))(baseStats(p)).map(m => move(m.name));
+// trening: ruchy dla kolejnych progów poziomu ruchów (55, 60 … 100), tylko gdy zestaw się zmienia → mvx: [[poziom, [4 ruchy]], …]
+function movesByLevel(p, types) {
+  const out = []; let prev = moveset(p, types).join();
+  for (let L = MV.LEVEL + 5; L <= MV.MAX_LEVEL; L += 5) { const m = moveset(p, types, L); if (m.join() !== prev) out.push([L, m]); prev = m.join(); }
+  return out.length ? out : undefined;
+}
 
 // formy Mega (arena): n nazwa · art numer grafiki w PokeAPI · typy i statystyki bazowe jak wyżej; ruchy te same co zwykłej formy
 const MEGA = /^(?!.*female).*-mega(-[xyz])?$/;   // samica Meowstic: ta sama Mega co samiec
@@ -106,7 +112,7 @@ for (const i of IDS) {
     from: (n => IDS.includes(n) ? n : null)(+sp.evolves_from_species?.url.match(/(\d+)\/$/)[1]),   // Pichu & co. spoza listy pomijamy
     legend: sp.is_legendary || sp.is_mythical || undefined,
     mega: megas(sp, en(sp.names)[0].name),
-    genus: en(sp.genera)[0].genus, flavor: clean(red.flavor_text), card: card(i, en(sp.names)[0].name), vars: (v => v.length ? v : undefined)(pick.variants(i)), mv: moveset(p, p.types.map(t => t.type.name)),
+    genus: en(sp.genera)[0].genus, flavor: clean(red.flavor_text), card: card(i, en(sp.names)[0].name), vars: (v => v.length ? v : undefined)(pick.variants(i)), mv: moveset(p, p.types.map(t => t.type.name)), mvx: movesByLevel(p, p.types.map(t => t.type.name)),
   });
 }
 // typ atakujący → {typ broniący: mnożnik}; tylko odstępstwa od 1
@@ -123,7 +129,7 @@ const rows = mons.map(({ genus, flavor, ...m }) => JSON.stringify({ ...m, ...PL[
 fs.writeFileSync(path.join(__dirname, '..', 'js', 'species.js'), `/* ================= POKÉDEX: 151 Pokémonów z 1. generacji + Pokémony z serialu Horyzonty (hz1 / hz2: sezon, w którym widać je w serialu) + sławne z gen. 4–9 z ewolucjami (fam) + z filmu „Arceus i Klejnot Życia” (m12) + z talii Battle Academy 2022 (ba) =================
    Wygenerowane: node tools/build_species.js  (dane: PokeAPI, teksty: tools/pl.json)
    hp/atk/def/satk/sdef/spd = statystyki bazowe z gier · m = wzrost, kg = waga · from = z kogo ewoluuje
-   mv: 4 ruchy do areny (klucze MOVES, opis pól w tools/build_species.js) · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1
+   mv: 4 ruchy do areny (klucze MOVES, opis pól w tools/build_species.js) · mvx: [[poziom ruchów, 4 ruchy], …] — odblokowane treningiem · CHART: typ ataku → {typ obrońcy: mnożnik}, brak wpisu = ×1
    card: karta z zestawu „Pokémon 151” (Scarlet & Violet, 2023) albo card.img, opis pól w tools/build_species.js
    Obrazki i głosy z repozytoriów PokeAPI na GitHubie, karty z images.pokemontcg.io (CORS dozwolony, potrzebny arenie 3D) */
 const POKEAPI_RAW = 'https://raw.githubusercontent.com/PokeAPI/';

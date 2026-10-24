@@ -2,9 +2,9 @@
    Wybór 4 ruchów (moc × atak albo atak specjalny Pokémona, np. Gyarados: Wodospad zamiast Hydropompy): najmocniejszy ruch każdego własnego typu, najmocniejszy innego typu, jeden z efektem (stan / statystyki / leczenie), reszta najmocniejsze.
    Pomijamy ruchy, których silnik (js/battle.js) nie obsługuje: SKIP_CATEGORIES, SKIP. */
 const VERSIONS = ['scarlet-violet', 'lets-go-pikachu-lets-go-eevee', 'sword-shield', 'ultra-sun-ultra-moon', 'red-blue'];
-const LEVEL = 50, SLOTS = 4;
+const LEVEL = 50, SLOTS = 4, MAX_LEVEL = 100;
 const SKIP_CATEGORIES = ['force-switch', 'field-effect', 'whole-field-effect', 'unique', 'swagger'];
-const SKIP = ['explosion', 'self-destruct', 'misty-explosion', 'memento', 'final-gambit', 'counter', 'mirror-coat', 'metal-burst', 'bide',
+const SKIP = ['attract', 'explosion', 'self-destruct', 'misty-explosion', 'memento', 'final-gambit', 'counter', 'mirror-coat', 'metal-burst', 'bide',
   'dream-eater', 'focus-punch', 'belch', 'last-resort', 'fake-out', 'first-impression', 'snore', 'sleep-talk', 'natural-gift', 'fling',
   'rage', 'thrash', 'petal-dance', 'outrage', 'uproar', 'rollout', 'ice-ball', 'fury-cutter', 'present', 'magnitude', 'spit-up', 'stockpile',
   'rest', 'endeavor', 'pain-split', 'curse', 'transform', 'mimic', 'sketch', 'metronome', 'mirror-move', 'copycat', 'assist', 'me-first',
@@ -27,9 +27,9 @@ const RECHARGE = ['hyper-beam', 'giga-impact', 'blast-burn', 'hydro-cannon', 'fr
 const FIXED = { 'seismic-toss': 'level', 'night-shade': 'level', 'dragon-rage': 40, 'sonic-boom': 20, 'super-fang': 'half', 'ruination': 'half', 'psywave': 'level' };
 
 // learnset: [{ name, level }] z pierwszej wersji, w której Pokémon uczy się ruchów z poziomem
-function learnset(p) {
+function learnset(p, level = LEVEL) {   // level: trening odblokowuje późniejsze ruchy (js/battle.js: TRAIN.moveStep)
   for (const vg of VERSIONS) {
-    const out = p.moves.flatMap(m => m.version_group_details.filter(d => d.version_group.name === vg && d.move_learn_method.name === 'level-up' && d.level_learned_at <= LEVEL)
+    const out = p.moves.flatMap(m => m.version_group_details.filter(d => d.version_group.name === vg && d.move_learn_method.name === 'level-up' && d.level_learned_at <= level)
       .map(d => ({ name: m.move.name, level: d.level_learned_at })));
     if (out.length) return { vg, moves: out };
   }
@@ -52,4 +52,4 @@ function pickMoves(types, list, get, st) {
   if (!pick.some(damaging)) pick.push(get('tackle'));   // np. Magikarp: sam Splash
   return pick.slice(0, SLOTS);
 }
-module.exports = { VERSIONS, LEVEL, CHARGE, RECHARGE, FIXED, learnset, pickMoves };
+module.exports = { VERSIONS, LEVEL, MAX_LEVEL, CHARGE, RECHARGE, FIXED, learnset, pickMoves };

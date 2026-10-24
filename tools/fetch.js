@@ -26,7 +26,7 @@ async function get(p, url) {
     for (const m of p.moves) MOVE_NO[m.move.name] = +m.move.url.match(/(\d+)\/$/)[1];
   }
   MOVE_NO.tackle ||= 33;
-  const moves = new Set(['tackle', ...IDS.flatMap(i => learnset(load(`pokemon/${i}`)).moves.map(m => m.name))]);   // ruchy do areny: tools/moves.js
+  const moves = new Set(['tackle', ...IDS.flatMap(i => learnset(load(`pokemon/${i}`), 100).moves.map(m => m.name))]);   // ruchy do areny do poziomu 100 (trening odblokowuje późniejsze): tools/moves.js
   for (const m of moves) await get(`move/${m}`);
   for (let i = 1; i <= TYPES; i++) await get(`type/${i}`);
   const sets = (await get('tcg_sets', TCG + 'sets/en.json')).filter(s => SERIES.includes(s.series) || VAR_SERIES.includes(s.series));

@@ -33,6 +33,8 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **Trening** — Twój Pokémon (🙂 Ty) zdobywa EXP po każdej walce na arenie: za wygraną zależnie od siły rywala (równy ~25, słabeusz ~1–3,
   silniejszy do 50), za przegraną trochę. 50 EXP = poziom wyżej (statystyki jak w grach), limit poziom 60 (⭐10). Wytrenowane mają znaczek ⭐N (na kafelkach w Pokédexie linijka ⭐N · EXP),
   w karcie pasek EXP; strojenie: `TRAIN` w `js/battle.js`. Walka kartami bez zmian.
+  Każda ⭐ odblokowuje też późniejsze ruchy z gry: ⭐N = ruchy do poziomu 50 + 5·N (⭐2 → do 60, ⭐10 → do 100), np. Charizard ⭐3 Ognisty Szturm,
+  Mewtwo ⭐5 Psychiczne Uderzenie; po walce „✨ nowy ruch”. Statystyki dalej tylko do poziomu 60.
 - **Tryb rodzica** — przytrzymaj ⚙️ przez sekundę: dotknięcie kafelka łapie albo wypuszcza Pokémona, trening wł./wył. (wyłączony: wszyscy na poziomie 50, EXP zostaje), zerowanie treningu, zapis/odczyt pliku, reset.
 
 ## Uruchomienie
