@@ -503,7 +503,11 @@ const CPU_MS = 900;
 const basicsCaught = () => roster().filter(s => s.card.st === 0);
 const cpuTeam = n => { const p = SPECIES.filter(s => s.card.st === 0 && !s.card.ex && !s.legend); return Array.from({ length: n }, () => p[Math.floor(Math.random() * p.length)]); };
 const cost = c => [...c].map(e => ENERGY_ICON[e]).join('');
-const fxIcons = fx => [fx.cond && COND_ICON[fx.cond], fx.heal && '💚', fx.bench && '🎯', fx.self && '💢'].filter(Boolean).join('');   // efekty ataku na przycisku
+const fxIcons = fx => [fx.cond && COND_ICON[fx.cond], fx.heal && '💚', fx.bench && '🎯', fx.self && '💢', fx.guard && '🛡️', fx.lock && '😮‍💨', fx.disc && '🔻'].filter(Boolean).join('');   // efekty ataku na przycisku
+// energia: ikony do 4, potem „⚡×7” (bez zrzutu energia rośnie co turę)
+const energyIcons = m => m.en > 4 ? `${ENERGY_ICON[m.sp.card.t]}×${m.en}` : ENERGY_ICON[m.sp.card.t].repeat(m.en) || '—';
+// stan aktywnego: stany, odpoczynek po mocnym ataku, ochrona na turę rywala
+const marks = m => conds(m).map(c => COND_ICON[c]).join('') + (m.lock?.n >= K.D.n ? '😮‍💨' : '') + (m.guard?.n >= K.D.n ? '🛡️' : '');
 function openDuel(preId) {
   stopBattle();
   const pre = byId(preId);
@@ -540,10 +544,10 @@ function sideHTML(who) {
   const left = Math.max(0, m.sp.card.hp - m.dmg), pct = 100 * left / m.sp.card.hp;
   return `<div class="d-active" id="da-${who}">${cardImg(m)}
       <div class="d-hp"><i style="width:${pct}%;background-position:${pct}% 0"></i></div>
-      <div class="d-info"><span>❤️ ${left}/${m.sp.card.hp} ${conds(m).map(c => COND_ICON[c]).join('')}</span><span>${ENERGY_ICON[m.sp.card.t].repeat(m.en) || '—'}</span></div></div>
+      <div class="d-info"><span>❤️ ${left}/${m.sp.card.hp} ${marks(m)}</span><span>${energyIcons(m)}</span></div></div>
     <div class="d-side">
       <div class="d-prizes">${mine ? '🙂 Ty' : '🤖 Komputer'} · 🎴 ${S.prizes}/${PRIZES}</div>
-      <div class="d-bench">${S.team.slice(1).map((b, i) => `<button ${mine ? `data-dretreat="${i + 1}"` : 'disabled'} class="${mine && canRetreat ? 'can' : ''}" title="Odwrót">${cardImg(b)}${b.en ? `<small>${ENERGY_ICON[b.sp.card.t].repeat(b.en)}</small>` : ''}</button>`).join('')}</div>
+      <div class="d-bench">${S.team.slice(1).map((b, i) => `<button ${mine ? `data-dretreat="${i + 1}"` : 'disabled'} class="${mine && canRetreat ? 'can' : ''}" title="Odwrót">${cardImg(b)}${b.en ? `<small>${energyIcons(b)}</small>` : ''}</button>`).join('')}</div>
       ${mine && canRetreat && S.team.length > 1 ? `<small>↩️ Dotknij karty na ławce: odwrót za ${m.sp.card.ret} ⚪</small>` : ''}
     </div>`;
 }
@@ -554,8 +558,9 @@ function actsHTML() {
   if (D.who !== 'me') return '<p class="m-lat">🤖 Komputer myśli…</p>';
   const evo = evolutionsOf(D, mine), missing = SPECIES.filter(s => s.from === m.sp.id && !isCaught(s.id));
   return `${evo.map(s => `<button class="btn" data-devolve="${s.id}">🧬 ${esc(s.name)}</button>`).join('')}
-    ${m.sp.card.atk.map(([n, c, dmg, kind, fx = {}], k) => `<button class="btn amber" data-dattack="${k}" ${canPay(m, c) && canAct(m) ? '' : 'disabled'}>${esc(n)} ${dmg || ''}${kind} ${fxIcons(fx)}<small>${cost(c)}</small></button>`).join('')}
+    ${m.sp.card.atk.map(([n, c, dmg, kind, fx = {}], k) => `<button class="btn amber" data-dattack="${k}" ${canPay(m, c) && canAct(m) && canUse(D, m, k) ? '' : 'disabled'}>${esc(n)} ${dmg || ''}${kind} ${fxIcons(fx)}<small>${cost(c)}</small></button>`).join('')}
     ${canAct(m) ? '' : `<p class="m-lat">${COND_ICON[m.cond]} ${esc(m.sp.name)} nie może atakować ani uciekać.</p>`}
+    ${m.lock?.n === D.n ? `<p class="m-lat">😮‍💨 ${esc(m.sp.name)} odpoczywa po mocnym ataku${m.lock.k < 0 ? ' i w tej turze nie atakuje' : `: w tej turze bez „${esc(m.sp.card.atk[m.lock.k][0])}”`}.</p>` : ''}
     <button class="btn ghost" data-dend="1">⏭️ Koniec tury</button>
     ${missing.length && !evo.length && !S.did.evolve ? `<p class="m-lat">🧬 Złap ${missing.map(s => s.name).join(' / ')}, żeby ewoluować!</p>` : ''}`;
 }

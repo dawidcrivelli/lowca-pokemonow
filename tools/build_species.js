@@ -15,14 +15,44 @@ const rarity = (sp, bst) => sp.is_legendary || sp.is_mythical ? 4 : bst >= 480 ?
 /* karta z zestawu „151” (numer karty = numer w Pokédexie), dla reszty z tools/pick_cards.js: tylko to, czego używa js/cards.js
    img obrazek spoza „151” · t typ energii · st etap 0/1/2 · ex (2 nagrody) · weak/res typ · ret koszt odwrotu · atk [nazwa, koszt „LLC”, obrażenia, „”|„+”|„×”, fx?]
    fx: efekty z opisu ataku, których używa js/cards.js: cond stan rywala (coin: tylko przy orle) · fail reszka = nic · heal · bench obrażenia na ławce · self w siebie · disc zrzut energii
-   Reszta opisów (talia, ręka, stadion…) pomijana. */
+       foedisc zrzut energii rywala (fdcoin: przy orle) · lock odpoczynek w następnej turze (1 = żaden atak, 2 = tylko ten) · foelock rywal nie atakuje w następnej turze
+       guard ochrona w następnej turze rywala: −guard obrażeń (999 = wcale; gcoin: przy orle, gbasic: tylko od Podstawowych, gko: tylko gdy ten atak pokonał rywala)
+       by — od czego zależą obrażenia „×” (obrażenia × liczba) i „+” (x więcej, raz albo za każdą sztukę):
+         flips n monet · tails rzuty do reszki · coin orzeł · en energia tego Pokémona · mydmg / foedmg jego rany (×10) · foeen energia rywala · team / bench / foebench Pokémony
+         hurt jest ranny · foehurt rywal ranny · foecond rywal ze stanem (cond: tylko ten) · foeex rywal ex / V · foetype rywal typu (t) · behind mniej nagród niż rywal · opt „możesz” (+ odpoczynek)
+       Bez rozpoznanego warunku „×” i „+” zostają przy rzucie monetą. Reszta opisów (talia, ręka, stadion…) pomijana. */
 const COND = { Poisoned: 'poison', Burned: 'burn', Paralyzed: 'paralyze', Asleep: 'sleep', Confused: 'confuse' };
-function cardFx(t = '') {
+const TYPE_E = { Grass: 'G', Fire: 'R', Water: 'W', Lightning: 'L', Psychic: 'P', Fighting: 'F', Darkness: 'D', Metal: 'M', Colorless: 'C', Dragon: 'N' };
+// od czego zależą obrażenia „×” / „+” (patrz opis fx wyżej)
+function dmgBy(t) {
+  const each = (re, by) => re.test(t) && { by }, x = +(t.match(/does (\d+) more damage/)?.[1]) || undefined;
+  const r = (/^Flip (\d) coins\. This attack does \d+ (?:more )?damage for each heads/.exec(t) && { by: 'flips', n: +RegExp.$1 })
+    || each(/^Flip a coin until you get tails\. This attack does \d+ (?:more )?damage for each heads/, 'tails')
+    || each(/for each (?:\w+ )?Energy attached to this Pokémon/, 'en') || each(/for each damage counter on this Pokémon/, 'mydmg')
+    || each(/for each damage counter on your opponent's Active Pokémon/, 'foedmg') || each(/for each (?:\w+ )?Energy attached to your opponent's Active Pokémon/, 'foeen')
+    || each(/for each of your opponent's Benched Pokémon/, 'foebench') || each(/for each of your Benched Pokémon/, 'bench') || each(/for each of your Pokémon in play/, 'team')
+    || each(/^Flip a coin\. If heads, this attack does \d+ more damage/, 'coin') || each(/^If this Pokémon has any damage counters on it/, 'hurt')
+    || each(/^If your opponent's Active Pokémon (?:already )?has any damage counters on it/, 'foehurt')
+    || (/^If your opponent's Active Pokémon is (Burned|Poisoned|Asleep|Paralyzed|Confused), this attack/.exec(t) && { by: 'foecond', cond: COND[RegExp.$1] })
+    || each(/^If your opponent's Active Pokémon is affected by a Special Condition/, 'foecond')
+    || each(/^If your opponent's Active Pokémon is a Pokémon (?:ex|V)/, 'foeex')
+    || (/^If your opponent's Active Pokémon is an? (\w+) Pokémon, this attack/.exec(t) && TYPE_E[RegExp.$1] && { by: 'foetype', t: TYPE_E[RegExp.$1] })
+    || each(/^If you have more Prize cards remaining than your opponent/, 'behind') || each(/^You may do \d+ more damage\. If you do, during your next turn, this Pokémon can't attack/, 'opt');
+  return r && { ...r, x };
+}
+function cardFx(t = '', name = '') {
   const num = re => +(t.match(re)?.[1]) || undefined, c = t.match(/(?:opponent's Active Pokémon|Defending Pokémon) is now (\w+)/)?.[1];
+  const guard = /prevent all damage (?:from and effects of attacks )?done to this Pokémon/.test(t) ? 999 : num(/During your opponent's next turn, this Pokémon takes (\d+) less damage from attacks/);
   const fx = { cond: COND[c], coin: COND[c] && /^Flip a coin\. If heads, (your opponent's Active|the Defending) Pokémon is now/.test(t) ? 1 : 0,
-    fail: /^Flip a coin\. If tails, this attack does nothing\.?$/.test(t) ? 1 : 0, heal: num(/Heal (\d+) damage from this Pokémon/),
+    fail: /^Flip a coin\. If tails, this attack does nothing\./.test(t) ? 1 : 0,   // ten sam rzut może dawać coś przy orle (np. ochronę) heal: num(/Heal (\d+) damage from this Pokémon/),
     bench: num(/(\d+) damage to 1 of your opponent's Benched Pokémon/), self: num(/does (\d+) damage to itself/),
-    disc: /Discard all Energy from this Pokémon/.test(t) ? 99 : num(/Discard (\d+) (?:\w+ )?Energy from this Pokémon/) || (/Discard an? (?:\w+ )?Energy from this Pokémon/.test(t) ? 1 : 0) };
+    disc: /Discard all Energy from this Pokémon/.test(t) ? 99 : num(/Discard (\d+) (?:\w+ )?Energy from this Pokémon/) || (/Discard an? (?:\w+ )?Energy from this Pokémon/.test(t) ? 1 : 0),
+    foedisc: /[Dd]iscard an? (?:\w+ )?Energy from your opponent's Active Pokémon/.test(t) ? 1 : 0, fdcoin: /^Flip a coin\. If heads, discard an? (?:\w+ )?Energy from your opponent's Active/.test(t) ? 1 : 0,
+    lock: /this Pokémon can't attack/.test(t) && /During your next turn|during your next turn/.test(t) ? 1 : name && t.includes(`During your next turn, this Pokémon can't use ${name}`) ? 2 : 0,
+    foelock: /During your opponent's next turn, the Defending Pokémon can't attack/.test(t) ? 1 : 0,
+    guard, gcoin: guard && /^Flip a coin\. If heads, during your opponent's next turn/.test(t) ? 1 : 0, gbasic: guard && /by attacks from Basic Pokémon/.test(t) ? 1 : 0,
+    gko: guard && /^If your opponent's Pokémon is Knocked Out by damage from this attack/.test(t) ? 1 : 0,   // „If tails, nothing. If heads, …”: rzut już w fail
+    ...dmgBy(t) };
   const out = Object.fromEntries(Object.entries(fx).filter(([, v]) => v));
   return Object.keys(out).length ? out : undefined;
 }
@@ -31,8 +61,8 @@ const ATK_PL = (f => fs.existsSync(f) ? JSON.parse(fs.readFileSync(f)) : {})(pat
 const TCG = Object.fromEntries(load('tcg_sv3pt5').map(c => [c.number, c]));
 function card(i, name) {
   const c = i <= LAST ? TCG[i] : pick(i, name), hp = +c.hp;
-  let atk = (c.attacks || []).filter(a => a.damage || cardFx(a.text)?.cond || cardFx(a.text)?.heal)   // bez obrażeń: tylko ze stanem albo leczeniem
-    .map(a => [ATK_PL[a.name] || a.name, a.cost.map(e => ENERGY[e]).join(''), +(a.damage.match(/\d+/)?.[0] || 0), a.damage.replace(/\d+/, ''), cardFx(a.text)].filter(x => x !== undefined));
+  let atk = (c.attacks || []).filter(a => a.damage || ['cond', 'heal', 'guard'].some(k => cardFx(a.text, a.name)?.[k]))   // bez obrażeń: tylko ze stanem, leczeniem albo ochroną
+    .map(a => [ATK_PL[a.name] || a.name, a.cost.map(e => ENERGY[e]).join(''), +((a.damage || '').match(/\d+/)?.[0] || 0), (a.damage || '').replace(/\d+/, ''), cardFx(a.text, a.name)].filter(x => x !== undefined));
   if (!atk.length) atk = [[ATK_PL.Tackle || 'Tackle', 'CC', Math.max(10, Math.round(hp / 40) * 10), '']];   // same zdolności (Magikarp, Mew ex…) → prosty atak
   return { img: i <= LAST ? undefined : c.images.small, hp, t: ENERGY[c.types[0]], st: ['Basic', 'Stage 1', 'Stage 2'].findIndex(s => c.subtypes.includes(s)), ex: c.subtypes.includes('ex') || c.subtypes.includes('V') || undefined,
     weak: ENERGY[c.weaknesses?.[0]?.type], res: ENERGY[c.resistances?.[0]?.type], ret: c.convertedRetreatCost || 0, atk };

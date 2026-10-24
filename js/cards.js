@@ -3,15 +3,17 @@
    - drużyna: do 3 Pokémonów Podstawowych (Basic); pierwszy walczy (aktywny), reszta czeka na ławce
    - w swojej turze: energia do aktywnego dochodzi sama na start tury (1×, jedyny sensowny wybór bez ręki kart), 1× ewoluuj go (nie w turze, w której wszedł), 1× odwrót (zapłać energią),
      na koniec atak (koszt = liczba energii) — atak kończy turę
-   - słabość ×2, odporność −30; „×” = obrażenia za każdego orła z 2 rzutów, „+” = orzeł dokłada drugie tyle
-   - efekty z opisu ataku (fx, tools/build_species.js): stany, leczenie, obrażenia na ławce i w siebie, zrzut energii
+   - słabość ×2, odporność −30; „×” i „+” wg opisu ataku (fx.by: monety, energia, rany, ławka, stan rywala…), bez rozpoznanego opisu: rzut monetą
+   - efekty z opisu ataku (fx, tools/build_species.js): stany, leczenie, obrażenia na ławce i w siebie, zrzut energii (swojej / rywala),
+     odpoczynek w następnej turze (lock), ochrona w następnej turze rywala (guard), rywal nie atakuje (foelock) — trwają, aż Pokémon zejdzie lub ewoluuje
    - stany jak w grze: zatruty −10 i oparzony −20 (potem rzut: orzeł leczy) między turami; śpiący: rzut, orzeł budzi;
      sparaliżowany: przechodzi po swojej następnej turze; śpiący i sparaliżowany nie atakuje ani nie ucieka;
      zdezorientowany: przy ataku rzut, reszka = 30 w siebie i koniec. Ewolucja i odwrót leczą stany.
    - pokonany Pokémon daje 1 nagrodę (ex: 2); wygrywa, kto zbierze PRIZES albo pokona wszystkich
    Stan:  D = { me, cpu, who: 'me'|'cpu', n: nr tury, winner }
-          strona = { team: [{ sp, dmg, en, since, poison, burn, cond: 'sleep'|'paralyze'|'confuse', paraN }], prizes, did: {energy, evolve, retreat} } */
-const PRIZES = 3, TEAM = 3;
+          strona = { team: [{ sp, dmg, en, since, poison, burn, cond: 'sleep'|'paralyze'|'confuse', paraN, lock: {n, k}, guard: {n, x, basic} }], prizes, did: {energy, evolve, retreat} }
+          lock.n / guard.n = numer tury, której dotyczą (lock.k: atak, −1 = każdy) */
+const PRIZES = 3, TEAM = 3, MAX_TURNS = 60;   // bez talii nikt nie przegra przez brak kart: po MAX_TURNS wygrywa ten z większą liczbą nagród, potem z mniejszymi ranami
 const RESIST = 30, WEAK = 2, FLIPS = 2;
 const POISON = 10, BURN = 20, CONFUSE_SELF = 30;
 const ENERGY_ICON = { G: '🌿', R: '🔥', W: '💧', L: '⚡', P: '🔮', F: '👊', D: '🌑', M: '⚙️', C: '⚪', N: '🐉' };
@@ -27,7 +29,8 @@ const active = (D, who = D.who) => D[who].team[0];
 const canPay = (m, cost) => m.en >= cost.length;
 const canAct = m => m.cond !== 'sleep' && m.cond !== 'paralyze';
 const conds = m => [m.poison && 'poison', m.burn && 'burn', m.cond].filter(Boolean);
-const heal = m => Object.assign(m, { poison: false, burn: false, cond: null });
+const heal = m => Object.assign(m, { poison: false, burn: false, cond: null, lock: null, guard: null });   // odwrót i ewolucja zdejmują stany i efekty ataków
+const canUse = (D, m, k) => !(m.lock && m.lock.n === D.n && (m.lock.k < 0 || m.lock.k === k));   // odpoczynek po mocnym ataku
 const heads = rnd => rnd() < .5;
 // ewolucje aktywnego; have = czy gracz ma tego Pokémona (CPU: wszystkie)
 const evolutionsOf = (D, have = () => true) => {
@@ -64,17 +67,48 @@ function hurt(D, who, i, dmg, ev) {
   else if (!i) ev.text += ` Wchodzi ${s.team[0].sp.name}.`;
 }
 /* atak: obrażenia z karty × słabość − odporność, potem efekty z fx */
+/* obrażenia „×” / „+” przed słabością → [obrażenia, opis]; avg: wartość oczekiwana (komputer, bez rzutów) */
+function attackDamage(D, m, t, base, kind, fx, rnd, avg) {
+  if (!kind) return [base, ''];
+  const me = D[D.who], op = foe(D), flip = () => avg ? .5 : +heads(rnd), x = fx.x ?? base;
+  let n, note = '';
+  switch (fx.by) {
+    case 'flips': n = avg ? fx.n / 2 : Array.from({ length: fx.n }, () => heads(rnd)).filter(Boolean).length; note = `🪙 ${n}/${fx.n} orzeł`; break;
+    case 'tails': if (avg) n = 1; else { n = 0; while (n < 20 && heads(rnd)) n++; } note = `🪙 ${n}× orzeł`; break;
+    case 'coin': n = flip(); note = `🪙 ${n ? 'orzeł' : 'reszka'}`; break;
+    case 'en': n = m.en; break;
+    case 'mydmg': n = m.dmg / 10; break;
+    case 'foedmg': n = t.dmg / 10; break;
+    case 'foeen': n = t.en; break;
+    case 'bench': n = me.team.length - 1; break;
+    case 'team': n = me.team.length; break;
+    case 'foebench': n = op.team.length - 1; break;
+    case 'hurt': n = +(m.dmg > 0); break;
+    case 'foehurt': n = +(t.dmg > 0); break;
+    case 'foecond': n = +(fx.cond ? conds(t).includes(fx.cond) : conds(t).length > 0); break;
+    case 'foeex': n = +!!t.sp.card.ex; break;
+    case 'foetype': n = +(t.sp.card.t === fx.t); break;
+    case 'behind': n = +(me.prizes < op.prizes); break;   // więcej nagród do zebrania niż rywal
+    case 'opt': n = 1; break;
+    default:   // opis nierozpoznany (ręka, talia, stadion…): rzut monetą jak dawniej
+      if (kind === '×') { n = avg ? 1 : [0, 0].filter(() => heads(rnd)).length; return [base * n, `🪙 ${n}× orzeł`]; }
+      n = flip(); return [base * (1 + n), `🪙 ${n ? 'orzeł' : 'reszka'}`];
+  }
+  if (kind === '×') return [base * n, note || `${n}× ${base}`];
+  return [base + x * n, note || (n ? `+${x * n}` : '')];
+}
 function cardAttack(D, k, rnd = Math.random) {
   const m = active(D), [name, cost, base, kind, fx = {}] = m.sp.card.atk[k] || [], who = D.who, def = foe(D), t = def.team[0];
-  if (!name || !canPay(m, cost) || !canAct(m)) return null;
+  if (!name || !canPay(m, cost) || !canAct(m) || !canUse(D, m, k)) return null;
   const ev = { attack: true, dmg: 0, on: other(who), text: `${m.sp.name}: ${name}` };
   if (m.cond === 'confuse' && !heads(rnd)) { ev.text += ` — 💫 reszka, rani sam siebie (${CONFUSE_SELF})!`; ev.self = true; hurt(D, who, 0, CONFUSE_SELF, ev); return ev; }
   if (fx.fail && !heads(rnd)) { ev.text += ' — 🪙 reszka, nic się nie dzieje.'; return ev; }
-  const flips = kind ? Array.from({ length: FLIPS }, () => heads(rnd)).filter(Boolean).length : 0;
-  let dmg = kind === '×' ? base * flips : kind === '+' ? base * (1 + Math.min(1, flips)) : base;
-  const notes = kind ? [`🪙 ${flips}× orzeł`] : [];
+  let [dmg, how] = attackDamage(D, m, t, base, kind, fx, rnd);
+  const notes = how ? [how] : [];
   if (dmg && t.sp.card.weak === m.sp.card.t) { dmg *= WEAK; notes.push('💥 słabość ×2'); }
   if (dmg && t.sp.card.res === m.sp.card.t) { dmg = Math.max(0, dmg - RESIST); notes.push(`🛡️ odporność −${RESIST}`); }
+  const g = t.guard;
+  if (dmg && g && g.n === D.n && (!g.basic || m.sp.card.st === 0)) { const cut = Math.min(dmg, g.x); dmg -= cut; notes.push(g.x >= 999 ? '🛡️ pełna ochrona' : `🛡️ ochrona −${cut}`); }
   ev.dmg = dmg; ev.text += `${notes.length ? ' (' + notes.join(', ') + ')' : ''}${dmg ? ` — ${dmg} obrażeń.` : '!'}`;
   hurt(D, other(who), 0, dmg, ev);
   if (fx.cond && def.team[0] === t && (!fx.coin || heads(rnd))) {
@@ -83,6 +117,12 @@ function cardAttack(D, k, rnd = Math.random) {
   } else if (fx.cond && fx.coin) ev.text += ' 🪙 reszka.';
   if (fx.heal && m.dmg) { const h = Math.min(m.dmg, fx.heal); m.dmg -= h; ev.heal = h; ev.text += ` 💚 +${h}.`; }
   if (fx.disc) { m.en = Math.max(0, m.en - fx.disc); ev.text += ` Zrzuca energię.`; }
+  if (fx.foedisc && t.en && def.team[0] === t && (!fx.fdcoin || heads(rnd))) { t.en--; ev.text += ` ${t.sp.name} traci energię.`; }
+  if (fx.lock) { m.lock = { n: D.n + 2, k: fx.lock === 2 ? k : -1 }; ev.text += ` 😮‍💨 W następnej turze ${fx.lock === 2 ? 'nie użyje tego ataku' : 'odpoczywa'}.`; }
+  if (fx.foelock && def.team[0] === t) { t.lock = { n: D.n + 1, k: -1 }; ev.text += ` ${t.sp.name} nie zaatakuje w następnej turze.`; }
+  if (fx.gko && !ev.ko) {}   // ochrona tylko po pokonaniu rywala
+  else if (fx.guard && (!fx.gcoin || heads(rnd))) { m.guard = { n: D.n + 1, x: fx.guard, basic: fx.gbasic }; ev.text += ` 🛡️ W następnej turze rywala: ${fx.guard >= 999 ? 'pełna ochrona' : `−${fx.guard} obrażeń`}.`; }
+  else if (fx.guard) ev.text += ' 🪙 reszka — bez ochrony.';
   if (fx.bench && def.team.length > 1) { ev.text += ` Ławka: ${def.team[1].sp.name} −${fx.bench}.`; hurt(D, other(who), 1, fx.bench, ev); }
   if (fx.self) { ev.text += ` 💢 W siebie −${fx.self}.`; hurt(D, who, 0, fx.self, ev); }
   return ev;
@@ -105,6 +145,12 @@ function checkup(D, rnd) {
 function endTurn(D, rnd = Math.random) {
   if (D.winner) return [];
   const evs = checkup(D, rnd);
+  if (!D.winner && D.n >= MAX_TURNS) {   // np. dwa Cloystery z ochroną −80 przy ataku za 80
+    const hurt = w => D[w].team.reduce((t, m) => t + m.dmg / m.sp.card.hp, 0) - D[w].team.length;
+    D.winner = D.me.prizes !== D.cpu.prizes ? (D.me.prizes > D.cpu.prizes ? 'me' : 'cpu') : hurt('me') <= hurt('cpu') ? 'me' : 'cpu';
+    evs.push({ text: `⏱️ Koniec czasu: wygrywa ${D.winner === 'me' ? 'gracz' : 'komputer'} (więcej nagród, mniej ran).` });
+    return evs;
+  }
   if (!D.winner) { D.who = other(D.who); D[D.who].did = {}; D.n++; evs.push(attachEnergy(D)); }   // nowa tura: energia sama
   return evs;
 }
@@ -112,7 +158,7 @@ function endTurn(D, rnd = Math.random) {
 function canDoMore(D, have = () => true) {
   const s = D[D.who], m = s.team[0];
   return !s.did.energy || evolutionsOf(D, have).length > 0 || (!s.did.retreat && s.team.length > 1 && m.en >= m.sp.card.ret && canAct(m))
-    || (canAct(m) && m.sp.card.atk.some(a => canPay(m, a[1])));
+    || (canAct(m) && m.sp.card.atk.some((a, k) => canPay(m, a[1]) && canUse(D, m, k)));
 }
 /* tura komputera: ewolucja, energia, najlepszy atak, na który go stać (obrażenia + premia za stan / leczenie) → lista zdarzeń
    have: w co komputer może ewoluować — w grze to samo co gracz (złapane), żeby było uczciwie */
@@ -121,11 +167,19 @@ function cpuTurn(D, rnd = Math.random, have = () => true) {
   if (evo.length) push(evolve(D, evo[Math.floor(rnd() * evo.length)]));
   push(attachEnergy(D));
   const m = active(D), t = foe(D).team[0];
-  const value = ([, , dmg, kind, fx = {}]) => dmg * (kind ? 1.25 : 1) * (fx.fail ? .5 : 1) + (fx.cond && !conds(t).includes(fx.cond) ? 20 : 0) + (fx.heal && m.dmg ? Math.min(m.dmg, fx.heal) : 0) - (fx.self || 0) / 2;
-  const atk = m.sp.card.atk.map((a, k) => [a, k]).filter(([a]) => canPay(m, a[1])).sort((x, y) => value(y[0]) - value(x[0]))[0];
+  // wartość ataku ≈ oczekiwane obrażenia (ze słabością, odpornością, ochroną rywala; dobicie +50) + stan, leczenie, ochrona; minus zrzut energii i odpoczynek
+  const value = ([, , base, kind, fx = {}]) => {
+    let d = attackDamage(D, m, t, base, kind, fx, rnd, true)[0] * (fx.fail ? .5 : 1);
+    if (d && t.sp.card.weak === m.sp.card.t) d *= WEAK;
+    if (d && t.sp.card.res === m.sp.card.t) d = Math.max(0, d - RESIST);
+    if (t.guard?.n === D.n && (!t.guard.basic || m.sp.card.st === 0)) d = Math.max(0, d - t.guard.x);
+    return d + (d >= t.sp.card.hp - t.dmg ? 50 : 0) + (fx.cond && !conds(t).includes(fx.cond) ? 20 : 0) + (fx.heal && m.dmg ? Math.min(m.dmg, fx.heal) : 0)
+      + (fx.guard ? Math.min(fx.guard, 60) * (fx.gcoin ? .5 : 1) : 0) - (fx.self || 0) / 2 - Math.min(fx.disc || 0, m.en) * 5 - (fx.lock ? 15 : 0);
+  };
+  const atk = m.sp.card.atk.map((a, k) => [a, k]).filter(([a, k]) => canPay(m, a[1]) && canUse(D, m, k)).sort((x, y) => value(y[0]) - value(x[0]))[0];
   if (atk && canAct(m)) push(cardAttack(D, atk[1], rnd));
   evs.push(...endTurn(D, rnd));
   return evs;
 }
 
-if (typeof module !== 'undefined') module.exports = { PRIZES, TEAM, ENERGY_ICON, COND_ICON, newDuel, active, foe, canPay, canAct, conds, evolutionsOf, attachEnergy, evolve, retreat, cardAttack, endTurn, canDoMore, cpuTurn };
+if (typeof module !== 'undefined') module.exports = { PRIZES, TEAM, canUse, attackDamage, ENERGY_ICON, COND_ICON, newDuel, active, foe, canPay, canAct, conds, evolutionsOf, attachEnergy, evolve, retreat, cardAttack, endTurn, canDoMore, cpuTurn };
