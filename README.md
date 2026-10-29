@@ -24,6 +24,8 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **Karty** z zestawu „Pokémon 151” (Scarlet & Violet, 2023), dla Horyzontów z innych zestawów (`tools/pick_cards.js`);
   niezłapane: rewers z sylwetką. U góry przełącznik 🎨 Pokémony / 🃏 Karty
   (siatka i karta Pokémona); dotknij karty lub obrazka → pełny ekran.
+  Okno Pokémona: przyciski form (⚪ zwykły / 🧬 Mega / 💎 Tera — obrazek, typy i statystyki), linia ewolucji z obrazkami (dotknij → ten Pokémon),
+  ciekawostka, waga i wzrost pod „📖 Więcej”.
   W oknie złapanego Pokémona ✨ karty specjalne do obejrzenia: Mega (XY, Mega Evolution) i V / VMAX / VSTAR (`variants` w `tools/pick_cards.js`).
 - **Walka kartami** (🃏 w oknie Pokémona) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
   energia (dochodzi sama; gdy nie ma nic do zrobienia, tura kończy się sama), ewolucja (tylko w złapane — komputer też, żeby było uczciwie), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).

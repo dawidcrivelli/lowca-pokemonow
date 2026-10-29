@@ -337,6 +337,23 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .m-vars div{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}   /* przewijane w bok: Charizard ma 8 */
 .m-vars img{height:150px;border-radius:7px;cursor:zoom-in;flex:none}
 .m-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+/* okno Pokémona: przyciski form pod obrazkiem, linia ewolucji, „📖 Więcej” */
+.m-forms{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:8px 8px 0}
+.m-forms button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 9px;font:800 12px var(--font-b);color:var(--ink-soft);white-space:nowrap}
+.m-forms button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.m-hero.mega .art img{filter:drop-shadow(0 0 10px #F5A524)}
+.m-evo{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px;flex-wrap:wrap}
+.m-evo i{font-style:normal;font-weight:900;color:var(--ink-soft)}
+.evo-st{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:78%}
+.m-evo.many .evo{width:40px;height:40px}
+.evo{width:52px;height:52px;padding:2px;border:2px solid var(--line);border-radius:12px;background:#fff}
+.evo.me{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,203,5,.35)}
+.evo img{width:100%;height:100%;display:block}
+.m-more{margin-top:12px;border:2px solid var(--line);border-radius:12px;background:#fff;padding:8px 12px}
+.m-body > .m-vars{margin-top:12px}
+@media(max-width:640px){.m-hero .art{max-height:180px}}
+.m-more summary{font:800 14px var(--font-b);color:var(--ink-soft);cursor:pointer}
+.m-more[open] summary{margin-bottom:6px}
 .stat{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 11px}
 .stat span{display:block;font-size:11px;color:#8C9A96;font-weight:800;letter-spacing:.5px}
 .stat b{font-family:var(--font-h);font-size:19px}

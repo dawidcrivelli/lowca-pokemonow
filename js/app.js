@@ -281,34 +281,46 @@ function xpBar(id) {
   return `<div class="sbar xpbar" title="Trening: EXP do następnego poziomu"><span>⭐</span><i><b style="width:${max ? 100 : Math.round(100 * part / TRAIN.perLevel)}%"></b></i><em>${max ? 'MAX' : `${part}/${TRAIN.perLevel}`}</em></div>`;
 }
 
-function caughtCard(sp) {
-  const st = statsOf(withLv(sp)), r = record(sp.id), pre = byId(sp.from), next = evolutions(sp);
-  const evo = [pre && `z ${esc(pre.name)}`, next.length && `w ${next.map(s => isCaught(s.id) ? esc(s.name) : '???').join(' / ')}`].filter(Boolean).join(' → ');
+/* linia ewolucji: od pierwszego w linii, etapami (Eevee: 8 na jednym etapie); dotknięcie otwiera Pokémona, niezłapany = sylwetka */
+function evoLine(sp) {
+  let root = sp; while (root.from && byId(root.from)) root = byId(root.from);
+  const stages = [[root]];
+  for (let k = 0; k < 3; k++) { const nx = stages[k].flatMap(evolutions); if (!nx.length) break; stages.push(nx); }
+  if (stages.length < 2) return '';
+  return `<div class="m-evo ${stages.some(st => st.length > 3) ? 'many' : ''}">${stages.map(st => `<div class="evo-st">${st.map(e => `<button class="evo ${e.id === sp.id ? 'me' : ''}" data-evo="${e.id}" title="${isCaught(e.id) ? esc(e.name) : '???'}">${art(e, isCaught(e.id) ? 'color' : 'ghost', 'small')}</button>`).join('')}</div>`).join('<i>→</i>')}</div>`;
+}
+/* okno złapanego: duży obrazek z przyciskami form (zwykła / Mega / Tera — zmieniają obrazek, typy i statystyki), linia ewolucji,
+   statystyki; ciekawostka, waga, wzrost i bilans pod „📖 Więcej” */
+function caughtCard(sp, fi = 0) {
+  const all = forms(sp), f = all[fi] || sp, st = statsOf(withLv(f)), r = record(sp.id), url = ART_URL(f.art || sp.id);
   return `
-  <div class="m-hero ${binder() ? 'card' : ''}"><button class="btn ghost icon flip" data-flip="1" title="Karta / obrazek">${binder() ? '🎨' : '🃏'}</button>
-    <div class="art" data-zoom="${ART_URL(sp.id)}">${art(sp)}</div><img class="tcg" src="${CARD_URL(sp, 'big')}" data-zoom="${CARD_URL(sp, 'big')}" alt="Karta ${esc(sp.name)}"></div>
+  <div class="m-hero ${binder() && !fi ? 'card' : ''} ${f.form || ''}"><button class="btn ghost icon flip" data-flip="1" title="Karta / obrazek">${binder() && !fi ? '🎨' : '🃏'}</button>
+    <div class="art" data-zoom="${url}" style="--m:url(${url})">${art(f)}</div><img class="tcg" src="${CARD_URL(sp, 'big')}" data-zoom="${CARD_URL(sp, 'big')}" alt="Karta ${esc(sp.name)}"></div>
+  ${all.length > 1 ? `<div class="m-forms">${all.map((x, i) => `<button class="${i === fi ? 'on' : ''}" data-cform="${i}">${FORM_LABEL(x)}</button>`).join('')}</div>` : ''}
   <div class="m-body">
-    <h2>${esc(sp.name)}${lvBadge(sp.id)}</h2><p class="m-lat">${dexNo(sp)} · ${esc(sp.kind || '')}</p>
+    <h2>${esc(f.name)}${lvBadge(sp.id)}</h2>
     <div class="m-tags">
-      ${sp.types.map(typeTag).join('')}
+      ${f.types.map(typeTag).join('')}
       ${sp.legend ? '<span class="tag light">⭐ Legendarny</span>' : ''}
       <span class="tag light">${'★'.repeat(sp.rarity)}${'☆'.repeat(4 - sp.rarity)}</span>
     </div>
-    <div class="m-fact"><b>CZY WIESZ, ŻE…</b>${esc(sp.fact || '')}</div>
-    <div class="m-stats">
-      <div class="stat"><span>WAGA</span><b>${mass(sp.kg)}</b></div>
-      <div class="stat"><span>WZROST</span><b>${sp.m} m</b></div>
-      ${evo ? `<div class="stat wide"><span>EWOLUCJA</span><b class="small">${evo}</b></div>` : ''}
-    </div>
-    ${sp.vars ? `<div class="m-vars"><b>✨ KARTY SPECJALNE · Mega i V</b><div>${sp.vars.map(u => (big => `<img src="${u}" data-zoom="${big}" alt="" loading="lazy">`)(CARD_URL({ card: { img: u } }, 'big'))).join('')}</div></div>` : ''}
+    ${evoLine(sp)}
     ${statBars(st, xpBar(sp.id))}
-    <p class="traits"><span class="record">⚔️ ${r.w} wygranych · ${r.l} przegranych</span></p>
     <div class="m-actions">
       <button class="btn amber big" data-arena="${sp.id}">⚔️ Do areny</button>
       <button class="btn" data-duel="${sp.id}">🃏 Karty</button>
-      <button class="btn ghost" data-close="1">Zamknij</button>
       ${editing ? `<button class="btn danger" data-release="${sp.id}">Wypuść</button>` : ''}
     </div>
+    ${sp.vars ? `<div class="m-vars"><b>✨ KARTY SPECJALNE · Mega i V</b><div>${sp.vars.map(u => (big => `<img src="${u}" data-zoom="${big}" alt="" loading="lazy">`)(CARD_URL({ card: { img: u } }, 'big'))).join('')}</div></div>` : ''}
+    <details class="m-more"><summary>📖 Więcej</summary>
+      <p class="m-lat">${dexNo(sp)} · ${esc(sp.kind || '')}</p>
+      <div class="m-fact"><b>CZY WIESZ, ŻE…</b>${esc(sp.fact || '')}</div>
+      <div class="m-stats">
+        <div class="stat"><span>WAGA</span><b>${mass(sp.kg)}</b></div>
+        <div class="stat"><span>WZROST</span><b>${sp.m} m</b></div>
+      </div>
+      <p class="traits"><span class="record">⚔️ ${r.w} wygranych · ${r.l} przegranych</span></p>
+    </details>
   </div>`;
 }
 function hintCard(sp) {
@@ -336,6 +348,8 @@ el.modalBody.addEventListener('click', e => {
   if (d.unlock) { closeModal(); setCaught(byId(d.unlock), true); }
   if (d.arena) openArena(d.arena);
   if (d.duel) openDuel(d.duel);
+  if (d.cform) { const sp = byId(el.modalBody.querySelector('[data-arena]').dataset.arena); el.modalBody.innerHTML = caughtCard(sp, +d.cform); blip(+d.cform ? 880 : 520, .08); return; }
+  if (d.evo) { const sp = byId(d.evo); blip(560, .06); return openCard(sp); }
   if (d.flip) { const h = b.closest('.m-hero'); setFace(h.classList.toggle('card') ? 'card' : 'art'); b.textContent = binder() ? '🎨' : '🃏'; }
   if (d.letter) {
     const sp = byId(d.letter);
