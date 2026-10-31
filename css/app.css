@@ -581,3 +581,12 @@ img.ghost{filter:brightness(0) opacity(.7)}   /* sylwetka niezłapanego */
 .d-pick .st{display:block;font:800 11px var(--font-b);color:var(--ink-soft);white-space:nowrap}
 .d-pick .no{position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:var(--amber);color:#3A2600;font:900 13px/22px var(--font-b)}
 .btn:disabled{opacity:.35;cursor:default;filter:grayscale(.6)}
+
+/* szukajka w wyborze do walki: 🔍 w pasku, pole po dotknięciu */
+.btn.icon.on{background:var(--ink);color:#FFF6E4}
+.pk-q{display:flex;gap:6px;margin:0 0 8px}
+.pk-q input{flex:1;min-width:0;font:800 18px var(--font-b);padding:9px 14px;border:3px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink)}
+.pk-q .btn{font-size:20px;padding:6px 14px}
+.ar-pick[data-empty]:not([data-empty=""])::before,.d-pick[data-empty]:not([data-empty=""])::before{content:attr(data-empty);grid-column:1/-1;padding:14px;text-align:center;font:800 14px var(--font-b);color:var(--ink-soft)}
+.d-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.d-head .btn.icon{font-size:20px;padding:4px 12px}

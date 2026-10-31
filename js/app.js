@@ -256,7 +256,7 @@ const dockHunt = slot => {
   if (slot) { say(''); if (matchMedia('(hover: hover)').matches) el.q.focus({ preventScroll: true }); }   // na telefonie klawiatura zasłoniłaby podpowiedź
 };
 function openModal(html, cls = '') { dockHunt(); el.modalBody.innerHTML = html; el.modal.className = 'modal ' + cls; el.modal.hidden = false; dockHunt(el.modalBody.querySelector('.m-hunt')); }
-function closeModal() { el.modal.hidden = true; stopBattle(); dockHunt(); }
+function closeModal() { el.modal.hidden = true; pickQ = null; stopBattle(); dockHunt(); }
 el.modalClose.addEventListener('click', closeModal);
 el.modal.addEventListener('click', e => { if (e.target === el.modal) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') el.zoom.hidden ? closeModal() : (el.zoom.hidden = true); });
@@ -368,6 +368,38 @@ function stopBattle() { A.timers.forEach(clearTimeout); A.timers = []; A.token++
 const later = (ms, fn) => { const t = A.token; A.timers.push(setTimeout(() => t === A.token && fn(), ms)); };
 const roster = () => LIST.filter(s => isCaught(s.id));
 const randomOther = id => { const p = roster().filter(s => s.id !== +id); return p[Math.floor(Math.random() * p.length)]; };
+/* szukajka w wyborze do walki (arena i karty): 🔍 obok przycisków, pole dopiero po dotknięciu.
+   pickQ: null = zamknięta, tekst = wpisane; od 1 litery fragment imienia, od 3 też literówki (jak przy łapaniu); wybrani do drużyny kart zostają widoczni */
+let pickQ = null;
+const pickBtn = () => `<button class="btn ghost icon ${pickQ !== null ? 'on' : ''}" data-pq="1" title="Szukaj Pokémona">🔍</button>`;
+const pickField = () => pickQ === null ? '' : `<div class="pk-q"><input type="search" enterkeyhint="search" autocomplete="off" placeholder="Wpisz imię…" value="${esc(pickQ)}"><button class="btn ghost" data-pqx="1" title="Zamknij szukanie">✕</button></div>`;
+function pickFilter() {
+  const box = el.modalBody.querySelector('.ar-pick,.d-pick'); if (!box) return;
+  const q = norm(pickQ), fuzzy = new Set(search(pickQ || '').map(h => h.sp.id));
+  let n = 0;
+  for (const b of box.querySelectorAll('button')) {
+    const sp = byId(b.dataset.pick || b.dataset.dpick);
+    const hit = !q || keysOf(sp).some(k => k.includes(q)) || fuzzy.has(sp.id);
+    b.hidden = !hit && !b.classList.contains('on'); n += hit;
+  }
+  box.dataset.empty = n ? '' : 'Nie ma takiego Pokémona wśród złapanych';
+}
+function pickRerender(focus) {
+  if (el.modalBody.querySelector('.arena')) renderSetup(); else if (el.modalBody.querySelector('.duel')) openDuel();
+  if (focus) el.modalBody.querySelector('.pk-q input')?.focus();
+}
+el.modalBody.addEventListener('click', e => {
+  const b = e.target.closest('[data-pq],[data-pqx]'); if (!b) return;
+  pickQ = b.dataset.pq && pickQ === null ? '' : null; blip(500, .05); pickRerender(pickQ !== null);
+});
+el.modalBody.addEventListener('input', e => { if (e.target.matches('.pk-q input')) { pickQ = e.target.value; pickFilter(); } });
+el.modalBody.addEventListener('focusin', e => { if (e.target.matches('.pk-q input')) e.target.select(); });   // nowe szukanie bez kasowania
+el.modalBody.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || !e.target.matches('.pk-q input')) return;
+  e.target.blur();   // chowa klawiaturę; jeden wynik → od razu wybrany
+  const hits = [...el.modalBody.querySelectorAll('.ar-pick button:not([hidden]),.d-pick button:not([hidden])')].filter(b => !b.classList.contains('on'));
+  if (hits.length === 1) hits[0].click();
+});
 
 function openArena(preId) {
   stopBattle();
@@ -395,12 +427,13 @@ function renderSetup() {
         <button class="${mode === 'play' ? 'on' : ''}" data-mode="play" title="Sam wybieram ruchy">👆<small>Walczę</small></button>
       </div>
       ${forms(A.a).length > 1 ? `<button class="btn ghost form" data-form="1" title="Zmień formę">${FORM_LABEL(formA())}</button>` : ''}
-      <button class="btn ghost icon" data-random="1" title="Losuj rywala">🎲</button>
+      ${pickBtn()}<button class="btn ghost icon" data-random="1" title="Losuj rywala">🎲</button>
       <button class="btn amber big" data-fight="1">⚔️ Walka!</button>
-    </div>
+    </div>${pickField()}
     <div class="ar-pick">${roster().map(s => `<button data-pick="${s.id}" class="${s === A.a ? 'is-a' : s === A.b ? 'is-b' : ''}">
       <span class="art">${art(s, 'color', 'small')}</span><span class="nm">${esc(s.name)}</span></button>`).join('')}</div>
   </div>`, 'wide');
+  pickFilter();
 }
 function onArenaClick(e) {
   const b = e.target.closest('button'); if (!b || !el.modalBody.querySelector('.arena')) return;
@@ -532,11 +565,12 @@ function openDuel(preId) {
     <p class="m-lat">Złap najpierw Pokémona Podstawowego, np. Pikachu, Bulbasaura albo Charmandera.</p>
     <div class="m-actions"><button class="btn ghost" data-close="1">Rozumiem</button></div></div>`);
   openModal(`<div class="m-body duel">
-    <h2>🃏 Walka kartami</h2>
-    <p class="m-lat">Wybierz do ${TEAM} Pokémonów Podstawowych — pierwszy (1) zaczyna walkę. 🧬 = ewoluuje w złapanego Pokémona.</p>
+    <h2 class="d-head">🃏 Walka kartami ${pickBtn()}</h2>
+    <p class="m-lat">Wybierz do ${TEAM} Pokémonów Podstawowych — pierwszy (1) zaczyna walkę. 🧬 = ewoluuje w złapanego Pokémona.</p>${pickField()}
     <div class="d-pick">${list.map(pickTile).join('')}</div>
     <div class="m-actions center"><button class="btn amber big" data-dstart="1" ${K.pick.length ? '' : 'disabled'}>🃏 Walka! (${K.pick.length}/${TEAM})</button></div>
   </div>`, 'wide');
+  pickFilter();
 }
 /* kafelek wyboru: obrazek zamiast małej karty (na telefonie nieczytelna) — HP, energia i najmocniejszy atak z karty, numer w drużynie (1 = walczy pierwszy) */
 function pickTile(s) {
