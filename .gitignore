@@ -3,3 +3,4 @@ tmp/pokeapi/
 dist/
 tmp/chrome-prof/
 tmp/en.json
+tmp/
