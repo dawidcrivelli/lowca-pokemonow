@@ -56,7 +56,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 | `js/sfx.js`, `sounds/` | odgłosy walki (CC0) |
 
 Zrzuty ekranu: `node tools/ui_shot.js [ui_steps_3d.json | ui_steps_cards.json]` → `tmp/`. Walka kartami na telefonie bez przewijania: `node tools/duel_fit.js 393 740`.
-Karty TCG do druku (PDF 3×3 na A4, prawdziwy rozmiar, linijka do kalibracji skali): `python3 tools/print_cards.py tools/ba2020_missing.txt [--scale 1.02] [--calibrate]` — lista: ilość, zestaw, numer.
+Karty TCG do druku (PDF 3×3 na A4, prawdziwy rozmiar, linijka do kalibracji skali): `python3 tools/print_cards.py tools/ba2020_missing.txt [--scale 1.02] [--calibrate]` — lista: ilość, zestaw, numer; szukanie innych kart: `--find pikachu [--set 151] [--preview]`.
 
 `tools/` — skrypty i dane źródłowe (w repo); `tmp/` — cache i wyniki (`tmp/pokeapi/`, `tmp/en.json`, zrzuty), poza repo.
 

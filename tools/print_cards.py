@@ -12,12 +12,18 @@ użycie:
 kalibracja: wydrukuj w skali 100 % (w Podglądzie: „Skala: 100%”, NIE „Dopasuj”), zmierz prawdziwą linijką linię „100 mm”.
   (odcinek 0–10 na dolnej linijce). Wyszło X mm → nowa skala = obecna × 100 / X (skrypt wypisuje to na stronie). Osobno w pionie: --scale-y.
 
+szukanie innych kart (baza pokemon-tcg-data z GitHuba, za pierwszym razem ~1 min, potem z pamięci):
+  python3 tools/print_cards.py --find pikachu                           # wszystkie wydania: gotowe wiersze do listy
+  python3 tools/print_cards.py --find "charizard ex" --set 151          # zawężenie: fragment nazwy zestawu albo jego id
+  python3 tools/print_cards.py --find snorlax --preview                 # katalog do obejrzenia: znalezione.pdf, małe karty z podpisami
+
 lista (plik tekstowy), jedna karta na wiersz, # = komentarz:
   3  sm115 19        ilość, zestaw (id z pokemontcg.io), numer w zestawie
   1  smp SM65        promki: numer z literami
+  1  sv3pt5-25       albo id karty z pokemontcg.io (zestaw-numer)
   2  https://…/x.png albo ścieżka do pliku PNG/JPG — dowolny obrazek karty
 """
-import argparse, hashlib, os, re, struct, subprocess, sys, urllib.error, urllib.request, zlib
+import argparse, hashlib, json, os, re, signal, struct, subprocess, sys, unicodedata, urllib.error, urllib.request, zlib
 
 MM = 72 / 25.4                      # punkty PDF na milimetr
 CARD = (63.0, 88.0)                 # rozmiar karty Pokémon TCG w mm
@@ -38,7 +44,9 @@ def read_list(path):
         if not parts[0].isdigit():
             sys.exit(f'{path}:{ln}: na początku wiersza ma być ilość, np. „2 sm115 19”')
         n, rest = int(parts[0]), parts[1:]
-        if len(rest) == 1:                                  # adres albo plik
+        if len(rest) == 1 and re.fullmatch(r'[a-z0-9]+-[A-Za-z0-9]+', rest[0]) and not os.path.exists(rest[0]):
+            src = URL.format(set=rest[0].split('-')[0], num=rest[0].split('-', 1)[1])
+        elif len(rest) == 1:                                # adres albo plik
             src = rest[0]
         elif len(rest) == 2:
             src = URL.format(set=rest[0], num=rest[1])
@@ -221,7 +229,61 @@ def ruler(x, y, length, sx, sy, vertical=False):
     return o
 
 
+# ---------------- szukanie kart ----------------
+DATA = 'https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/'
+SMALL = 'https://images.pokemontcg.io/{set}/{num}.png'   # mała wersja (~245×342) do katalogu
+
+
+def get_json(url, f):
+    if not os.path.exists(f):
+        try:
+            data = urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'print_cards/1.0'}), timeout=60).read()
+        except Exception:
+            r = subprocess.run(['curl', '-fsSL', url], capture_output=True)
+            if r.returncode:
+                sys.exit(f'nie udało się pobrać {url}: {r.stderr.decode().strip()}')
+            data = r.stdout
+        open(f, 'wb').write(data)
+    return json.load(open(f, encoding='utf-8'))
+
+
+def card_index(refresh=False):
+    """[nazwa, zestaw, numer, nazwa zestawu, data, hp, rzadkość, podtypy] dla wszystkich kart; jeden plik w pamięci podręcznej"""
+    d = os.path.join(CACHE, 'data')
+    os.makedirs(d, exist_ok=True)
+    idx = os.path.join(d, 'index.json')
+    if refresh:
+        for f in os.listdir(d):
+            os.remove(os.path.join(d, f))
+    if os.path.exists(idx):
+        return json.load(open(idx, encoding='utf-8'))
+    sets = get_json(DATA + 'sets/en.json', os.path.join(d, 'sets.json'))
+    print(f'pierwsze szukanie: pobieram listy kart z {len(sets)} zestawów (raz, potem z pamięci)…', file=sys.stderr)
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(12) as ex:
+        per_set = list(ex.map(lambda st: get_json(f'{DATA}cards/en/{st["id"]}.json', os.path.join(d, st['id'] + '.json')), sets))
+    rows = [[c['name'], st['id'], c['number'], st['name'], st['releaseDate'].replace('/', '-'), c.get('hp', ''), c.get('rarity', ''), ' '.join(c.get('subtypes', []))]
+            for st, cards in zip(sets, per_set) for c in cards]
+    json.dump(rows, open(idx, 'w', encoding='utf-8'))
+    for st in sets:                                        # zostaje tylko indeks (~5 MB zamiast ~100 MB)
+        os.remove(os.path.join(d, st['id'] + '.json'))
+    return rows
+
+
+def fold(t):
+    return unicodedata.normalize('NFD', t.lower()).encode('ascii', 'ignore').decode()
+
+
+def find(query, set_filter, refresh):
+    words = fold(query).split()
+    sf = set_filter and fold(set_filter)
+    hits = [r for r in card_index(refresh) if all(w in fold(r[0]) for w in words) and (not sf or sf in fold(r[3]) or sf == r[1])]
+    return sorted(hits, key=lambda r: (r[4], r[1], int(re.sub(r'\D', '', r[2]) or 0), r[2]))
+
+
 def main():
+    if hasattr(signal, 'SIGPIPE'):
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)   # „| head” bez błędu
     ap = argparse.ArgumentParser(description='Karty TCG do druku (PDF, prawdziwy rozmiar, linijka do kalibracji)')
     ap.add_argument('lista', nargs='?', help='plik z listą kart (ilość zestaw numer)')
     ap.add_argument('-o', '--out', default='karty_do_druku.pdf')
@@ -233,7 +295,24 @@ def main():
     ap.add_argument('--gap', type=float, default=0.0, help='odstęp między kartami w mm (0 = jedno cięcie dzieli dwie karty)')
     ap.add_argument('--no-lines', action='store_true', help='bez cienkich linii cięcia wokół kart')
     ap.add_argument('--calibrate', action='store_true', help='tylko strona kalibracji (linijki 150 mm i 250 mm + ramka karty)')
+    ap.add_argument('--find', metavar='NAZWA', help='szukaj karty po angielskiej nazwie, np. "pikachu" albo "charizard ex"')
+    ap.add_argument('--set', metavar='ZESTAW', help='przy --find: fragment nazwy zestawu („151”, „Hidden Fates”) albo id (sv3pt5)')
+    ap.add_argument('--preview', action='store_true', help='przy --find: PDF z małymi kartami i podpisami do wyboru (znalezione.pdf)')
+    ap.add_argument('--refresh', action='store_true', help='przy --find: pobierz bazę kart od nowa (nowe zestawy)')
     a = ap.parse_args()
+    if a.find:
+        hits = find(a.find, a.set, a.refresh)
+        if not hits:
+            sys.exit(f'nic dla „{a.find}”' + (f' w „{a.set}”' if a.set else '') + ' — nazwy kart są po angielsku (np. Snorlax, Mr. Mime, Charizard ex)')
+        for name, st, num, sname, date, hp, rar, sub in hits:
+            print(f'1  {st:<7} {num:<6} # {name} — {sname} ({date[:7]})' + (f' · HP {hp}' if hp else '') + (f' · {rar}' if rar else '') + (f' · {sub}' if sub else ''))
+        print(f'# znaleziono: {len(hits)} — skopiuj wybrane wiersze do listy (pierwsza liczba = ile sztuk)', file=sys.stderr)
+        if not a.preview:
+            return
+        a.cards = [(SMALL.format(set=h[1], num=h[2]), f'{h[1]} {h[2]}  ({h[4][:4]})') for h in hits]
+        a.scale, a.scale_y, a.cols, a.rows, a.gap, a.no_lines = 0.5, None, 5, 5, 12.0, True
+        if a.out == 'karty_do_druku.pdf':
+            a.out = 'znalezione.pdf'
     sx, sy = a.scale, a.scale_y or a.scale
     pw, ph = PAPER[a.paper]
     W, H = pw * MM, ph * MM
@@ -259,7 +338,7 @@ def main():
         ops += txt(x0, y0 - 11.5 * MM, howto, 6) if y0 > 13 * MM else ''
         return ops
 
-    if a.calibrate or not a.lista:
+    if a.calibrate or not (a.lista or a.find):
         ops = frame('', min(int(gw / MM / sx) // 10 * 10, 150))
         ops += f'0 g 0.4 w {x0:.2f} {H / 2 - ch / 2:.2f} {cw:.2f} {ch:.2f} re S\n'
         ops += txt(x0 + 3 * MM, H / 2, f'ramka karty: {CARD[0]:g} x {CARD[1]:g} mm', 8)
@@ -271,7 +350,8 @@ def main():
         print(f'zapisano {a.out}: strona kalibracji ({info})')
         return
 
-    cards = read_list(a.lista)
+    labels = dict(getattr(a, 'cards', []))
+    cards = list(labels) if labels else read_list(a.lista)
     if not cards:
         sys.exit('lista jest pusta')
     images, ids = {}, {}
@@ -287,6 +367,8 @@ def main():
             ops += f'q {cw:.3f} 0 0 {ch:.3f} {x:.3f} {y:.3f} cm /Im{ids[src]} Do Q\n'
             if not a.no_lines:
                 ops += f'0.6 G 0.2 w {x:.3f} {y:.3f} {cw:.3f} {ch:.3f} re S\n'
+            if src in labels:
+                ops += '0 g ' + txt(x, y - 3.8 * MM, labels[src], 7.5)
         # znaczniki cięcia w marginesie na przedłużeniu krawędzi kart (z odstępem: obie krawędzie)
         ops += '0 G 0.3 w\n'
         for xx in sorted({x0 + c * (cw + gx) + d for c in range(a.cols) for d in (0, cw)}):
@@ -294,7 +376,7 @@ def main():
         for yy in sorted({H - y0 - r * (ch + gy) - d for r in range(a.rows) for d in (0, ch)}):
             ops += f'{x0 + gw + 1 * MM:.2f} {yy:.2f} m {x0 + gw + 3 * MM:.2f} {yy:.2f} l S\n'
         ops += txt(W - 25 * MM, 5 * MM, f'strona {p // per + 1}/{(len(cards) + per - 1) // per}', 6)
-        pages.append(frame(ops, min(int(gw / MM / sx) // 10 * 10, 150)))
+        pages.append(ops if labels else frame(ops, min(int(gw / MM / sx) // 10 * 10, 150)))   # katalog: bez linijek
     pdf.save(a.out, pages, (W, H), images, font)
     print(f'zapisano {a.out}: {len(cards)} kart ({len(images)} różnych) na {len(pages)} str. — {info}')
 
