@@ -1,0 +1,51 @@
+# Battle Academy 2020 — brakujące karty (bez energii). Format: ilość  zestaw  numer   # opis
+# Karty Battle Academy to przedruki; tu są skany oryginałów (ta sama karta, bez stempla talii i numeru #).
+# Numery oryginałów: Bulbapedia / TCGCollector (przez wyszukiwarkę), nazwy sprawdzone w pokemon-tcg-data.
+# id zestawów: sm1 Sun & Moon, sm3 Burning Shadows, sm5 Ultra Prism, sm75 Dragon Majesty, sm8 Lost Thunder,
+#              sm9 Team Up, sm11 Unified Minds, sm115 Hidden Fates, smp promki SM
+
+# ⚡ Pikachu — Pokémony (10)
+3  sm115 19     # Pikachu (Hidden Fates 19/68)
+2  sm8   81     # Blitzle (Lost Thunder 81/214)
+1  smp   SM65   # Alolan Raichu (promka SM65) — w talii #25
+1  sm3   43     # Electivire (Burning Shadows 43/147) — w talii #32
+1  sm5   43     # Electabuzz (Ultra Prism 43/156)
+1  sm115 46     # Chansey (Hidden Fates 46/68)
+1  sm11  164    # Tauros (Unified Minds 164/236)
+# ⚡ Pikachu — Trenerzy (9)
+3  sm11  189    # Bug Catcher (Unified Minds 189/236)
+2  sm1   119    # Great Ball (Sun & Moon 119/149)
+2  sm1   120    # Hau (Sun & Moon 120/149)
+1  sm1   132    # Switch (Sun & Moon 132/149)
+1  sm1   127    # Potion (Sun & Moon 127/149)
+
+# 🔥 Charizard — Pokémony (9)
+1  sm115 9      # Charizard-GX (Hidden Fates 9/68) — w talii #60
+1  sm75  3      # Charizard (Dragon Majesty 3/70) — w talii #39
+2  sm3   18     # Charmander (Burning Shadows 18/147)
+1  sm115 8      # Charmeleon (Hidden Fates 8/68)
+1  sm11  34     # Salazzle (Unified Minds 34/236)
+1  sm5   25     # Salandit (Ultra Prism 25/156)
+1  sm115 49     # Eevee (Hidden Fates 49/68)
+1  sm75  55     # Kangaskhan (Dragon Majesty 55/70)
+# 🔥 Charizard — Trenerzy: ok. 4, niepewne (zasłonięte na zdjęciu) — odkomentuj właściwe
+# 1  sm1  119   # Great Ball
+# 1  sm1  120   # Hau
+# 1  sm5  119   # Cynthia (Ultra Prism 119/156)
+# 1  sm1  132   # Switch
+# 1  sm1  127   # Potion
+
+# 🔮 Mewtwo — Pokémony (6)
+2  sm115 50     # Snorlax (Hidden Fates 50/68)
+1  sm115 49     # Eevee (Hidden Fates 49/68)
+1  sm8   105    # Mareanie (Lost Thunder 105/214)
+1  sm115 32     # Mew (Hidden Fates 32/68)
+1  sm11  87     # Cresselia (Unified Minds 87/236)
+# 🔮 Mewtwo — Trenerzy (co najmniej 5)
+2  sm5   119    # Cynthia (Ultra Prism 119/156)
+2  sm1   120    # Hau
+1  sm11  189    # Bug Catcher
+# niepotwierdzone ilości:
+# 1  sm1  119   # Great Ball
+# 1  sm1  126   # Pokémon Catcher (Sun & Moon 126/149)
+# 1  sm1  127   # Potion
