@@ -335,7 +335,9 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .m-vars{margin:10px 0}
 .m-vars b{display:block;font-family:var(--font-h);font-size:13px;color:var(--amber-dk);margin-bottom:4px;letter-spacing:.6px}
 .m-vars div{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}   /* przewijane w bok: Charizard ma 8 */
-.m-vars img{height:150px;border-radius:7px;cursor:zoom-in;flex:none}
+.m-vars img{height:150px;aspect-ratio:63/88;border-radius:7px;cursor:zoom-in;flex:none;background:var(--paper-2)}
+.m-vars .var{position:relative;flex:none;display:block}
+.m-vars .var i{position:absolute;top:4px;left:4px;z-index:1;font:900 11px var(--font-b);font-style:normal;background:var(--ink);color:#FFF6E4;padding:1px 6px;border-radius:99px}
 .m-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 /* okno Pokémona: przyciski form pod obrazkiem, linia ewolucji, „📖 Więcej” */
 .m-forms{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:8px 8px 0}

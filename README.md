@@ -27,7 +27,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
   (siatka i karta Pokémona); dotknij karty lub obrazka → pełny ekran.
   Okno Pokémona: przyciski form (⚪ zwykły / 🧬 Mega / 💎 Tera — obrazek, typy i statystyki), linia ewolucji z obrazkami (dotknij → ten Pokémon),
   ciekawostka, waga i wzrost pod „📖 Więcej”.
-  W oknie złapanego Pokémona ✨ karty specjalne do obejrzenia: Mega (XY, Mega Evolution) i V / VMAX / VSTAR (`variants` w `tools/pick_cards.js`).
+  W oknie złapanego Pokémona 🃏 wszystkie jego karty do obejrzenia (ze wszystkich zestawów, bez powtórek tej samej karty w innej grafice): najpierw VMAX, VSTAR, Mega, ex, GX, V, inne specjalne, potem zwykłe, w grupach od największego HP (`allCards` w `tools/pick_cards.js`).
 - **Walka kartami** (🃏 w oknie Pokémona) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
   energia (dochodzi sama; gdy nie ma nic do zrobienia, tura kończy się sama), ewolucja (tylko w złapane — komputer też, żeby było uczciwie), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
   Efekty z opisu ataku (wzorce w `tools/build_species.js`): stany (☠️ 🔥 💤 ⚡ 💫, jak w grze), leczenie, obrażenia na ławce i w siebie,

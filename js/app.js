@@ -291,6 +291,11 @@ function evoLine(sp) {
 }
 /* okno złapanego: duży obrazek z przyciskami form (zwykła / Mega / Tera — zmieniają obrazek, typy i statystyki), linia ewolucji,
    statystyki; ciekawostka, waga, wzrost i bilans pod „📖 Więcej” */
+/* wszystkie karty Pokémona (tools/pick_cards.js: allCards): 'swsh4/44|VMAX' albo pełny adres; najpierw najmocniejsze rodzaje, w nich wg HP */
+function varThumb(v) {
+  const [u, kind] = v.split('|'), img = /^https:/.test(u) ? u : `https://images.pokemontcg.io/${u}.png`;
+  return `<span class="var">${kind ? `<i>${kind}</i>` : ''}<img src="${img}" data-zoom="${CARD_URL({ card: { img } }, 'big')}" alt="" loading="lazy"></span>`;
+}
 function caughtCard(sp, fi = 0) {
   const all = forms(sp), f = all[fi] || sp, st = statsOf(withLv(f)), r = record(sp.id), url = ART_URL(f.art || sp.id);
   return `
@@ -311,7 +316,7 @@ function caughtCard(sp, fi = 0) {
       <button class="btn" data-duel="${sp.id}">🃏 Karty</button>
       ${editing ? `<button class="btn danger" data-release="${sp.id}">Wypuść</button>` : ''}
     </div>
-    ${sp.vars ? `<div class="m-vars"><b>✨ KARTY SPECJALNE · Mega i V</b><div>${sp.vars.map(u => (big => `<img src="${u}" data-zoom="${big}" alt="" loading="lazy">`)(CARD_URL({ card: { img: u } }, 'big'))).join('')}</div></div>` : ''}
+    ${sp.vars ? `<div class="m-vars"><b>🃏 WSZYSTKIE KARTY · ${sp.vars.length}</b><div>${sp.vars.map(varThumb).join('')}</div></div>` : ''}
     <details class="m-more"><summary>📖 Więcej</summary>
       <p class="m-lat">${dexNo(sp)} · ${esc(sp.kind || '')}</p>
       <div class="m-fact"><b>CZY WIESZ, ŻE…</b>${esc(sp.fact || '')}</div>
