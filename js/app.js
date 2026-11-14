@@ -174,8 +174,41 @@ function setFace(face) { DB.settings.face = face; save(); renderMode(); renderGr
 el.modeSeg.addEventListener('click', e => { const b = e.target.closest('[data-face]'); if (b) { setFace(b.dataset.face); blip(560, .06); } });
 renderMode();
 /* powiększenie na cały ekran: karta do czytania albo duży obrazek */
-const zoom = src => { el.zoom.innerHTML = `<img src="${src}" alt="">`; el.zoom.hidden = false; };
-el.zoom.addEventListener('click', () => { el.zoom.hidden = true; });
+/* pełny ekran karty: w rzędzie kart ← → (przesunięcie palcem, strzałki), góra / dół albo dotknięcie zamyka */
+const Z = { list: [], i: 0, thumbs: [] };
+function zoom(src, thumbs = []) {
+  Z.thumbs = thumbs; Z.list = thumbs.length ? thumbs.map(t => t.dataset.zoom) : [src]; Z.i = Math.max(0, Z.list.indexOf(src));
+  el.zoom.hidden = false; zoomShow();
+}
+function zoomShow(dir = 0) {
+  const n = Z.list.length, nav = n > 1;
+  el.zoom.innerHTML = `<img src="${Z.list[Z.i]}" alt="" class="${dir ? (dir > 0 ? 'in-r' : 'in-l') : ''}">`
+    + (nav ? `<button class="zp" data-zs="-1" aria-label="Poprzednia" ${Z.i ? '' : 'disabled'}>‹</button><button class="zn" data-zs="1" aria-label="Następna" ${Z.i < n - 1 ? '' : 'disabled'}>›</button><b class="zc">${Z.i + 1} / ${n}</b>` : '');
+  for (const k of [Z.i - 1, Z.i + 1]) if (Z.list[k]) new Image().src = Z.list[k];   // sąsiednie od razu gotowe
+}
+function zoomStep(d) {
+  const k = Z.i + d; if (k < 0 || k >= Z.list.length) return zoomShow();   // na końcu: wraca na miejsce
+  Z.i = k; blip(520 + d * 40, .04); zoomShow(d);
+}
+function zoomClose() { el.zoom.hidden = true; Z.thumbs[Z.i]?.scrollIntoView({ block: 'nearest', inline: 'center' }); }
+let zt = null;   // początek przesunięcia palcem
+el.zoom.addEventListener('pointerdown', e => { zt = { x: e.clientX, y: e.clientY, moved: false }; });
+el.zoom.addEventListener('pointermove', e => {
+  if (!zt) return;
+  const dx = e.clientX - zt.x, dy = e.clientY - zt.y, img = el.zoom.querySelector('img');
+  if (Math.abs(dx) > 8 || Math.abs(dy) > 8) zt.moved = true;
+  if (img && zt.moved) img.style.transform = Math.abs(dx) > Math.abs(dy) ? `translateX(${dx}px)` : `translateY(${dy}px)`;
+});
+el.zoom.addEventListener('pointerup', e => {
+  if (!zt) return;
+  const dx = e.clientX - zt.x, dy = e.clientY - zt.y, moved = zt.moved; zt = null;
+  const b = e.target.closest('[data-zs]');
+  if (!moved) return b ? zoomStep(+b.dataset.zs) : zoomClose();   // dotknięcie: strzałka albo zamknij
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50 && Z.list.length > 1) zoomStep(dx < 0 ? 1 : -1);
+  else if (Math.abs(dy) > 60) zoomClose();
+  else zoomShow();
+});
+el.zoom.addEventListener('pointercancel', () => { zt = null; zoomShow(); });
 
 /* ================= ŁOWY ================= */
 function showSugg() {
@@ -255,12 +288,16 @@ const dockHunt = slot => {
   (slot || huntHome).append(el.huntBox);
   if (slot) { say(''); if (matchMedia('(hover: hover)').matches) el.q.focus({ preventScroll: true }); }   // na telefonie klawiatura zasłoniłaby podpowiedź
 };
-function openModal(html, cls = '') { dockHunt(); el.modalBody.innerHTML = html; el.modal.className = 'modal ' + cls; el.modal.hidden = false; dockHunt(el.modalBody.querySelector('.m-hunt')); }
-function closeModal() { el.modal.hidden = true; pickQ = null; stopBattle(); dockHunt(); }
+/* okno zakrywa cały ekran (telefon) i blokuje przewijanie listy pod spodem */
+function openModal(html, cls = '') { dockHunt(); el.modalBody.innerHTML = html; el.modal.className = 'modal ' + cls; el.modal.hidden = false; el.modalBody.closest('.modal-card').scrollTop = 0; document.documentElement.classList.add('modal-open'); dockHunt(el.modalBody.querySelector('.m-hunt')); }
+function closeModal() { el.modal.hidden = true; document.documentElement.classList.remove('modal-open'); pickQ = null; stopBattle(); dockHunt(); }
 el.modalClose.addEventListener('click', closeModal);
 el.modal.addEventListener('click', e => { if (e.target === el.modal) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') el.zoom.hidden ? closeModal() : (el.zoom.hidden = true); });
-el.modalBody.addEventListener('click', e => { const z = e.target.closest('[data-zoom]'); if (z) zoom(z.dataset.zoom); });
+document.addEventListener('keydown', e => {
+  if (!el.zoom.hidden && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) return zoomStep(e.key === 'ArrowRight' ? 1 : -1);
+  if (e.key === 'Escape') el.zoom.hidden ? closeModal() : zoomClose();
+});
+el.modalBody.addEventListener('click', e => { const z = e.target.closest('[data-zoom]'); if (z) zoom(z.dataset.zoom, z.closest('.m-vars') ? [...z.closest('.m-vars').querySelectorAll('[data-zoom]')] : []); });
 const openCard = sp => openModal(isCaught(sp.id) ? caughtCard(sp) : hintCard(sp));
 
 /* paski statystyk z ikonami – czytelne bez umiejętności czytania */

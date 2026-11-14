@@ -293,8 +293,10 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .modal{
   position:fixed;inset:0;z-index:90;background:rgba(12,36,33,.62);
   display:flex;align-items:center;justify-content:center;padding:16px;
-  animation:fadeIn .18s;overflow-y:auto;
+  animation:fadeIn .18s;overflow-y:auto;overscroll-behavior:contain;
 }
+html.modal-open,html.modal-open body{overflow:hidden}   /* lista pod oknem stoi w miejscu */
+.modal-card{overscroll-behavior:contain}
 .modal-card{
   position:relative;background:var(--paper);border:3px solid var(--ink);border-radius:22px;
   width:min(520px,100%);max-height:92vh;overflow-y:auto;
@@ -318,8 +320,13 @@ body.editing .tile:not(.ghost):hover{border-color:#C4523C}
 .mode-seg{display:flex;gap:6px;margin:14px 0 0;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:5px}
 .mode-seg button{flex:1;border:0;border-radius:999px;padding:11px 8px;font:800 17px var(--font-h);background:none;color:var(--ink-soft)}
 .mode-seg button.on{background:var(--ink);color:#fff}
-.zoom{position:fixed;inset:0;z-index:120;background:rgba(10,14,28,.92);display:grid;place-items:center;padding:12px;cursor:zoom-out}
-.zoom img{max-width:100%;max-height:100%;object-fit:contain;border-radius:18px}
+.zoom{position:fixed;inset:0;z-index:120;background:rgba(10,14,28,.92);display:grid;place-items:center;padding:12px;cursor:zoom-out;touch-action:none;user-select:none;overscroll-behavior:contain}
+.zoom img{max-width:100%;max-height:100%;object-fit:contain;border-radius:18px;-webkit-user-drag:none;pointer-events:none}
+.zoom img.in-r{animation:zin-r .18s ease-out}.zoom img.in-l{animation:zin-l .18s ease-out}
+@keyframes zin-r{from{transform:translateX(40%);opacity:.3}}@keyframes zin-l{from{transform:translateX(-40%);opacity:.3}}
+.zoom .zp,.zoom .zn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;border-radius:14px;background:rgba(255,255,255,.18);color:#fff;font:900 34px/1 var(--font-b);cursor:pointer}
+.zoom .zp{left:6px}.zoom .zn{right:6px}.zoom [disabled]{opacity:.15}
+.zoom .zc{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#fff;font:800 14px var(--font-b);opacity:.8;pointer-events:none}
 .flip{position:absolute;left:12px;top:12px;z-index:2}
 .m-body{padding:14px 18px 18px}
 .m-body h2{margin:0;font-size:26px;line-height:1.1}
@@ -592,3 +599,10 @@ img.ghost{filter:brightness(0) opacity(.7)}   /* sylwetka niezłapanego */
 .ar-pick[data-empty]:not([data-empty=""])::before,.d-pick[data-empty]:not([data-empty=""])::before{content:attr(data-empty);grid-column:1/-1;padding:14px;text-align:center;font:800 14px var(--font-b);color:var(--ink-soft)}
 .d-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .d-head .btn.icon{font-size:20px;padding:4px 12px}
+
+/* telefon: okno zakrywa cały ekran (na końcu: wygrywa z .duelm wyżej) */
+@media(max-width:640px){
+  .modal,.modal.duelm{padding:0;align-items:stretch}
+  .modal .modal-card,.modal.duelm .modal-card{width:100%;max-height:none;height:100dvh;border:0;border-radius:0;box-shadow:none;animation:none}
+  .modal .m-hero{border-radius:0}
+}
