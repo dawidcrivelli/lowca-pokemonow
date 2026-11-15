@@ -517,13 +517,20 @@ function startFight() {
   play ? later(500, askMove) : later(500, autoStep);
 }
 function autoStep() { showEvents(playRound(A.B), () => A.B.winner ? finish() : autoStep()); }
-/* 4 ruchy gracza w kolorach typów, z PP; w turze ładowania / odpoczynku nie ma wyboru */
+/* 4 ruchy gracza w kolorach typów, z PP; w turze ładowania / odpoczynku nie ma wyboru.
+   Podpowiedzi na tego rywala: skuteczność typu (💥 ×2, 😕 ×½, 🚫), pasek: ile mniej więcej jego życia zabierze, 🏁 dobija; ruch bez obrażeń: co robi; ⭐ = ruch, który wybrałby komputer */
+const EFF = t => t >= 2 ? `💥 ×${t}` : t === 0 ? '🚫 nie działa' : t < 1 ? `😕 ×${t === .5 ? '½' : '¼'}` : '';
 function askMove() {
-  const me = A.B.a;
+  const { a: me, b: foe } = A.B;
   if (me.charging || me.recharge) return playerMove(0);
-  const box = $('#moves'); box.hidden = false;
-  box.innerHTML = me.moves.map(({ m, pp }, i) => `<button class="move" data-move="${i}" style="--tc:${TYPES[m.t][2]}" ${pp ? '' : 'disabled'}>
-    <b>${TYPES[m.t][1]} ${esc(m.n)}</b><small>${m.p ? `moc ${m.p}` : 'efekt'} · PP ${pp}/${m.pp}</small></button>`).join('');
+  const box = $('#moves'), star = bestMove(A.B, me, foe); box.hidden = false;
+  box.innerHTML = me.moves.map(({ m, pp }, i) => {
+    const h = moveHint(A.B, me, foe, m);
+    const info = h.fx ? `<span class="mfx">${esc(h.fx)}</span>`
+      : `<span class="mhit">${EFF(h.eff) ? `<em>${EFF(h.eff)}</em>` : ''}${h.eff ? `<i class="mbar"><i style="width:${h.pct}%"></i></i>${h.kills ? '🏁' : `${h.pct}%`}` : ''}</span>`;
+    return `<button class="move ${i === star ? 'best' : ''}" data-move="${i}" style="--tc:${TYPES[m.t][2]}" ${pp ? '' : 'disabled'}>
+    <b>${i === star ? '⭐ ' : ''}${TYPES[m.t][1]} ${esc(m.n)}</b>${info}<small>PP ${pp}/${m.pp}${h.acc && h.acc < 100 ? ` · 🎯 ${h.acc}%` : ''}${h.slow ? ' · ⏳ 2 tury' : ''}</small></button>`;
+  }).join('');
 }
 function playerMove(move) {
   if (!A.B || A.B.winner) return;

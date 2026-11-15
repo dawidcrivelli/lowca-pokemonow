@@ -18,7 +18,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
 - **Arena** (⚔️ w oknie Pokémona) — jak w grach, na poziomie 50: 4 ruchy z gry (Scarlet/Violet, wybór: `tools/moves.js`), wzór na obrażenia, premia za własny typ,
   tabela typów, stany (☠️ 🔥 ⚡ 💤 🧊 💫), zmiany statystyk, ładowanie i odpoczynek; życie ×2,5, żeby walka trwała ~5 rund.
   🔍 przy wyborze Pokémona (arena i drużyna do kart): pole po dotknięciu, fragment imienia albo literówka, Enter przy jednym wyniku = wybór.
-  Teren daje premię swoim typom (Wyspa Cynamonowa: 🔥…). Tryby ▶️ oglądam / 👆 walczę (4 przyciski ruchów z PP), widok 3D
+  Teren daje premię swoim typom (Wyspa Cynamonowa: 🔥…). Tryby ▶️ oglądam / 👆 walczę (4 przyciski ruchów z PP i podpowiedzią na tego rywala: 💥 ×2 / 😕 ×½ / 🚫, pasek ile życia zabierze, co robi ruch bez obrażeń, ⭐ ruch, który wybrałby komputer — `bestMove`, `moveHint`; w dzienniku dlaczego: „🔥 na 🌿 ×2”), widok 3D
   (pociski w kolorze typu, pioruny, ikony stanów). Forma (jeden przycisk): ⚪ zwykła → 🧬 Mega (50 form, statystyki z gier) →
   💎 Tera (jeden typ, w nim premia ×2); rywal w tej samej formie, jeśli ją ma. Komputer wybiera ruch o największych oczekiwanych obrażeniach albo stan / wzmocnienie
   (każdą statystykę wzmacnia najwyżej raz i nigdy dwa takie ruchy z rzędu); zmienione statystyki widać pod paskiem życia (👊+1 💨+1).

@@ -164,7 +164,7 @@ function useMove(B, att, def, slot) {
     total += damageOf(B, att, def, m, { crit: c });
   }
   total = Math.min(def.hp, total); def.hp -= total;
-  const notes = [crit && '✨ krytyczny', n > 1 && `${n}×`, tm >= 2 && '💥 super skuteczny!', tm && tm < 1 && '😕 mało skuteczny', !tm && '🚫 nie działa', m.ohko && tm && '💀 nokaut jednym ciosem!'].filter(Boolean);
+  const notes = [crit && '✨ krytyczny', n > 1 && `${n}×`, tm >= 2 && `💥 super skuteczny: ${effWhy(m, def)} ×${tm}`, tm && tm < 1 && `😕 mało skuteczny: ${effWhy(m, def)} ×${tm === .5 ? '½' : '¼'}`, !tm && `🚫 nie działa: ${effWhy(m, def)}`, m.ohko && tm && '💀 nokaut jednym ciosem!'].filter(Boolean);
   E({ ...ev, damage: total, crit, eff: tm, hits: n, text: `${att.name}: ${m.n}${notes.length ? ' (' + notes.join(', ') + ')' : ''} — ${total} obrażeń.` });
   if (m.drain && total) {
     const d = Math.max(1, Math.floor(total * Math.abs(m.drain) / 100));
@@ -207,9 +207,15 @@ function healGain(B, me, foe, m) {
   return best(B, me, foe) * h / Math.max(1, best(B, foe, me));
 }
 function aiMove(B, me, foe) {
-  const rnd = B.rnd, K = TUNE.ai, ok = me.moves.map((x, i) => [x, i]).filter(([x]) => x.pp);
+  const rnd = B.rnd, ok = me.moves.map((x, i) => [x, i]).filter(([x]) => x.pp);
   if (!ok.length) return 0;
-  if (rnd() < K.random) { const r = ok.filter(([x]) => !me.lastX || x.m.c !== 'x'); if (r.length) return r[Math.floor(rnd() * r.length)][1]; }
+  if (rnd() < TUNE.ai.random) { const r = ok.filter(([x]) => !me.lastX || x.m.c !== 'x'); if (r.length) return r[Math.floor(rnd() * r.length)][1]; }
+  return bestMove(B, me, foe);
+}
+/* najlepszy ruch bez losowania: ⭐ podpowiedź dla gracza w trybie „Walczę” */
+function bestMove(B, me, foe) {
+  const K = TUNE.ai, ok = me.moves.map((x, i) => [x, i]).filter(([x]) => x.pp);
+  if (!ok.length) return 0;
   const score = ({ m }) => {
     const acc = m.a ? m.a / 100 : m.ohko ? TUNE.ohkoAcc / 100 : 1;
     if (m.c !== 'x') {
@@ -225,6 +231,17 @@ function aiMove(B, me, foe) {
   };
   return ok.reduce((b, c) => score(c[0]) > score(b[0]) ? c : b)[1];
 }
+
+/* podpowiedź na przycisku ruchu: skuteczność typu, ile mniej więcej życia rywala zabierze (%), czy dobija; ruch bez obrażeń: co robi */
+function moveHint(B, me, foe, m) {
+  if (m.c === 'x') return { fx: effText(m) };
+  const tm = typeMult(m.t, foe.s.types);
+  const d = m.ohko ? (tm ? foe.hp : 0) : damageOf(B, me, foe, m, { avg: true }) * (m.hits ? (m.hits[0] + m.hits[1]) / 2 : 1);
+  return { eff: tm, pct: Math.min(100, Math.round(100 * d / Math.max(1, foe.hp))), kills: d >= foe.hp, acc: m.ohko ? TUNE.ohkoAcc : m.a, slow: !!(m.chg || m.rch) };
+}
+const effText = m => [m.heal && `💚 leczy ${m.heal}% życia`, m.ail && `${STATUS[m.ail][0]} rywal ${STATUS[m.ail][1]}`,
+  ...(m.st || []).map(([k, n]) => `${STAT_ICON[k]} ${STAT_PL[k]}${m.self ? '' : ' rywala'} ${n > 0 ? '⬆️' : '⬇️'}`)].filter(Boolean).join(' · ') || 'efekt';
+const effWhy = (m, def) => `${TYPES[m.t]?.[1] || ''} na ${def.s.types.map(t => TYPES[t][1]).join('')}`;   // „dlatego”: 🔥 na 🌿
 
 /* ---------- runda: kolejność wg priorytetu ruchu, potem szybkości; moveA = numer ruchu gracza albo undefined (komputer) ---------- */
 function playRound(B, moveA) {
@@ -256,4 +273,4 @@ function autoBattle(sa, sb, rnd) {
   return B;
 }
 
-if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TRAIN, levelOf, xpGain, movesAt, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove };
+if (typeof module !== 'undefined') module.exports = { LEVEL, TUNE, TRAIN, levelOf, xpGain, movesAt, TYPES, STATUS, ARENAS, STAT_ICON, statsOf, typeMult, forms, formLike, newBattle, playRound, autoBattle, aiMove, bestMove, moveHint };
