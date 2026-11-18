@@ -1,0 +1,13 @@
+/* kolorowanka (js/paint.js): duże przyciski dla małych palców */
+.paint{display:flex;flex-direction:column;gap:8px;user-select:none;-webkit-user-select:none}
+.pt-bar{display:grid;grid-template-columns:repeat(3,1fr) 6px repeat(5,1fr);gap:4px;align-items:center}   /* jeden rząd na telefonie */
+.pt-bar button{font-size:22px;aspect-ratio:1;max-height:52px;border-radius:12px;border:3px solid #D6CDB8;background:#fff;padding:0;line-height:1;min-width:0}
+.pt-bar button.on{border-color:#1F2A44;background:#FFE58A}
+.pt-bar .pt-size{font-size:26px}.pt-bar .pt-size.small{font-size:12px}
+.pt-stage{position:relative;border-radius:18px;overflow:hidden;background:#fff;border:3px solid #1F2A44;aspect-ratio:1;touch-action:none}
+.pt-stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.pt-peek{position:absolute;inset:3%;width:94%;height:94%;object-fit:contain;background:#fff;pointer-events:none}
+.pt-wait{position:absolute;inset:0;display:grid;place-items:center;font:800 18px system-ui;color:#555}
+.pt-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px}
+.pt-colors button{aspect-ratio:1;border-radius:50%;border:3px solid rgba(0,0,0,.18);background:var(--c);padding:0}
+.pt-colors button.on{border-color:#1F2A44;box-shadow:0 0 0 3px #FFE58A;transform:scale(1.08)}
