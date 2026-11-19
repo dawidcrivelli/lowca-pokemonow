@@ -1,7 +1,7 @@
 /* ================= KOLOROWANKA =================
    Z oficjalnej grafiki Pokémona: czarne kontury (ciemne piksele + brzeg sylwetki) i pola między nimi.
-   Narzędzia dla 4–6 lat: 🖍️ kredka, która nie wychodzi z pola, w którym zaczęła; 🖌️ pędzel swobodny; 🪄 magia (pędzel prawdziwymi kolorami Pokémona);
-   3 grubości; ↶ cofnij; ⬜ wszystko białe. Kontury zawsze na wierzchu. 🪣 wiadro (dotknij pole) w kodzie, przycisk tylko z opts.bucket.
+   Narzędzia dla 4–6 lat: 🖍️ kredka, która nie wychodzi z pola, w którym zaczęła; 🖌️ pędzel swobodny (pod konturami);
+   🧽 gąbka: kryje wszystko, też kontury; 🪄 magia (pędzel prawdziwymi kolorami Pokémona); 3 grubości; ⬜ wszystko białe (z konturami). Bez cofania: można zamalować. 🪣 wiadro (dotknij pole) w kodzie, przycisk tylko z opts.bucket.
    Bez zależności: Paint.open(host, src, { onSound, onChange, bucket }) → { destroy, dataURL }. Obrazek musi pozwalać na odczyt (CORS / data:). */
 (function () {
 'use strict';
@@ -71,22 +71,22 @@ function open(host, src, opts = {}) {
   const btn = (attr, on, title, html) => `<button ${attr} class="${on ? 'on' : ''}" title="${title}">${html}</button>`;
   host.innerHTML = `<div class="paint">
     <div class="pt-bar ${opts.bucket ? 'b' : ''}">
-      ${btn('data-tool="lines"', 1, 'Kredka: nie wychodzi za linie', '🖍️')}${btn('data-tool="brush"', 0, 'Pędzel', '🖌️')}${btn('data-tool="magic"', 0, 'Magia: prawdziwe kolory', '🪄')}${opts.bucket ? btn('data-tool="fill"', 0, 'Wiadro: dotknij pole', '🪣') : ''}
+      ${btn('data-tool="lines"', 1, 'Kredka: nie wychodzi za linie', '🖍️')}${btn('data-tool="brush"', 0, 'Pędzel', '🖌️')}${btn('data-tool="cover"', 0, 'Gąbka: kryje też linie', '🧽')}${btn('data-tool="magic"', 0, 'Magia: prawdziwe kolory', '🪄')}${opts.bucket ? btn('data-tool="fill"', 0, 'Wiadro: dotknij pole', '🪣') : ''}
       <i></i>${SIZES.map((r, i) => btn(`data-size="${i}"`, i === 1, 'Grubość', `<b class="dot" style="--d:${6 + i * 7}px"></b>`)).join('')}
-      <i></i>${btn('data-undo="1"', 0, 'Cofnij', '↶')}${btn('data-clear="1"', 0, 'Wszystko białe', '<b class="sheet"></b>')}
+      <i></i>${btn('data-clear="1"', 0, 'Wszystko białe', '<b class="sheet"></b>')}
     </div>
     <div class="pt-stage"><canvas width="${S}" height="${S}"></canvas><div class="pt-wait">✏️ Rysuję kontury…</div></div>
     <div class="pt-colors">${COLORS.map((c, i) => `<button data-color="${c}" class="${i ? '' : 'on'}" style="--c:${c}" aria-label="kolor"></button>`).join('')}</div>
   </div>`;
   const root = host.firstElementChild, cv = root.querySelector('canvas'), g = cv.getContext('2d', { willReadFrequently: true });
-  const st = { tool: 'lines', color: COLORS[0], size: 1, A: null, paint: null, undo: [], strokeId: null, last: null };
+  const st = { tool: 'lines', color: COLORS[0], size: 1, A: null, paint: null, lines: null, strokeId: null, last: null };
   const lineCv = document.createElement('canvas'); lineCv.width = lineCv.height = S;
   const sound = (f, v) => opts.onSound?.(f, v);
 
   const img = new Image(); img.crossOrigin = 'anonymous';
   img.onload = () => {
     st.A = analyse(img);
-    lineCv.getContext('2d').putImageData(st.A.lines, 0, 0);
+    st.lines = new ImageData(st.A.lines.data.slice(), S, S); lineCv.getContext('2d').putImageData(st.lines, 0, 0);
     st.paint = new ImageData(S, S); st.paint.data.fill(255);
     root.querySelector('.pt-wait').remove();
     draw();
@@ -94,7 +94,10 @@ function open(host, src, opts = {}) {
   img.onerror = () => { root.querySelector('.pt-wait').textContent = '😕 Nie udało się wczytać obrazka.'; };
   img.src = src;
 
-  function draw() { g.putImageData(st.paint, 0, 0); g.drawImage(lineCv, 0, 0); }
+  function draw() {
+    if (st.linesDirty) { lineCv.getContext('2d').putImageData(st.lines, 0, 0); st.linesDirty = false; }
+    g.putImageData(st.paint, 0, 0); g.drawImage(lineCv, 0, 0);
+  }
   const rgb = hex => [1, 3, 5].map(k => parseInt(hex.slice(k, k + 2), 16));
   function setPx(i, col) {   // col: [r,g,b] albo null = magia (oryginał; tło zostaje białe)
     const p = st.paint.data, o = st.A.orig.data, j = i * 4;
@@ -113,6 +116,7 @@ function open(host, src, opts = {}) {
     for (let yy = Math.max(0, y - r | 0); yy <= Math.min(S - 1, y + r); yy++) for (let xx = Math.max(0, x - r | 0); xx <= Math.min(S - 1, x + r); xx++) {
       if ((xx - x) ** 2 + (yy - y) ** 2 > r * r) continue;
       const i = yy * S + xx;
+      if (st.tool === 'cover') { setPx(i, col); st.lines.data[i * 4 + 3] = 0; st.linesDirty = true; continue; }   // gąbka: też na konturze
       if (L[i] < 0 || (st.strokeId !== null && L[i] !== st.strokeId)) continue;
       setPx(i, col);
     }
@@ -127,13 +131,11 @@ function open(host, src, opts = {}) {
     return null;
   }
   const pos = e => { const b = cv.getBoundingClientRect(); return [Math.round((e.clientX - b.left) / b.width * S), Math.round((e.clientY - b.top) / b.height * S)]; };
-  function snapshot() { st.undo.push(st.paint.data.slice()); if (st.undo.length > 25) st.undo.shift(); }
 
   cv.addEventListener('pointerdown', e => {
     if (!st.A) return;
     e.preventDefault(); cv.setPointerCapture(e.pointerId);
     const [x, y] = pos(e), id = regionAt(x, y);
-    snapshot();
     if (st.tool === 'fill') { if (id !== null) fill(id); st.last = null; return; }
     st.strokeId = st.tool === 'lines' ? id : null;   // kredka: tylko pole, w którym zaczęła; pędzel i magia swobodnie
     st.last = [x, y]; st.moved = false;
@@ -158,8 +160,7 @@ function open(host, src, opts = {}) {
     const d = b.dataset;
     if (d.tool) { st.tool = d.tool; mark('[data-tool]', b); sound(520, .04); }
     if (d.size) { st.size = +d.size; mark('[data-size]', b); sound(380 + 80 * st.size, .04); }
-    if (d.undo && st.undo.length) { st.paint.data.set(st.undo.pop()); draw(); sound(380, .05); }
-    if (d.clear) { snapshot(); st.paint.data.fill(255); draw(); sound(300, .08); opts.onChange?.(); }   // ↶ przywraca
+    if (d.clear) { st.paint.data.fill(255); st.lines.data.set(st.A.lines.data); lineCv.getContext('2d').putImageData(st.lines, 0, 0); draw(); sound(300, .08); opts.onChange?.(); }   // kontury wracają
   });
   root.querySelector('.pt-colors').addEventListener('click', e => {
     const b = e.target.closest('[data-color]'); if (!b) return;

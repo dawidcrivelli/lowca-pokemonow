@@ -25,8 +25,8 @@ ${fs.readFileSync(path.join(root, 'css', 'paint.css'), 'utf8')}</style></head><b
 <h1>🎨 Kolorowanka — demo</h1>
 <div class="pick">${pics.map((p, i) => `<button data-i="${i}" class="${i ? '' : 'on'}" title="${p.name}"><img src="${p.src}" alt="${p.name}"></button>`).join('')}</div>
 <div id="host"></div>
-<p class="help">🖍️ kredka: nie wychodzi z pola, w którym zaczęła · 🖌️ pędzel: swobodnie · 🪄 magia: maluje prawdziwymi kolorami Pokémona ·
-● 3 grubości · ↶ cofnij · ⬜ wszystko białe (↶ przywraca). Kontury zostają zawsze na wierzchu.</p>
+<p class="help">🖍️ kredka: nie wychodzi z pola, w którym zaczęła · 🖌️ pędzel: swobodnie, pod konturami · 🧽 gąbka: kryje też kontury · 🪄 magia: maluje prawdziwymi kolorami Pokémona ·
+● 3 grubości · ⬜ wszystko białe, z konturami.</p>
 </main><script>
 const PICS = ${JSON.stringify(pics.map(p => p.src))};
 let ctx = null; const AC = window.AudioContext && new AudioContext();

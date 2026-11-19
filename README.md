@@ -27,6 +27,7 @@ Wersja Pokémon [Łowcy Dinozaurów](https://dawidcrivelli.github.io/lowca-dinoz
   (siatka i karta Pokémona); dotknij karty lub obrazka → pełny ekran.
   Okno Pokémona: przyciski form (⚪ zwykły / 🧬 Mega / 💎 Tera — obrazek, typy i statystyki), linia ewolucji z obrazkami (dotknij → ten Pokémon),
   ciekawostka, waga i wzrost pod „📖 Więcej”.
+  🎨 **Kolorowanka** (przycisk w oknie złapanego Pokémona, `js/paint.js`): kontury liczone z grafiki (piksele ciemniejsze od otoczenia), 🖍️ kredka nie wychodzi z pola, 🖌️ pędzel, 🧽 gąbka kryje też kontury, 🪄 magia = prawdziwe kolory, 3 grubości, ⬜ od nowa; bez zapisu (zrzut ekranu). Demo bez aplikacji: `node tools/paint_demo.js`.
   W oknie złapanego Pokémona 🃏 wszystkie jego karty do obejrzenia (ze wszystkich zestawów, bez powtórek tej samej karty w innej grafice): najpierw VMAX, VSTAR, Mega, ex, GX, V, inne specjalne, potem zwykłe, w grupach od największego HP (`allCards` w `tools/pick_cards.js`).
 - **Walka kartami** (🃏 w oknie Pokémona) — uproszczone zasady Battle Academy: drużyna 3 Pokémonów Podstawowych, co turę
   energia (dochodzi sama; gdy nie ma nic do zrobienia, tura kończy się sama), ewolucja (tylko w złapane — komputer też, żeby było uczciwie), odwrót, ataki z prawdziwym kosztem i obrażeniami, słabość ×2, 3 nagrody (ex daje 2).
@@ -51,6 +52,7 @@ Otwórz `index.html` w przeglądarce — bez budowania. Obrazki i głosy ładuj�
 | `js/species.js` | Pokédex (generowany: `node tools/fetch.js && node tools/build_species.js`; polskie teksty w `tools/pl.json`, nazwy ataków w `tools/attacks_pl.json`, ruchów w `tools/moves_pl.json`) |
 | `js/battle.js` | typy, stany, tereny, silnik walki i komputer, bez DOM; strojenie: `TUNE`, potem `node tools/sim.js` |
 | `js/cards.js` | zasady walki kartami, bez DOM; `node tools/sim_cards.js` — długość gier komputer vs komputer |
+| `js/paint.js`, `css/paint.css` | kolorowanka: kontury i pola z grafiki, narzędzia; bez DOM aplikacji (`Paint.open(host, src)`) |
 | `js/app.js` | interfejs: łowy, Pokédex, karty, arena, walka kartami, tryb rodzica |
 | `js/arena3d.js`, `vendor/three.min.js` | widok walki 3D na terenie low-poly: modele z gier ([Pokemon-3D-api](https://github.com/Pokemon-3D-api/assets), z CDN, z animacjami, jeśli są), bez nich wytłoczone grafiki |
 | `js/sfx.js`, `sounds/` | odgłosy walki (CC0) |

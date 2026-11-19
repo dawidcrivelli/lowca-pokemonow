@@ -333,6 +333,12 @@ function varThumb(v) {
   const [u, kind] = v.split('|'), img = /^https:/.test(u) ? u : `https://images.pokemontcg.io/${u}.png`;
   return `<span class="var">${kind ? `<i>${kind}</i>` : ''}<img src="${img}" data-zoom="${CARD_URL({ card: { img } }, 'big')}" alt="" loading="lazy"></span>`;
 }
+/* kolorowanka z grafiki Pokémona (js/paint.js); forma z okna (Mega: jej grafika); bez zapisu — rysunek zostaje do zamknięcia okna */
+function openPaint(sp, artId) {
+  stopBattle();
+  openModal(`<div class="m-body paintm"><h2>🎨 ${esc(sp.name)}</h2><div id="paintHost"></div></div>`, 'wide');
+  Paint.open($('#paintHost'), ART_URL(artId || sp.id), { onSound: (f, v) => blip(f, v) });
+}
 function caughtCard(sp, fi = 0) {
   const all = forms(sp), f = all[fi] || sp, st = statsOf(withLv(f)), r = record(sp.id), url = ART_URL(f.art || sp.id);
   return `
@@ -351,6 +357,7 @@ function caughtCard(sp, fi = 0) {
     <div class="m-actions">
       <button class="btn amber big" data-arena="${sp.id}">⚔️ Do areny</button>
       <button class="btn" data-duel="${sp.id}">🃏 Karty</button>
+      <button class="btn" data-paint="${sp.id}" data-art="${f.art || sp.id}" title="Kolorowanka">🎨</button>
       ${editing ? `<button class="btn danger" data-release="${sp.id}">Wypuść</button>` : ''}
     </div>
     ${sp.vars ? `<div class="m-vars"><b>🃏 WSZYSTKIE KARTY · ${sp.vars.length}</b><div>${sp.vars.map(varThumb).join('')}</div></div>` : ''}
@@ -390,6 +397,7 @@ el.modalBody.addEventListener('click', e => {
   if (d.unlock) { closeModal(); setCaught(byId(d.unlock), true); }
   if (d.arena) openArena(d.arena);
   if (d.duel) openDuel(d.duel);
+  if (d.paint) openPaint(byId(d.paint), d.art);
   if (d.cform) { const sp = byId(el.modalBody.querySelector('[data-arena]').dataset.arena); el.modalBody.innerHTML = caughtCard(sp, +d.cform); blip(+d.cform ? 880 : 520, .08); return; }
   if (d.evo) { const sp = byId(d.evo); blip(560, .06); return openCard(sp); }
   if (d.flip) { const h = b.closest('.m-hero'); setFace(h.classList.toggle('card') ? 'card' : 'art'); b.textContent = binder() ? '🎨' : '🃏'; }

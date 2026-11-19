@@ -612,3 +612,5 @@ img.ghost{filter:brightness(0) opacity(.7)}   /* sylwetka niezłapanego */
   .modal .modal-card,.modal.duelm .modal-card{width:100%;max-height:none;height:100dvh;border:0;border-radius:0;box-shadow:none;animation:none}
   .modal .m-hero{border-radius:0}
 }
+.paintm h2{margin:0 44px 8px 0}
+.paintm .paint{max-width:560px;margin:0 auto}
