@@ -1,14 +1,15 @@
 /* kolorowanka (js/paint.js): duże przyciski dla małych palców */
 .paint{display:flex;flex-direction:column;gap:8px;user-select:none;-webkit-user-select:none}
-.pt-bar{display:grid;grid-template-columns:repeat(4,1fr) 4px repeat(3,1fr) 4px 1fr;gap:4px;align-items:center}   /* jeden rząd na telefonie */
-.pt-bar.b{grid-template-columns:repeat(5,1fr) 4px repeat(3,1fr) 4px 1fr}
-.pt-bar button{font-size:24px;aspect-ratio:1;max-height:54px;border-radius:12px;border:3px solid #D6CDB8;background:#fff;padding:0;line-height:1;min-width:0;display:grid;place-items:center;color:#1F2A44}
+.pt-tools{display:grid;grid-template-columns:repeat(4,1fr) 10px 1fr;gap:8px}
+.pt-sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:62%}
+.pt-bar button{font-size:30px;aspect-ratio:1;max-height:64px;border-radius:12px;border:3px solid #D6CDB8;background:#fff;padding:0;line-height:1;min-width:0;display:grid;place-items:center;color:#1F2A44}
 .pt-bar button.on{border-color:#1F2A44;background:#FFE58A}
 .pt-bar .dot{display:block;width:var(--d);height:var(--d);border-radius:50%;background:#1F2A44}
 .pt-bar .sheet{display:block;width:58%;height:70%;background:#fff;border:2px solid #9AA3B5;border-radius:3px;box-shadow:2px 2px 0 #D6CDB8}
 .pt-stage{position:relative;border-radius:18px;overflow:hidden;background:#fff;border:3px solid #1F2A44;aspect-ratio:1;touch-action:none}
 .pt-stage canvas{display:block;width:100%;height:100%;touch-action:none}
 .pt-wait{position:absolute;inset:0;display:grid;place-items:center;font:800 18px system-ui;color:#555}
-.pt-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px}
+.pt-colors{display:grid;grid-template-columns:repeat(9,1fr);gap:5px}
 .pt-colors button{aspect-ratio:1;border-radius:50%;border:3px solid rgba(0,0,0,.18);background:var(--c);padding:0}
 .pt-colors button.on{border-color:#1F2A44;box-shadow:0 0 0 3px #FFE58A;transform:scale(1.08)}
+.pt-colors button.gold{background:linear-gradient(135deg,#8A6212,#FFE680 35%,#C99A1E 55%,#FFF3B0 75%,#9C7416)}

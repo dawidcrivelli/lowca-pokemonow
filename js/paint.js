@@ -10,7 +10,11 @@ const DARK = 40;                  // jasność (0–255) poniżej = zawsze kontu
 const EDGE = .72, EDGE_MIN = 28;  // kontur: jaśniejsze otoczenie (× EDGE) i różnica co najmniej EDGE_MIN
 const SOLID = 110;                // przezroczystość powyżej = Pokémon, poniżej = tło
 const TINY = 24;                  // mniejsze pola doklejone do konturu (okruchy po cieniowaniu)
-const COLORS = ['#E53935', '#FB8C00', '#FDD835', '#7CB342', '#2E7D32', '#4FC3F7', '#1E63D6', '#8E24AA', '#F48FB1', '#8D6E63', '#9E9E9E', '#212121', '#FFFFFF'];
+/* 26 kolorów w 3 rzędach po 9 (jasne → ciemne w rodzinach) + złoto (błyszczący wzór, nie jeden kolor) */
+const COLORS = ['#FFFFFF', '#FFF59D', '#FDD835', '#FFCC80', '#FB8C00', '#E53935', '#B71C1C', '#F48FB1', '#EC407A',
+  '#CE93D8', '#8E24AA', '#5E35B1', '#0D2C6B', '#1E63D6', '#4FC3F7', '#80DEEA', '#00897B', 'gold',
+  '#C5E1A5', '#7CB342', '#2E7D32', '#E8C9A0', '#8D6E63', '#4E342E', '#E0E0E0', '#9E9E9E', '#212121'];
+const FIRST = '#E53935';
 const SIZES = [6, 14, 28];   // promień pędzla w px płótna
 
 /* kontury i pola: label[i] = numer pola (0 = tło na zewnątrz, 1… = pola), -1 = kontur */
@@ -70,16 +74,16 @@ function analyse(img) {
 function open(host, src, opts = {}) {
   const btn = (attr, on, title, html) => `<button ${attr} class="${on ? 'on' : ''}" title="${title}">${html}</button>`;
   host.innerHTML = `<div class="paint">
-    <div class="pt-bar ${opts.bucket ? 'b' : ''}">
+    <div class="pt-bar pt-tools">
       ${btn('data-tool="lines"', 1, 'Kredka: nie wychodzi za linie', '🖍️')}${btn('data-tool="brush"', 0, 'Pędzel', '🖌️')}${btn('data-tool="cover"', 0, 'Gąbka: kryje też linie', '🧽')}${btn('data-tool="magic"', 0, 'Magia: prawdziwe kolory', '🪄')}${opts.bucket ? btn('data-tool="fill"', 0, 'Wiadro: dotknij pole', '🪣') : ''}
-      <i></i>${SIZES.map((r, i) => btn(`data-size="${i}"`, i === 1, 'Grubość', `<b class="dot" style="--d:${6 + i * 7}px"></b>`)).join('')}
       <i></i>${btn('data-clear="1"', 0, 'Wszystko białe', '<b class="sheet"></b>')}
     </div>
+    <div class="pt-bar pt-sizes">${SIZES.map((r, i) => btn(`data-size="${i}"`, i === 1, 'Grubość', `<b class="dot" style="--d:${8 + i * 9}px"></b>`)).join('')}</div>
     <div class="pt-stage"><canvas width="${S}" height="${S}"></canvas><div class="pt-wait">✏️ Rysuję kontury…</div></div>
-    <div class="pt-colors">${COLORS.map((c, i) => `<button data-color="${c}" class="${i ? '' : 'on'}" style="--c:${c}" aria-label="kolor"></button>`).join('')}</div>
+    <div class="pt-colors">${COLORS.map(c => `<button data-color="${c}" class="${c === FIRST ? 'on' : ''} ${c === 'gold' ? 'gold' : ''}" style="--c:${c}" aria-label="${c === 'gold' ? 'złoto' : 'kolor'}"></button>`).join('')}</div>
   </div>`;
   const root = host.firstElementChild, cv = root.querySelector('canvas'), g = cv.getContext('2d', { willReadFrequently: true });
-  const st = { tool: 'lines', color: COLORS[0], size: 1, A: null, paint: null, lines: null, strokeId: null, last: null };
+  const st = { tool: 'lines', color: FIRST, size: 1, A: null, paint: null, lines: null, strokeId: null, last: null };
   const lineCv = document.createElement('canvas'); lineCv.width = lineCv.height = S;
   const sound = (f, v) => opts.onSound?.(f, v);
 
@@ -101,11 +105,13 @@ function open(host, src, opts = {}) {
   const rgb = hex => [1, 3, 5].map(k => parseInt(hex.slice(k, k + 2), 16));
   function setPx(i, col) {   // col: [r,g,b] albo null = magia (oryginał; tło zostaje białe)
     const p = st.paint.data, o = st.A.orig.data, j = i * 4;
-    if (col) { p[j] = col[0]; p[j + 1] = col[1]; p[j + 2] = col[2]; }
+    if (col === 'gold') { const x = i % S, y = i / S | 0, t = .5 + .5 * Math.sin((x + y) / 16) * Math.cos((x - y) / 37), h = (Math.imul(i, 2654435761) >>> 0) / 4294967296;
+      if (h < .006) { p[j] = p[j + 1] = 255; p[j + 2] = 235; } else { p[j] = 176 + 79 * t; p[j + 1] = 128 + 100 * t; p[j + 2] = 20 + 90 * t * t; } }   // złoto: połysk w paskach + iskierki
+    else if (col) { p[j] = col[0]; p[j + 1] = col[1]; p[j + 2] = col[2]; }
     else if (st.A.label[i] === 0 || o[j + 3] < SOLID) { p[j] = p[j + 1] = p[j + 2] = 255; }
     else { p[j] = o[j]; p[j + 1] = o[j + 1]; p[j + 2] = o[j + 2]; }
   }
-  const colNow = () => st.tool === 'magic' ? null : rgb(st.color);
+  const colNow = () => st.tool === 'magic' ? null : st.color === 'gold' ? 'gold' : rgb(st.color);
   function fill(id) {
     const L = st.A.label, col = colNow();
     for (let i = 0; i < L.length; i++) if (L[i] === id) setPx(i, col);
@@ -155,7 +161,7 @@ function open(host, src, opts = {}) {
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
 
   const mark = (sel, b) => root.querySelectorAll(sel).forEach(x => x.classList.toggle('on', x === b));
-  root.querySelector('.pt-bar').addEventListener('click', e => {
+  root.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !st.A) return;
     const d = b.dataset;
     if (d.tool) { st.tool = d.tool; mark('[data-tool]', b); sound(520, .04); }
