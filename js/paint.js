@@ -1,8 +1,8 @@
 /* ================= KOLOROWANKA =================
    Z oficjalnej grafiki Pokémona: czarne kontury (ciemne piksele + brzeg sylwetki) i pola między nimi.
-   Narzędzia dla 4–6 lat: 🪣 wiadro (dotknij pole), 🖌️ pędzel, który nie wychodzi z pola, w którym zaczął (🔒; bez kłódki: swobodnie),
-   🪄 magia (prawdziwe kolory Pokémona: dotknij pole albo maluj), ↶ cofnij, 👁 podgląd oryginału (przytrzymaj), 🗑️ od nowa.
-   Bez zależności: Paint.open(host, src, { onSound, onChange }) → { destroy, dataURL }. Obrazek musi pozwalać na odczyt (CORS / data:). */
+   Narzędzia dla 4–6 lat: 🖍️ kredka, która nie wychodzi z pola, w którym zaczęła; 🖌️ pędzel swobodny; 🪄 magia (pędzel prawdziwymi kolorami Pokémona);
+   3 grubości; ↶ cofnij; ⬜ wszystko białe. Kontury zawsze na wierzchu. 🪣 wiadro (dotknij pole) w kodzie, przycisk tylko z opts.bucket.
+   Bez zależności: Paint.open(host, src, { onSound, onChange, bucket }) → { destroy, dataURL }. Obrazek musi pozwalać na odczyt (CORS / data:). */
 (function () {
 'use strict';
 const S = 640;                    // płótno S×S
@@ -11,7 +11,7 @@ const EDGE = .72, EDGE_MIN = 28;  // kontur: jaśniejsze otoczenie (× EDGE) i r
 const SOLID = 110;                // przezroczystość powyżej = Pokémon, poniżej = tło
 const TINY = 24;                  // mniejsze pola doklejone do konturu (okruchy po cieniowaniu)
 const COLORS = ['#E53935', '#FB8C00', '#FDD835', '#7CB342', '#2E7D32', '#4FC3F7', '#1E63D6', '#8E24AA', '#F48FB1', '#8D6E63', '#9E9E9E', '#212121', '#FFFFFF'];
-const SIZES = [10, 26];
+const SIZES = [6, 14, 28];   // promień pędzla w px płótna
 
 /* kontury i pola: label[i] = numer pola (0 = tło na zewnątrz, 1… = pola), -1 = kontur */
 function analyse(img) {
@@ -68,23 +68,18 @@ function analyse(img) {
 }
 
 function open(host, src, opts = {}) {
+  const btn = (attr, on, title, html) => `<button ${attr} class="${on ? 'on' : ''}" title="${title}">${html}</button>`;
   host.innerHTML = `<div class="paint">
-    <div class="pt-bar">
-      <button data-tool="fill" class="on" title="Wiadro: dotknij pole">🪣</button>
-      <button data-tool="brush" title="Pędzel">🖌️</button>
-      <button data-tool="magic" title="Magia: prawdziwe kolory">🪄</button>
-      <span class="pt-sp"></span>
-      <button data-size="1" class="pt-size" title="Grubość pędzla">⬤</button>
-      <button data-lock="1" class="on" title="Nie wychodź za linie">🔒</button>
-      <button data-undo="1" title="Cofnij">↶</button>
-      <button data-peek="1" title="Przytrzymaj: jak wygląda naprawdę">👁</button>
-      <button data-clear="1" title="Od nowa">🗑️</button>
+    <div class="pt-bar ${opts.bucket ? 'b' : ''}">
+      ${btn('data-tool="lines"', 1, 'Kredka: nie wychodzi za linie', '🖍️')}${btn('data-tool="brush"', 0, 'Pędzel', '🖌️')}${btn('data-tool="magic"', 0, 'Magia: prawdziwe kolory', '🪄')}${opts.bucket ? btn('data-tool="fill"', 0, 'Wiadro: dotknij pole', '🪣') : ''}
+      <i></i>${SIZES.map((r, i) => btn(`data-size="${i}"`, i === 1, 'Grubość', `<b class="dot" style="--d:${6 + i * 7}px"></b>`)).join('')}
+      <i></i>${btn('data-undo="1"', 0, 'Cofnij', '↶')}${btn('data-clear="1"', 0, 'Wszystko białe', '<b class="sheet"></b>')}
     </div>
-    <div class="pt-stage"><canvas width="${S}" height="${S}"></canvas><img class="pt-peek" alt="" hidden><div class="pt-wait">✏️ Rysuję kontury…</div></div>
+    <div class="pt-stage"><canvas width="${S}" height="${S}"></canvas><div class="pt-wait">✏️ Rysuję kontury…</div></div>
     <div class="pt-colors">${COLORS.map((c, i) => `<button data-color="${c}" class="${i ? '' : 'on'}" style="--c:${c}" aria-label="kolor"></button>`).join('')}</div>
   </div>`;
   const root = host.firstElementChild, cv = root.querySelector('canvas'), g = cv.getContext('2d', { willReadFrequently: true });
-  const st = { tool: 'fill', color: COLORS[0], size: 1, lock: true, A: null, paint: null, undo: [], strokeId: null, last: null };
+  const st = { tool: 'lines', color: COLORS[0], size: 1, A: null, paint: null, undo: [], strokeId: null, last: null };
   const lineCv = document.createElement('canvas'); lineCv.width = lineCv.height = S;
   const sound = (f, v) => opts.onSound?.(f, v);
 
@@ -93,7 +88,6 @@ function open(host, src, opts = {}) {
     st.A = analyse(img);
     lineCv.getContext('2d').putImageData(st.A.lines, 0, 0);
     st.paint = new ImageData(S, S); st.paint.data.fill(255);
-    root.querySelector('.pt-peek').src = src;
     root.querySelector('.pt-wait').remove();
     draw();
   };
@@ -141,7 +135,7 @@ function open(host, src, opts = {}) {
     const [x, y] = pos(e), id = regionAt(x, y);
     snapshot();
     if (st.tool === 'fill') { if (id !== null) fill(id); st.last = null; return; }
-    st.strokeId = st.lock || st.tool === 'magic' ? id : null;   // magia zawsze w polu: dotknięcie = całe pole
+    st.strokeId = st.tool === 'lines' ? id : null;   // kredka: tylko pole, w którym zaczęła; pędzel i magia swobodnie
     st.last = [x, y]; st.moved = false;
     dab(x, y); draw();
   });
@@ -153,28 +147,24 @@ function open(host, src, opts = {}) {
   });
   const end = () => {
     if (!st.last) return;
-    if (st.tool === 'magic' && !st.moved && st.strokeId !== null) fill(st.strokeId);   // magia: dotknięcie = całe pole
-    else opts.onChange?.();
+    opts.onChange?.();
     st.last = null; st.strokeId = null;
   };
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
 
+  const mark = (sel, b) => root.querySelectorAll(sel).forEach(x => x.classList.toggle('on', x === b));
   root.querySelector('.pt-bar').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !st.A) return;
     const d = b.dataset;
-    if (d.tool) { st.tool = d.tool; root.querySelectorAll('[data-tool]').forEach(x => x.classList.toggle('on', x === b)); sound(520, .04); }
-    if (d.size) { st.size = 1 - st.size; b.classList.toggle('small', !st.size); sound(440, .04); }
-    if (d.lock) { st.lock = !st.lock; b.classList.toggle('on', st.lock); b.textContent = st.lock ? '🔒' : '🔓'; sound(st.lock ? 600 : 400, .05); }
+    if (d.tool) { st.tool = d.tool; mark('[data-tool]', b); sound(520, .04); }
+    if (d.size) { st.size = +d.size; mark('[data-size]', b); sound(380 + 80 * st.size, .04); }
     if (d.undo && st.undo.length) { st.paint.data.set(st.undo.pop()); draw(); sound(380, .05); }
-    if (d.clear) { snapshot(); st.paint.data.fill(255); draw(); sound(300, .08); }
+    if (d.clear) { snapshot(); st.paint.data.fill(255); draw(); sound(300, .08); opts.onChange?.(); }   // ↶ przywraca
   });
-  const peek = root.querySelector('.pt-peek'), pb = root.querySelector('[data-peek]');
-  pb.addEventListener('pointerdown', () => { peek.hidden = false; });
-  for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) pb.addEventListener(ev, () => { peek.hidden = true; });
   root.querySelector('.pt-colors').addEventListener('click', e => {
     const b = e.target.closest('[data-color]'); if (!b) return;
-    st.color = b.dataset.color; root.querySelectorAll('[data-color]').forEach(x => x.classList.toggle('on', x === b));
-    if (st.tool === 'magic') { st.tool = 'fill'; root.querySelectorAll('[data-tool]').forEach(x => x.classList.toggle('on', x.dataset.tool === 'fill')); }   // kolor po magii: z powrotem wiadro
+    st.color = b.dataset.color; mark('[data-color]', b);
+    if (st.tool === 'magic') { st.tool = 'lines'; mark('[data-tool]', root.querySelector('[data-tool="lines"]')); }   // kolor po magii: z powrotem kredka
     sound(500 + COLORS.indexOf(st.color) * 25, .04);
   });
   return { destroy: () => { host.innerHTML = ''; }, dataURL: () => cv.toDataURL('image/png'), state: st };
