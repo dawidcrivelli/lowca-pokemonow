@@ -78,8 +78,8 @@ function open(host, src, opts = {}) {
       ${btn('data-tool="lines"', 1, 'Kredka: nie wychodzi za linie', '🖍️')}${btn('data-tool="brush"', 0, 'Pędzel', '🖌️')}${btn('data-tool="cover"', 0, 'Gąbka: kryje też linie', '🧽')}${btn('data-tool="magic"', 0, 'Magia: prawdziwe kolory', '🪄')}${opts.bucket ? btn('data-tool="fill"', 0, 'Wiadro: dotknij pole', '🪣') : ''}
       <i></i>${btn('data-clear="1"', 0, 'Wszystko białe', '<b class="sheet"></b>')}
     </div>
-    <div class="pt-bar pt-sizes">${SIZES.map((r, i) => btn(`data-size="${i}"`, i === 1, 'Grubość', `<b class="dot" style="--d:${8 + i * 9}px"></b>`)).join('')}</div>
     <div class="pt-stage"><canvas width="${S}" height="${S}"></canvas><div class="pt-wait">✏️ Rysuję kontury…</div></div>
+    <div class="pt-bar pt-sizes">${SIZES.map((r, i) => btn(`data-size="${i}"`, i === 1, 'Grubość', `<b class="dot" style="--d:${8 + i * 9}px"></b>`)).join('')}</div>
     <div class="pt-colors">${COLORS.map(c => `<button data-color="${c}" class="${c === FIRST ? 'on' : ''} ${c === 'gold' ? 'gold' : ''}" style="--c:${c}" aria-label="${c === 'gold' ? 'złoto' : 'kolor'}"></button>`).join('')}</div>
   </div>`;
   const root = host.firstElementChild, cv = root.querySelector('canvas'), g = cv.getContext('2d', { willReadFrequently: true });

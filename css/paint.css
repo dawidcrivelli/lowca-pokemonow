@@ -1,7 +1,8 @@
 /* kolorowanka (js/paint.js): duże przyciski dla małych palców */
 .paint{display:flex;flex-direction:column;gap:8px;user-select:none;-webkit-user-select:none}
 .pt-tools{display:grid;grid-template-columns:repeat(4,1fr) 10px 1fr;gap:8px}
-.pt-sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:62%}
+.pt-sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}   /* pod obrazkiem, przy palecie: kolor i grubość pod kciukiem */
+.pt-bar.pt-sizes button{aspect-ratio:auto;height:50px;width:100%;max-height:none}
 .pt-bar button{font-size:30px;aspect-ratio:1;max-height:64px;border-radius:12px;border:3px solid #D6CDB8;background:#fff;padding:0;line-height:1;min-width:0;display:grid;place-items:center;color:#1F2A44}
 .pt-bar button.on{border-color:#1F2A44;background:#FFE58A}
 .pt-bar .dot{display:block;width:var(--d);height:var(--d);border-radius:50%;background:#1F2A44}
