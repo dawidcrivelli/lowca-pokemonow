@@ -8,6 +8,8 @@ użycie:
   python3 tools/print_cards.py tools/ba2020_missing.txt                # → karty_do_druku.pdf
   python3 tools/print_cards.py lista.txt --scale 1.03                   # drukarka zmniejsza o 3 % → powiększ
   python3 tools/print_cards.py lista.txt --calibrate                    # tylko strona z linijkami (bez kart)
+  python3 tools/print_cards.py lista.txt --kontury                      # kolorowanka: czarne kontury i napisy na białym
+  python3 tools/print_cards.py lista.txt --preview                      # przegląd listy: małe karty z nazwami (znalezione.pdf)
 
 kalibracja: wydrukuj w skali 100 % (w Podglądzie: „Skala: 100%”, NIE „Dopasuj”), zmierz prawdziwą linijką linię „100 mm”.
   (odcinek 0–10 na dolnej linijce). Wyszło X mm → nowa skala = obecna × 100 / X (skrypt wypisuje to na stronie). Osobno w pionie: --scale-y.
@@ -23,7 +25,7 @@ lista (plik tekstowy), jedna karta na wiersz, # = komentarz:
   1  sv3pt5-25       albo id karty z pokemontcg.io (zestaw-numer)
   2  https://…/x.png albo ścieżka do pliku PNG/JPG — dowolny obrazek karty
 """
-import argparse, hashlib, json, os, re, signal, struct, subprocess, sys, unicodedata, urllib.error, urllib.request, zlib
+import argparse, hashlib, itertools, json, os, re, signal, struct, subprocess, sys, unicodedata, urllib.error, urllib.request, zlib
 
 MM = 72 / 25.4                      # punkty PDF na milimetr
 CARD = (63.0, 88.0)                 # rozmiar karty Pokémon TCG w mm
@@ -92,8 +94,7 @@ def jpeg_image(data):
     sys.exit('zły plik JPG')
 
 
-def png_image(data):
-    """PNG 8-bit bez przeplotu: RGB idzie do PDF bez dekodowania (filtr PNG = predyktor PDF); przezroczystość → osobna maska."""
+def png_chunks(data):
     if data[:8] != b'\x89PNG\r\n\x1a\n':
         sys.exit('obrazek nie jest PNG ani JPG')
     pos, idat, plte, trns = 8, [], None, None
@@ -111,7 +112,12 @@ def png_image(data):
         pos += 12 + ln
     if bd != 8 or il:
         sys.exit(f'PNG {bd}-bit / z przeplotem — przekonwertuj na JPG (np. w Podglądzie: Eksportuj…)')
-    raw = b''.join(idat)
+    return w, h, ct, b''.join(idat), plte, trns
+
+
+def png_image(data):
+    """PNG 8-bit bez przeplotu: RGB idzie do PDF bez dekodowania (filtr PNG = predyktor PDF); przezroczystość → osobna maska."""
+    w, h, ct, raw, plte, trns = png_chunks(data)
     if ct in (0, 2) or (ct == 3 and not trns):            # bez przezroczystości: wprost
         colors = {0: 1, 2: 3, 3: 1}[ct]
         cs = '/DeviceGray' if ct == 0 else '/DeviceRGB' if ct == 2 else f'[/Indexed /DeviceRGB {len(plte) // 3 - 1} <{plte.hex()}>]'
@@ -159,9 +165,83 @@ def unfilter(raw, w, h, bpp):
     return out
 
 
-def load_image(src):
+BLACK = 90    # piksel czarny: każda składowa RGB (0–255) poniżej
+ART = (.06, .09, .94, .56)    # okienko obrazka na karcie (lewo, góra, prawo, dół — ułamki): tylko tu kontury rysunku
+MEAN_R, DARK, EDGE, EDGE_MIN, TINY = 6, 40, .72, 28, 24   # jak w js/paint.js: otoczenie 2R+1, progi, okruchy w px
+
+
+def grow(v, w):
+    """+1 px w 4 strony (obrazek w wierszach po w pikseli)"""
+    return [p or l or r or u or d for p, l, r, u, d in zip(v, [0] + v[:-1], v[1:] + [0], [0] * w + v[:-w], v[w:] + [0] * w)]
+
+
+def paint_lines(lum, w, h):
+    """kontury jak kolorowanka w aplikacji (js/paint.js analyse): piksel ciemniejszy od średniej otoczenia albo bardzo ciemny,
+    pogrubiony o 1 px; pola mniejsze niż TINY doklejone do konturu"""
+    acc = [[0] * (w + 1)]                                  # suma narastająca: średnia otoczenia w stałym czasie
+    for y in range(h):
+        acc.append([u + v for u, v in zip(acc[-1], [0, *itertools.accumulate(lum[y * w:(y + 1) * w])])])
+    xs = [(max(0, x - MEAN_R), min(w, x + MEAN_R + 1)) for x in range(w)]
+    line = []
+    for y in range(h):
+        y0, y1 = max(0, y - MEAN_R), min(h, y + MEAN_R + 1)
+        A0, A1 = acc[y0], acc[y1]
+        for (x0, x1), L in zip(xs, lum[y * w:(y + 1) * w]):
+            m = (A1[x1] - A0[x1] - A1[x0] + A0[x0]) / ((x1 - x0) * (y1 - y0))
+            line.append(L < DARK or (L < m * EDGE and m - L > EDGE_MIN))
+    n = w * h
+    line = grow(line, w)
+    seen = line[:]
+    for s0 in range(n):                                    # okruchy: małe pola → kontur
+        if seen[s0]:
+            continue
+        comp, k = [s0], 0
+        seen[s0] = 1
+        while k < len(comp):
+            i = comp[k]
+            k += 1
+            for j in (i - 1 if i % w else -1, i + 1 if (i + 1) % w else -1, i - w, i + w):
+                if 0 <= j < n and not seen[j]:
+                    seen[j] = 1
+                    comp.append(j)
+        if len(comp) < TINY:
+            for i in comp:
+                line[i] = 1
+    return line
+
+
+def outline_image(data):
+    """kolorowanka: zostaje czarne (napisy, ramki), w okienku obrazka kontury jak w aplikacji; +1 px; reszta biała do kolorowania"""
+    if data[:2] == b'\xff\xd8':
+        sys.exit('--kontury: tylko obrazki PNG (karty z pokemontcg.io są w PNG)')
+    w, h, ct, raw, plte, trns = png_chunks(data)
+    bpp = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}[ct]
+    pix = bytes(unfilter(zlib.decompress(raw), w, h, bpp))
+    if ct == 3:
+        r, g, b = (pix.translate(plte[i::3].ljust(256, b'\0')) for i in range(3))
+        a = trns and pix.translate(trns.ljust(256, b'\xff'))
+    else:
+        r, g, b = (pix[i::bpp] for i in ((0, 0, 0) if ct in (0, 4) else (0, 1, 2)))
+        a = ct in (4, 6) and pix[bpp - 1::bpp]
+    blk = [int(max(R, G, B) < BLACK) for R, G, B in zip(r, g, b)]
+    if a:
+        blk = [p and A >= 128 for p, A in zip(blk, a)]   # przezroczyste rogi = białe
+    lum = [(77 * R + 150 * G + 29 * B) >> 8 for R, G, B in zip(r, g, b)]
+    x0, y0, x1, y1 = int(ART[0] * w), int(ART[1] * h), int(ART[2] * w), int(ART[3] * h)
+    art = paint_lines([L for y in range(y0, y1) for L in lum[y * w + x0:y * w + x1]], x1 - x0, y1 - y0)
+    far = grow(grow(blk, w), w)                            # kontury z dala od czarnego: drobny tekst nie zlewa się w plamy
+    for y in range(y0, y1):                                # okienko obrazka: kontury jak w aplikacji
+        row = slice(y * w + x0, y * w + x1)
+        blk[row] = [p or (q and not n) for p, q, n in zip(blk[row], art[(y - y0) * (x1 - x0):(y - y0 + 1) * (x1 - x0)], far[row])]
+    blk = [x or y for x, y in zip(blk, blk[1:] + [0])]                 # +1 px w prawo i w dół: cienki tekst grubszy
+    blk = [x or y for x, y in zip(blk, blk[w:] + [0] * w)]
+    out = [0 if p else 255 for p in blk]
+    return dict(w=w, h=h, cs='/DeviceGray', bpc=8, filt='/FlateDecode', data=zlib.compress(bytes(out)), smask=None)
+
+
+def load_image(src, outline=False):
     data = fetch(src)
-    return jpeg_image(data) if data[:2] == b'\xff\xd8' else png_image(data)
+    return outline_image(data) if outline else jpeg_image(data) if data[:2] == b'\xff\xd8' else png_image(data)
 
 
 # ---------------- PDF ----------------
@@ -297,8 +377,9 @@ def main():
     ap.add_argument('--calibrate', action='store_true', help='tylko strona kalibracji (linijki 150 mm i 250 mm + ramka karty)')
     ap.add_argument('--find', metavar='NAZWA', help='szukaj karty po angielskiej nazwie, np. "pikachu" albo "charizard ex"')
     ap.add_argument('--set', metavar='ZESTAW', help='przy --find: fragment nazwy zestawu („151”, „Hidden Fates”) albo id (sv3pt5)')
-    ap.add_argument('--preview', action='store_true', help='przy --find: PDF z małymi kartami i podpisami do wyboru (znalezione.pdf)')
+    ap.add_argument('--preview', action='store_true', help='PDF z małymi kartami i podpisami do wyboru (znalezione.pdf): z --find albo z listy')
     ap.add_argument('--refresh', action='store_true', help='przy --find: pobierz bazę kart od nowa (nowe zestawy)')
+    ap.add_argument('--kontury', action='store_true', help='kolorowanka: tylko czarne kontury i napisy na białym')
     a = ap.parse_args()
     if a.find:
         hits = find(a.find, a.set, a.refresh)
@@ -309,7 +390,12 @@ def main():
         print(f'# znaleziono: {len(hits)} — skopiuj wybrane wiersze do listy (pierwsza liczba = ile sztuk)', file=sys.stderr)
         if not a.preview:
             return
-        a.cards = [(SMALL.format(set=h[1], num=h[2]), f'{h[1]} {h[2]}  ({h[4][:4]})') for h in hits]
+        a.cards = [(SMALL.format(set=h[1], num=h[2]), f'{h[0]}\n{h[1]} {h[2]}  ({h[4][:4]})') for h in hits]
+    elif a.preview and a.lista:                            # przegląd listy: każda karta raz, z nazwą z bazy
+        names = {(r[1], r[2]): f'{r[0]}\n{r[1]} {r[2]}  ({r[4][:4]})' for r in card_index()}
+        ids = [re.search(r'io/([^/]+)/([^/_]+)_hires', s) for s in dict.fromkeys(read_list(a.lista))]
+        a.cards = [(SMALL.format(set=m[1], num=m[2]), names.get((m[1], m[2]), f'{m[1]} {m[2]}')) for m in ids if m]
+    if a.preview:
         a.scale, a.scale_y, a.cols, a.rows, a.gap, a.no_lines = 0.5, None, 5, 5, 12.0, True
         if a.out == 'karty_do_druku.pdf':
             a.out = 'znalezione.pdf'
@@ -357,7 +443,7 @@ def main():
     images, ids = {}, {}
     for src in dict.fromkeys(cards):                      # każdy obrazek raz w PDF
         ids[src] = len(images)
-        images[ids[src]] = pdf.image(load_image(src))
+        images[ids[src]] = pdf.image(load_image(src, a.kontury))
     per, pages = a.cols * a.rows, []
     for p in range(0, len(cards), per):
         ops = ''
@@ -367,8 +453,8 @@ def main():
             ops += f'q {cw:.3f} 0 0 {ch:.3f} {x:.3f} {y:.3f} cm /Im{ids[src]} Do Q\n'
             if not a.no_lines:
                 ops += f'0.6 G 0.2 w {x:.3f} {y:.3f} {cw:.3f} {ch:.3f} re S\n'
-            if src in labels:
-                ops += '0 g ' + txt(x, y - 3.8 * MM, labels[src], 7.5)
+            for k, s in enumerate(labels[src].split('\n') if src in labels else []):   # nazwa, pod nią zestaw
+                ops += '0 g ' + txt(x, y - (2.8 + 2.6 * k) * MM, s, 6.5)
         # znaczniki cięcia w marginesie na przedłużeniu krawędzi kart (z odstępem: obie krawędzie)
         ops += '0 G 0.3 w\n'
         for xx in sorted({x0 + c * (cw + gx) + d for c in range(a.cols) for d in (0, cw)}):
